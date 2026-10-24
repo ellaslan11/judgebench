@@ -11,17 +11,40 @@ from jbc.judges.base import Judge
 from jbc.judges.heuristic import _to_label
 from jbc.schemas import Item, Pair, Pref, Rating
 
+_BAD_ESCAPE = re.compile(r'\\(?!["\\/bfnrtu])')
 
-def parse_json(text: str) -> dict:
+
+def parse_json(text: str, require: str | None = None) -> dict:
+    try:
+        return _parse_json(text, require)
+    except ValueError:
+        fixed = _BAD_ESCAPE.sub(r"\\\\", text)
+        if fixed == text:
+            raise
+        return _parse_json(fixed, require)
+
+
+def _parse_json(text: str, require: str | None = None) -> dict:
     text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
     try:
-        return json.loads(text)
+        d = json.loads(text)
+        if isinstance(d, dict) and (require is None or require in d):
+            return d
     except json.JSONDecodeError:
         pass
-    start = text.find("{")
-    end = text.rfind("}")
-    if start >= 0 and end > start:
-        return json.JSONDecoder().raw_decode(text[start:])[0]
+    found = []
+    dec = json.JSONDecoder()
+    for m in re.finditer(r"\{", text):
+        try:
+            d = dec.raw_decode(text[m.start():])[0]
+        except json.JSONDecodeError:
+            continue
+        if isinstance(d, dict):
+            if require is None or require in d:
+                return d
+            found.append(d)
+    if found and require is None:
+        return found[0]
     raise ValueError(f"no JSON in judge output: {text[:200]!r}")
 
 
@@ -52,7 +75,7 @@ class LLMJudge(Judge):
 
     def rate(self, item: Item) -> Rating:
         r = llm.chat(self.provider, self.model, self.system, prompts.single_user(item), self.max_tokens)
-        d = parse_json(r.text)
+        d = parse_json(r.text, "scores" if self.kind == "rubric" else "score")
         if self.kind == "rubric":
             scores = {k: _clamp(v) for k, v in d["scores"].items()}
             reasons = {k: str(v) for k, v in d.get("reasons", {}).items()}
@@ -65,7 +88,7 @@ class LLMJudge(Judge):
 
     def compare(self, pair: Pair, first: Item, second: Item, order: str) -> Pref:
         r = llm.chat(self.provider, self.model, prompts.PAIR_SYSTEM, prompts.pair_user(first, second), 800)
-        d = parse_json(r.text)
+        d = parse_json(r.text, "winner")
         w = str(d.get("winner", "tie")).strip()
         w = "A" if w.upper() == "A" else "B" if w.upper() == "B" else "tie"
         return Pref(pair_id=pair.id, judge_id=self.id, order=order, winner=_to_label(w, order),

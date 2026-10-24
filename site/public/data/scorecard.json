@@ -232,6 +232,72 @@
       "p50_latency_s": 4.277505874633789,
       "composite": 0.7932062338251709
     },
+    "merge-zs-haiku4.5": {
+      "metrics": {
+        "hack_catch_rate": {
+          "value": 0.39325842696629215,
+          "lo": 0.2988505747126437,
+          "hi": 0.48314606741573035,
+          "n": 89,
+          "n_parents": 49
+        },
+        "scope_sensitivity": {
+          "value": 0.425531914893617,
+          "lo": 0.2978723404255319,
+          "hi": 0.574468085106383,
+          "n": 47,
+          "n_parents": 47
+        },
+        "length_bias": {
+          "value": -0.813953488372093,
+          "lo": -1.2093023255813953,
+          "hi": -0.4877906976744191,
+          "n": 43,
+          "n_parents": 43
+        },
+        "desc_gaming": {
+          "value": -0.22448979591836735,
+          "lo": -0.4489795918367347,
+          "hi": -0.04081632653061224,
+          "n": 49,
+          "n_parents": 49
+        },
+        "stability": {
+          "value": 1.0,
+          "lo": 1.0,
+          "hi": 1.0,
+          "n": 22,
+          "n_parents": 22
+        },
+        "pairwise_acc": {
+          "value": 0.6875,
+          "lo": 0.6376650563607085,
+          "hi": 0.7333441558441558,
+          "n": 144,
+          "n_parents": 50
+        },
+        "position_flip_rate": {
+          "value": 0.2087912087912088,
+          "lo": 0.15675675675675677,
+          "hi": 0.26229508196721313,
+          "n": 182,
+          "n_parents": 50
+        },
+        "parent_merge_rate": {
+          "value": 0.94,
+          "lo": 0.86,
+          "hi": 1.0,
+          "n": 50,
+          "n_parents": 50
+        }
+      },
+      "n_ratings": 300,
+      "n_prefs": 364,
+      "cost_usd_total": 5.443332999999999,
+      "cost_per_rating_usd": 0.005716589999999998,
+      "p50_latency_s": 2.110442280769348,
+      "composite": 0.7147846863654337
+    },
     "rubric-gpt6-luna": {
       "metrics": {
         "hack_catch_rate": {
@@ -363,6 +429,60 @@
       "cost_per_rating_usd": 0.012746973684210525,
       "p50_latency_s": 9.17272436618805,
       "composite": 0.7929063060397781
+    },
+    "rubric-haiku4.5": {
+      "metrics": {
+        "hack_catch_rate": {
+          "value": 0.7682926829268293,
+          "lo": 0.6790013227513227,
+          "hi": 0.8452380952380952,
+          "n": 82,
+          "n_parents": 46
+        },
+        "scope_sensitivity": {
+          "value": 0.7857142857142857,
+          "lo": 0.6666666666666666,
+          "hi": 0.9047619047619048,
+          "n": 42,
+          "n_parents": 42
+        },
+        "length_bias": {
+          "value": -1.7,
+          "lo": -2.025,
+          "hi": -1.35,
+          "n": 40,
+          "n_parents": 40
+        },
+        "desc_gaming": {
+          "value": -0.047619047619047616,
+          "lo": -0.23809523809523808,
+          "hi": 0.14285714285714285,
+          "n": 42,
+          "n_parents": 42
+        },
+        "stability": {
+          "value": 0.6666666666666666,
+          "lo": 0.47619047619047616,
+          "hi": 0.8571428571428571,
+          "n": 21,
+          "n_parents": 21
+        },
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "parent_merge_rate": {
+          "value": 0.8913043478260869,
+          "lo": 0.8043478260869565,
+          "hi": 0.9782608695652174,
+          "n": 46,
+          "n_parents": 46
+        }
+      },
+      "n_ratings": 291,
+      "n_prefs": 0,
+      "cost_usd_total": 2.779834000000001,
+      "cost_per_rating_usd": 0.009552694158075605,
+      "p50_latency_s": 8.810487747192383,
+      "composite": 0.7063614098873908
     }
   },
   "n_items": 304,
