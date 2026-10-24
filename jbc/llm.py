@@ -25,7 +25,8 @@ class LLMResponse:
 
 def _conn() -> sqlite3.Connection:
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    c = sqlite3.connect(CACHE_PATH, check_same_thread=False)
+    c = sqlite3.connect(CACHE_PATH, check_same_thread=False, timeout=60)
+    c.execute("PRAGMA journal_mode=WAL")
     c.execute("CREATE TABLE IF NOT EXISTS cache (k TEXT PRIMARY KEY, v TEXT)")
     return c
 

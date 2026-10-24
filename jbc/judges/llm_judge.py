@@ -21,7 +21,7 @@ def parse_json(text: str) -> dict:
     start = text.find("{")
     end = text.rfind("}")
     if start >= 0 and end > start:
-        return json.loads(text[start : end + 1])
+        return json.JSONDecoder().raw_decode(text[start:])[0]
     raise ValueError(f"no JSON in judge output: {text[:200]!r}")
 
 

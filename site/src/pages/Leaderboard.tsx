@@ -92,7 +92,7 @@ export default function Leaderboard() {
             <XAxis type="number" dataKey="cost" name="$/1k ratings" label={{ value: "$ per 1k ratings", position: "bottom", fill: "var(--muted)" }} stroke="var(--muted)" />
             <YAxis type="number" dataKey="hack" name="hack catch %" domain={[0, 100]} label={{ value: "hack catch %", angle: -90, position: "insideLeft", fill: "var(--muted)" }} stroke="var(--muted)" />
             <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-            <Scatter data={scatter} fill="var(--accent)">
+            <Scatter data={scatter} fill="var(--accent)" isAnimationActive={false}>
               <LabelList dataKey="id" position="top" style={{ fontSize: 11, fill: "var(--fg)" }} />
             </Scatter>
           </ScatterChart>
