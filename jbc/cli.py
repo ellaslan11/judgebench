@@ -80,9 +80,21 @@ def estimate(judges: str = "configs/judges.yaml"):
             a2, _ = j.estimate_tokens(by_id[p.b])
             tin += 2 * (a1 + a2)
             tout += 2 * 200 if a1 else 0
+        # Prefer observed token usage (includes reasoning/thinking tokens) from earlier runs.
+        tag = ""
+        seen_r = [r.meta for r in read_jsonl(RESULTS / j.id / "ratings.jsonl", Rating) if "in_tok" in r.meta]
+        seen_p = [r.meta for r in read_jsonl(RESULTS / j.id / "prefs.jsonl", Pref) if "in_tok" in r.meta]
+        if len(seen_r) >= 5:
+            mean_in = sum(x["in_tok"] for x in seen_r) / len(seen_r)
+            mean_out = sum(x["out_tok"] for x in seen_r) / len(seen_r)
+            pin = sum(x["in_tok"] for x in seen_p) / len(seen_p) if len(seen_p) >= 5 else 2 * mean_in
+            pout = sum(x["out_tok"] for x in seen_p) / len(seen_p) if len(seen_p) >= 5 else 200
+            tin = mean_in * len(items) + pin * 2 * len(pairs)
+            tout = mean_out * len(items) + pout * 2 * len(pairs)
+            tag = f"  (calibrated from {len(seen_r)} runs)"
         cost = (tin * getattr(j, "price_in", 0) + tout * getattr(j, "price_out", 0)) / 1e6
         total += cost
-        typer.echo(f"{j.id:22s} in={tin/1e6:6.2f}M out={tout/1e6:5.2f}M  ~${cost:7.2f}")
+        typer.echo(f"{j.id:22s} in={tin/1e6:6.2f}M out={tout/1e6:5.2f}M  ~${cost:7.2f}{tag}")
     typer.echo(f"{'TOTAL':22s} ~${total:.2f}")
 
 

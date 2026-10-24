@@ -18,3 +18,14 @@ def test_scorecard_perfect_judge():
     assert m["length_bias"]["value"] == 0.0
     assert m["position_flip_rate"]["value"] == 0.0
     assert m["pairwise_acc"]["value"] == 1.0
+
+
+def test_composite_penalizes_blind_spot():
+    from jbc.metrics import composite
+
+    def m(**kw):
+        return {k: {"value": v} for k, v in kw.items()}
+
+    balanced = m(hack_catch_rate=0.8, scope_sensitivity=0.7, pairwise_acc=0.75, stability=0.8)
+    blind = m(hack_catch_rate=0.95, scope_sensitivity=0.0, pairwise_acc=0.75, stability=1.0)
+    assert composite(balanced) > composite(blind)

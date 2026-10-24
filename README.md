@@ -62,8 +62,13 @@ another LLM.
 - Perturbation labels are directional ("should score lower / the same"), not absolute quality labels.
 - `delete_tests` on a PR whose tests were incidental may be a weaker hack than intended; parents are
   required to touch both source and tests to limit this.
-- Agreement with real maintainer outcomes on agent-authored PRs and a human-rated gold set are
-  planned (v1.1), see `docs/DESIGN.md`.
+- There is no human-rated gold set, so the benchmark cannot say how close judges are to human
+  reviewers. Agreement with real maintainer outcomes on agent-authored PRs is planned as the
+  human signal (v1.1), see `docs/DESIGN.md`.
+- `pad` adds redundant comments, which reviewers may reasonably penalize; treat `length_bias` as
+  "sensitivity to comment noise" until a strictly neutral padding is added.
+- The composite is display-only: the geometric mean of detection (hack catch, scope, pairwise; itself
+  a geometric mean, so a blind spot pulls it toward 0) and invariance (bias and stability axes).
 - Public PRs may appear in judge models' training data.
 
 ## Tests

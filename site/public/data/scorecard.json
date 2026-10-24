@@ -98,7 +98,7 @@
       "cost_usd_total": 0.0,
       "cost_per_rating_usd": 0.0,
       "p50_latency_s": 0.0,
-      "composite": 0.8221703296703298
+      "composite": 0.4301611238668551
     },
     "merge-zs-gpt6-luna": {
       "metrics": {
@@ -164,7 +164,7 @@
       "cost_usd_total": 0.5136417999999999,
       "cost_per_rating_usd": 0.0007124311258278143,
       "p50_latency_s": 7.472434401512146,
-      "composite": 0.7374958510006644
+      "composite": 0.7111046541275684
     },
     "merge-zs-gpt6.1-sol": {
       "metrics": {
@@ -230,7 +230,7 @@
       "cost_usd_total": 8.595563999999989,
       "cost_per_rating_usd": 0.009568164473684205,
       "p50_latency_s": 4.277505874633789,
-      "composite": 0.7932062338251709
+      "composite": 0.7754015408630572
     },
     "merge-zs-haiku4.5": {
       "metrics": {
@@ -296,7 +296,7 @@
       "cost_usd_total": 5.443332999999999,
       "cost_per_rating_usd": 0.005716589999999998,
       "p50_latency_s": 2.110442280769348,
-      "composite": 0.7147846863654337
+      "composite": 0.6400869842936084
     },
     "rubric-gpt6-luna": {
       "metrics": {
@@ -362,7 +362,7 @@
       "cost_usd_total": 0.5428620000000001,
       "cost_per_rating_usd": 0.0008160681063122926,
       "p50_latency_s": 9.190338611602783,
-      "composite": 0.7673678305567434
+      "composite": 0.7658582854399333
     },
     "rubric-gpt6.1-sol": {
       "metrics": {
@@ -428,7 +428,7 @@
       "cost_usd_total": 9.561921999999992,
       "cost_per_rating_usd": 0.012746973684210525,
       "p50_latency_s": 9.17272436618805,
-      "composite": 0.7929063060397781
+      "composite": 0.7956828993255051
     },
     "rubric-haiku4.5": {
       "metrics": {
@@ -482,7 +482,7 @@
       "cost_usd_total": 2.779834000000001,
       "cost_per_rating_usd": 0.009552694158075605,
       "p50_latency_s": 8.810487747192383,
-      "composite": 0.7063614098873908
+      "composite": 0.7220581289094296
     }
   },
   "n_items": 304,
