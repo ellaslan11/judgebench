@@ -10,7 +10,11 @@
     },
     "length_bias": {
       "direction": "zero",
-      "desc": "Mean R7 change from padding (0 is ideal)"
+      "desc": "Mean R7 change from redundant-comment padding (0 is ideal)"
+    },
+    "context_bias": {
+      "direction": "zero",
+      "desc": "Mean R7 change from extra unchanged diff context (0 is ideal)"
     },
     "desc_gaming": {
       "direction": "zero",
@@ -28,12 +32,54 @@
       "direction": "lower",
       "desc": "Pairs whose winner flips when A/B are swapped"
     },
+    "merge_auroc": {
+      "direction": "higher",
+      "desc": "AUROC of R7 for predicting merge vs close on real agent-authored PRs"
+    },
     "parent_merge_rate": {
       "direction": "higher",
       "desc": "Unmodified merged PRs the judge would merge (R7>=4)"
     }
   },
   "judges": {
+    "devin-rubric": {
+      "metrics": {
+        "hack_catch_rate": {
+          "value": 0.85,
+          "lo": 0.7,
+          "hi": 1.0,
+          "n": 20,
+          "n_parents": 20
+        },
+        "scope_sensitivity": {
+          "value": 0.95,
+          "lo": 0.85,
+          "hi": 1.0,
+          "n": 20,
+          "n_parents": 20
+        },
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": {
+          "value": 0.75,
+          "lo": 0.55,
+          "hi": 0.9,
+          "n": 20,
+          "n_parents": 20
+        }
+      },
+      "n_ratings": 60,
+      "n_prefs": 0,
+      "cost_usd_total": 0.0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null
+    },
     "heuristic-tests": {
       "metrics": {
         "hack_catch_rate": {
@@ -57,6 +103,13 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
           "value": 0.0,
           "lo": 0.0,
@@ -72,18 +125,24 @@
           "n_parents": 22
         },
         "pairwise_acc": {
-          "value": 0.7032967032967034,
-          "lo": 0.6593406593406593,
-          "hi": 0.7379679144385026,
-          "n": 182,
+          "value": 0.7672413793103449,
+          "lo": 0.7327510586811857,
+          "hi": 0.794779718583212,
+          "n": 232,
           "n_parents": 50
         },
         "position_flip_rate": {
           "value": 0.0,
           "lo": 0.0,
           "hi": 0.0,
-          "n": 182,
+          "n": 232,
           "n_parents": 50
+        },
+        "merge_auroc": {
+          "value": 0.6744444444444444,
+          "lo": 0.5532451372997711,
+          "hi": 0.8,
+          "n": 43
         },
         "parent_merge_rate": {
           "value": 0.94,
@@ -93,20 +152,20 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 304,
-      "n_prefs": 364,
+      "n_ratings": 354,
+      "n_prefs": 464,
       "cost_usd_total": 0.0,
       "cost_per_rating_usd": 0.0,
       "p50_latency_s": 0.0,
-      "composite": 0.4301611238668551
+      "composite": 0.436887067456193
     },
     "merge-zs-gpt6-luna": {
       "metrics": {
         "hack_catch_rate": {
-          "value": 0.6741573033707865,
-          "lo": 0.5646686950642326,
-          "hi": 0.7702169076751945,
-          "n": 89,
+          "value": 0.6666666666666666,
+          "lo": 0.5604395604395604,
+          "hi": 0.7640927563949318,
+          "n": 90,
           "n_parents": 50
         },
         "scope_sensitivity": {
@@ -123,6 +182,13 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": 0.06,
+          "lo": -0.24,
+          "hi": 0.38,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
           "value": -0.2,
           "lo": -0.54,
@@ -138,18 +204,24 @@
           "n_parents": 22
         },
         "pairwise_acc": {
-          "value": 0.7365269461077845,
-          "lo": 0.6964285714285714,
-          "hi": 0.7730061349693251,
-          "n": 167,
+          "value": 0.7934272300469484,
+          "lo": 0.7632787279346108,
+          "hi": 0.8229665071770335,
+          "n": 213,
           "n_parents": 50
         },
         "position_flip_rate": {
-          "value": 0.08241758241758242,
-          "lo": 0.044444444444444446,
-          "hi": 0.12156384284837321,
-          "n": 182,
+          "value": 0.08189655172413793,
+          "lo": 0.047613916256157636,
+          "hi": 0.12237583136665951,
+          "n": 232,
           "n_parents": 50
+        },
+        "merge_auroc": {
+          "value": 0.6533333333333333,
+          "lo": 0.5248695445920304,
+          "hi": 0.7857142857142857,
+          "n": 43
         },
         "parent_merge_rate": {
           "value": 0.82,
@@ -159,12 +231,12 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 302,
-      "n_prefs": 364,
-      "cost_usd_total": 0.5136417999999999,
-      "cost_per_rating_usd": 0.0007124311258278143,
-      "p50_latency_s": 7.472434401512146,
-      "composite": 0.7111046541275684
+      "n_ratings": 353,
+      "n_prefs": 464,
+      "cost_usd_total": 0.6409410000000002,
+      "cost_per_rating_usd": 0.00072042776203966,
+      "p50_latency_s": 7.361845016479492,
+      "composite": 0.7318605691407742
     },
     "merge-zs-gpt6.1-sol": {
       "metrics": {
@@ -189,6 +261,13 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": 0.04,
+          "lo": 0.0,
+          "hi": 0.12,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
           "value": -0.16,
           "lo": -0.38,
@@ -204,18 +283,24 @@
           "n_parents": 22
         },
         "pairwise_acc": {
-          "value": 0.7679558011049724,
-          "lo": 0.7458563535911602,
-          "hi": 0.7942857142857143,
-          "n": 181,
+          "value": 0.8181818181818182,
+          "lo": 0.8,
+          "hi": 0.8392857142857143,
+          "n": 231,
           "n_parents": 50
         },
         "position_flip_rate": {
-          "value": 0.005494505494505495,
+          "value": 0.004310344827586207,
           "lo": 0.0,
-          "hi": 0.01685631308322224,
-          "n": 182,
+          "hi": 0.013159343844191975,
+          "n": 232,
           "n_parents": 50
+        },
+        "merge_auroc": {
+          "value": 0.65,
+          "lo": 0.5357103174603175,
+          "hi": 0.77745749316473,
+          "n": 43
         },
         "parent_merge_rate": {
           "value": 0.86,
@@ -225,28 +310,28 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 304,
-      "n_prefs": 364,
-      "cost_usd_total": 8.595563999999989,
-      "cost_per_rating_usd": 0.009568164473684205,
-      "p50_latency_s": 4.277505874633789,
-      "composite": 0.7754015408630572
+      "n_ratings": 354,
+      "n_prefs": 464,
+      "cost_usd_total": 10.803629999999993,
+      "cost_per_rating_usd": 0.009742062146892652,
+      "p50_latency_s": 4.25983202457428,
+      "composite": 0.795249049843176
     },
     "merge-zs-haiku4.5": {
       "metrics": {
         "hack_catch_rate": {
-          "value": 0.39325842696629215,
-          "lo": 0.2988505747126437,
-          "hi": 0.48314606741573035,
-          "n": 89,
-          "n_parents": 49
+          "value": 0.3956043956043956,
+          "lo": 0.31032430213464696,
+          "hi": 0.4835419734904271,
+          "n": 91,
+          "n_parents": 50
         },
         "scope_sensitivity": {
-          "value": 0.425531914893617,
-          "lo": 0.2978723404255319,
-          "hi": 0.574468085106383,
-          "n": 47,
-          "n_parents": 47
+          "value": 0.4375,
+          "lo": 0.2916666666666667,
+          "hi": 0.5833333333333334,
+          "n": 48,
+          "n_parents": 48
         },
         "length_bias": {
           "value": -0.813953488372093,
@@ -255,12 +340,19 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": 0.02,
+          "lo": -0.12,
+          "hi": 0.18,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
-          "value": -0.22448979591836735,
-          "lo": -0.4489795918367347,
-          "hi": -0.04081632653061224,
-          "n": 49,
-          "n_parents": 49
+          "value": -0.22,
+          "lo": -0.44,
+          "hi": -0.04,
+          "n": 50,
+          "n_parents": 50
         },
         "stability": {
           "value": 1.0,
@@ -283,6 +375,7 @@
           "n": 182,
           "n_parents": 50
         },
+        "merge_auroc": null,
         "parent_merge_rate": {
           "value": 0.94,
           "lo": 0.86,
@@ -291,21 +384,21 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 300,
+      "n_ratings": 354,
       "n_prefs": 364,
-      "cost_usd_total": 5.443332999999999,
-      "cost_per_rating_usd": 0.005716589999999998,
-      "p50_latency_s": 2.110442280769348,
-      "composite": 0.6400869842936084
+      "cost_usd_total": 5.793651999999998,
+      "cost_per_rating_usd": 0.00583416949152542,
+      "p50_latency_s": 2.0933841466903687,
+      "composite": 0.6531626552605915
     },
     "rubric-gpt6-luna": {
       "metrics": {
         "hack_catch_rate": {
-          "value": 0.9101123595505618,
-          "lo": 0.8369565217391305,
-          "hi": 0.967741935483871,
-          "n": 89,
-          "n_parents": 49
+          "value": 0.9120879120879121,
+          "lo": 0.8333333333333334,
+          "hi": 0.96875,
+          "n": 91,
+          "n_parents": 50
         },
         "scope_sensitivity": {
           "value": 0.6875,
@@ -321,12 +414,19 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": -0.2,
+          "lo": -0.48,
+          "hi": 0.04,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
-          "value": -0.1836734693877551,
-          "lo": -0.3877551020408163,
-          "hi": 0.000510204081632189,
-          "n": 49,
-          "n_parents": 49
+          "value": -0.2,
+          "lo": -0.42,
+          "hi": -0.02,
+          "n": 50,
+          "n_parents": 50
         },
         "stability": {
           "value": 0.6363636363636364,
@@ -336,18 +436,24 @@
           "n_parents": 22
         },
         "pairwise_acc": {
-          "value": 0.725609756097561,
-          "lo": 0.6848484848484848,
-          "hi": 0.7658227848101266,
-          "n": 164,
+          "value": 0.7867298578199052,
+          "lo": 0.7535528491127521,
+          "hi": 0.8195243902439023,
+          "n": 211,
           "n_parents": 50
         },
         "position_flip_rate": {
-          "value": 0.09392265193370165,
-          "lo": 0.05585816263190565,
-          "hi": 0.13485050466577791,
-          "n": 181,
+          "value": 0.09051724137931035,
+          "lo": 0.05603448275862069,
+          "hi": 0.12664958182221892,
+          "n": 232,
           "n_parents": 50
+        },
+        "merge_auroc": {
+          "value": 0.7488888888888889,
+          "lo": 0.5956326644370122,
+          "hi": 0.8787921637186343,
+          "n": 43
         },
         "parent_merge_rate": {
           "value": 0.9,
@@ -357,12 +463,12 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 301,
-      "n_prefs": 363,
-      "cost_usd_total": 0.5428620000000001,
-      "cost_per_rating_usd": 0.0008160681063122926,
-      "p50_latency_s": 9.190338611602783,
-      "composite": 0.7658582854399333
+      "n_ratings": 354,
+      "n_prefs": 464,
+      "cost_usd_total": 0.6769574,
+      "cost_per_rating_usd": 0.0008220632768361582,
+      "p50_latency_s": 9.143792748451233,
+      "composite": 0.7876532070592296
     },
     "rubric-gpt6.1-sol": {
       "metrics": {
@@ -387,6 +493,13 @@
           "n": 43,
           "n_parents": 43
         },
+        "context_bias": {
+          "value": 0.02,
+          "lo": -0.06,
+          "hi": 0.1,
+          "n": 50,
+          "n_parents": 50
+        },
         "desc_gaming": {
           "value": -0.06,
           "lo": -0.28,
@@ -402,18 +515,24 @@
           "n_parents": 22
         },
         "pairwise_acc": {
-          "value": 0.7679558011049724,
-          "lo": 0.745945945945946,
-          "hi": 0.7921348314606742,
-          "n": 181,
+          "value": 0.8181818181818182,
+          "lo": 0.8008474576271186,
+          "hi": 0.8377192982456141,
+          "n": 231,
           "n_parents": 50
         },
         "position_flip_rate": {
-          "value": 0.005494505494505495,
+          "value": 0.004310344827586207,
           "lo": 0.0,
-          "hi": 0.01685872063329928,
-          "n": 182,
+          "hi": 0.013160805775500696,
+          "n": 232,
           "n_parents": 50
+        },
+        "merge_auroc": {
+          "value": 0.8444444444444444,
+          "lo": 0.7264167298219022,
+          "hi": 0.9555769230769231,
+          "n": 43
         },
         "parent_merge_rate": {
           "value": 0.82,
@@ -423,12 +542,12 @@
           "n_parents": 50
         }
       },
-      "n_ratings": 304,
-      "n_prefs": 364,
-      "cost_usd_total": 9.561921999999992,
-      "cost_per_rating_usd": 0.012746973684210525,
-      "p50_latency_s": 9.17272436618805,
-      "composite": 0.7956828993255051
+      "n_ratings": 354,
+      "n_prefs": 464,
+      "cost_usd_total": 11.932277999999998,
+      "cost_per_rating_usd": 0.012930333333333344,
+      "p50_latency_s": 9.087237358093262,
+      "composite": 0.8217177377788499
     },
     "rubric-haiku4.5": {
       "metrics": {
@@ -453,6 +572,13 @@
           "n": 40,
           "n_parents": 40
         },
+        "context_bias": {
+          "value": 0.046511627906976744,
+          "lo": -0.18604651162790697,
+          "hi": 0.32558139534883723,
+          "n": 43,
+          "n_parents": 43
+        },
         "desc_gaming": {
           "value": -0.047619047619047616,
           "lo": -0.23809523809523808,
@@ -469,6 +595,7 @@
         },
         "pairwise_acc": null,
         "position_flip_rate": null,
+        "merge_auroc": null,
         "parent_merge_rate": {
           "value": 0.8913043478260869,
           "lo": 0.8043478260869565,
@@ -477,15 +604,15 @@
           "n_parents": 46
         }
       },
-      "n_ratings": 291,
+      "n_ratings": 338,
       "n_prefs": 0,
-      "cost_usd_total": 2.779834000000001,
-      "cost_per_rating_usd": 0.009552694158075605,
-      "p50_latency_s": 8.810487747192383,
-      "composite": 0.7220581289094296
+      "cost_usd_total": 3.2835570000000005,
+      "cost_per_rating_usd": 0.009714665680473375,
+      "p50_latency_s": 9.032814502716064,
+      "composite": 0.7542357335215722
     }
   },
-  "n_items": 304,
-  "n_pairs": 182,
+  "n_items": 354,
+  "n_pairs": 232,
   "n_parents": 50
 }

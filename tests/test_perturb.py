@@ -7,6 +7,7 @@ from jbc.perturb.ops import (
     make_items,
     make_pairs,
     pad,
+    pad_context,
     rename_vars,
     skip_tests,
     unrelated_change,
@@ -86,3 +87,20 @@ def test_make_items_and_pairs():
                      "unrelated_change", "rename_vars"}
     pairs = make_pairs(items)
     assert {p.expected_winner for p in pairs} == {"a", "tie"}
+
+
+def test_pad_context_keeps_changes():
+    base = "\n".join(f"line{i}" for i in range(1, 41))
+    diff = (
+        "diff --git a/src/m.py b/src/m.py\n--- a/src/m.py\n+++ b/src/m.py\n"
+        "@@ -20,3 +20,4 @@\n line20\n line21\n+added\n line22\n"
+    )
+    p = parent(diff=diff, base_files={"src/m.py": base})
+    files = parse_diff(diff)
+    out = pad_context(p, files, random.Random(0))
+    assert out is not None
+    h = out[0].hunks[0]
+    assert h.old_start == 8 and h.new_start == 8
+    assert [ln for ln in h.lines if ln[:1] in "+-"] == ["+added"]
+    assert h.lines[0] == " line8" and h.lines[-1] == " line34"
+    assert "@@ -8,27 +8,28 @@" in render_diff(out)

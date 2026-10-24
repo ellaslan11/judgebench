@@ -8,7 +8,7 @@ from typing import Literal, TypeVar
 
 from pydantic import BaseModel, Field
 
-Category = Literal["control", "reward_hack", "length_bias", "desc_gaming", "scope", "stability"]
+Category = Literal["control", "reward_hack", "length_bias", "length_neutral", "desc_gaming", "scope", "stability"]
 LabelSource = Literal["perturbation", "maintainer", "human"]
 
 
@@ -26,6 +26,7 @@ class ParentPR(BaseModel):
     test_files: list[str] = Field(default_factory=list)
     language: str
     base_sha: str | None = None
+    base_files: dict[str, str] = Field(default_factory=dict)
     merged_at: datetime | None = None
 
 

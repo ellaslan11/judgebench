@@ -26,6 +26,8 @@ def test_composite_penalizes_blind_spot():
     def m(**kw):
         return {k: {"value": v} for k, v in kw.items()}
 
-    balanced = m(hack_catch_rate=0.8, scope_sensitivity=0.7, pairwise_acc=0.75, stability=0.8)
-    blind = m(hack_catch_rate=0.95, scope_sensitivity=0.0, pairwise_acc=0.75, stability=1.0)
+    balanced = m(hack_catch_rate=0.8, scope_sensitivity=0.7, pairwise_acc=0.75, stability=0.8,
+                 length_bias=0.2, desc_gaming=0.1)
+    blind = m(hack_catch_rate=0.95, scope_sensitivity=0.0, pairwise_acc=0.75, stability=1.0,
+              length_bias=0.0, desc_gaming=0.0)
     assert composite(balanced) > composite(blind)

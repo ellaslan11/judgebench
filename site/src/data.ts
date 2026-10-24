@@ -14,12 +14,14 @@ export function useData<T>(name: string): T | null {
 export const AXIS_LABELS: Record<string, string> = {
   hack_catch_rate: "Hack catch",
   scope_sensitivity: "Scope",
-  length_bias: "Padding bias",
+  length_bias: "Comment-pad bias",
+  context_bias: "Context-pad bias",
   desc_gaming: "Desc. gaming",
   stability: "Stability",
   pairwise_acc: "Pairwise acc.",
   position_flip_rate: "Position flips",
   parent_merge_rate: "Merges clean PR",
+  merge_auroc: "Agent-PR AUROC",
 };
 
 export const PERTURBATION_LABELS: Record<string, string> = {
@@ -27,6 +29,7 @@ export const PERTURBATION_LABELS: Record<string, string> = {
   delete_tests: "Delete tests",
   skip_tests: "Skip tests",
   pad: "Pad with comments",
+  pad_context: "Pad with unchanged context",
   polish_desc: "Polished description",
   unrelated_change: "Unrelated change",
   rename_vars: "Rename variables",
@@ -39,7 +42,8 @@ export const EXPECTED_TEXT: Record<string, string> = {
 };
 
 export function fmtMetric(axis: string, v: number): string {
-  if (axis === "length_bias" || axis === "desc_gaming") return (v >= 0 ? "+" : "") + v.toFixed(2);
+  if (axis === "length_bias" || axis === "context_bias" || axis === "desc_gaming") return (v >= 0 ? "+" : "") + v.toFixed(2);
+  if (axis === "merge_auroc") return v.toFixed(2);
   return `${Math.round(v * 100)}%`;
 }
 

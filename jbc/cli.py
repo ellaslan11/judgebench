@@ -44,6 +44,67 @@ def fetch(config: str = "configs/sources.yaml", repo: list[str] | None = typer.O
     typer.echo(f"{len(parents)} parents -> data/parents.jsonl")
 
 
+@app.command("fetch-context")
+def fetch_context():
+    """Fetch base-revision contents of changed source files (used by pad_context)."""
+    from jbc.github import GH
+    from jbc.perturb.diffutil import is_test_path, parse_diff
+
+    gh = GH()
+    parents = read_jsonl(DATA / "parents.jsonl", ParentPR)
+    for p in parents:
+        for f in parse_diff(p.diff):
+            if p.base_sha and f.path not in p.base_files and not is_test_path(f.path) \
+                    and f.hunks and f.hunks[0].old_start > 0:
+                txt = gh.file(p.repo, f.path, p.base_sha)
+                if txt is not None:
+                    p.base_files[f.path] = txt
+        typer.echo(f"{p.id}: {len(p.base_files)} base files")
+    write_jsonl(DATA / "parents.jsonl", parents)
+
+
+@app.command("agent-fetch")
+def agent_fetch(since: str = "2026-06-01", per_bucket: int = 15, min_stars: int = 100):
+    """Collect agent-authored PRs (merged vs closed) -> data/agent_items.jsonl + agent_outcomes.json."""
+    from jbc.agent_prs import collect
+    from jbc.github import GH
+
+    items, outcome = collect(GH(), since, per_bucket, min_stars, log=typer.echo)
+    write_jsonl(DATA / "agent_items.jsonl", items)
+    dump_json(DATA / "agent_outcomes.json", outcome)
+    typer.echo(f"{len(items)} agent PRs ({sum(outcome.values())} merged)")
+
+
+@app.command("agent-run")
+def agent_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+              workers: int = 8):
+    """Rate agent-authored PRs with each judge -> results/<judge>/agent_ratings.jsonl."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    from jbc.judges import build_judges
+
+    items = read_jsonl(DATA / "agent_items.jsonl", Item)
+    for j in build_judges(load_yaml(ROOT / judges), only):
+        path = RESULTS / j.id / "agent_ratings.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        done = {r.item_id: r for r in read_jsonl(path, Rating)}
+        todo = [it for it in items if it.id not in done]
+
+        def one(it, j=j):
+            try:
+                return j.rate(it)
+            except Exception as e:  # noqa: BLE001
+                typer.echo(f"  ! {j.id} {it.id}: {type(e).__name__}: {str(e)[:120]}")
+                return None
+
+        with ThreadPoolExecutor(workers) as ex:
+            for r in ex.map(one, todo):
+                if r:
+                    done[r.item_id] = r
+        write_jsonl(path, done.values())
+        typer.echo(f"{j.id}: {len(done)}/{len(items)} agent PRs rated")
+
+
 @app.command()
 def perturb(seed: int = 0):
     """Generate perturbed items and pairs from parents."""
@@ -121,7 +182,10 @@ def run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Opti
 @app.command()
 def score():
     """Compute scorecard.json and failures.json from results/."""
-    from jbc.metrics import AXES, failures, judge_scorecard
+    from jbc.metrics import AXES, failures, judge_scorecard, merge_auroc
+
+    op = DATA / "agent_outcomes.json"
+    outcomes = json.loads(op.read_text()) if op.exists() else {}
 
     items, pairs = _items(), _pairs()
     board, fails = {}, []
@@ -131,6 +195,9 @@ def score():
         if not ratings and not prefs:
             continue
         board[d.name] = judge_scorecard(items, pairs, ratings, prefs)
+        agent = read_jsonl(d / "agent_ratings.jsonl", Rating)
+        if agent and outcomes:
+            board[d.name]["metrics"]["merge_auroc"] = merge_auroc(agent, outcomes)
         fails += failures(items, ratings, d.name)
     out = {"axes": {k: {"direction": v[0], "desc": v[1]} for k, v in AXES.items()},
            "judges": board, "n_items": len(items), "n_pairs": len(pairs),

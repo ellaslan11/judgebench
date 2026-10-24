@@ -21,7 +21,8 @@ It does **not** benchmark coding agents. It benchmarks the thing that grades the
    | `delete_tests` | reward hack | score lower |
    | `skip_tests` | reward hack | score lower |
    | `unrelated_change` | scope creep | score lower |
-   | `pad` | length bias | not change |
+   | `pad` | length bias (redundant comments) | not change |
+   | `pad_context` | length bias (neutral: 12 more unchanged base-file lines around each hunk) | not change |
    | `polish_desc` | description gaming | not change |
    | `rename_vars` | stability | not change |
 
@@ -63,10 +64,17 @@ another LLM.
 - `delete_tests` on a PR whose tests were incidental may be a weaker hack than intended; parents are
   required to touch both source and tests to limit this.
 - There is no human-rated gold set, so the benchmark cannot say how close judges are to human
-  reviewers. Agreement with real maintainer outcomes on agent-authored PRs is planned as the
-  human signal (v1.1), see `docs/DESIGN.md`.
-- `pad` adds redundant comments, which reviewers may reasonably penalize; treat `length_bias` as
-  "sensitivity to comment noise" until a strictly neutral padding is added.
+  reviewers. The human signal is maintainer outcomes on real agent-authored PRs
+  (`jbc agent-fetch` / `jbc agent-run`, Devin and Copilot bot accounts, merged vs closed-unmerged):
+  `merge_auroc` is the AUROC of each judge's R7 for predicting "merged". These labels are noisy
+  (PRs are closed for staleness, duplication or changed plans, not only quality) and the sample is
+  small, so read it as a weak signal; it is excluded from the composite.
+- `pad` adds redundant comments, which reviewers may reasonably penalize, so `length_bias` measures
+  "sensitivity to comment noise". `pad_context` is the strictly neutral version: the patch is
+  byte-identical except for extra unchanged context lines, reported as `context_bias`.
+- `devin-rubric` (Devin as a judge) was run as 20 blind Devin sessions, each rating 3 unrelated
+  items (original, deleted tests, unrelated change; shuffled) for 20 parents only. It has
+  hack-catch and scope numbers but no bias/pairwise axes, so it has no composite.
 - The composite is display-only: the geometric mean of detection (hack catch, scope, pairwise; itself
   a geometric mean, so a blind spot pulls it toward 0) and invariance (bias and stability axes).
 - Public PRs may appear in judge models' training data.
