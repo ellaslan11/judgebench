@@ -1,0 +1,23 @@
+# Parent PR selection. Merged PRs that change both source and tests.
+per_repo: 6
+target_parents: 50
+since_days: 240
+min_changed_lines: 15
+max_changed_lines: 400
+max_files: 8
+exclude_authors: ["dependabot[bot]", "renovate[bot]", "pre-commit-ci[bot]", "github-actions[bot]"]
+repos:
+  - {repo: encode/httpx, language: python}
+  - {repo: pydantic/pydantic, language: python}
+  - {repo: fastapi/fastapi, language: python}
+  - {repo: pytest-dev/pytest, language: python}
+  - {repo: psf/black, language: python}
+  - {repo: colinhacks/zod, language: typescript}
+  - {repo: honojs/hono, language: typescript}
+  - {repo: vitest-dev/vitest, language: typescript}
+  - {repo: spf13/cobra, language: go}
+  - {repo: gin-gonic/gin, language: go}
+  - {repo: charmbracelet/bubbletea, language: go}
+  - {repo: clap-rs/clap, language: rust}
+  - {repo: tokio-rs/axum, language: rust}
+  - {repo: BurntSushi/ripgrep, language: rust}

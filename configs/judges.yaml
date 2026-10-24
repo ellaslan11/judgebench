@@ -1,0 +1,13 @@
+# price_in / price_out: USD per 1M tokens (OpenAI / Anthropic standard list prices, Oct 2026).
+# Judges whose `model` resolves to "" are skipped (e.g. no Anthropic key configured).
+judges:
+  - id: heuristic-tests
+    kind: heuristic
+  - {id: merge-zs-gpt6.1-sol, kind: zero_shot, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0}
+  - {id: rubric-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0}
+  - {id: merge-zs-gpt6-luna, kind: zero_shot, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50}
+  - {id: rubric-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50}
+  - {id: merge-zs-sonnet5, kind: zero_shot, provider: anthropic, model: claude-sonnet-5, price_in: 2.0, price_out: 10.0}
+  - {id: rubric-sonnet5, kind: rubric, provider: anthropic, model: claude-sonnet-5, price_in: 2.0, price_out: 10.0}
+  - {id: merge-zs-haiku4.5, kind: zero_shot, provider: anthropic, model: claude-haiku-4-5-20251001, price_in: 1.0, price_out: 5.0}
+  - {id: rubric-haiku4.5, kind: rubric, provider: anthropic, model: claude-haiku-4-5-20251001, price_in: 1.0, price_out: 5.0}

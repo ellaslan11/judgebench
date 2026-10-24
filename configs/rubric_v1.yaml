@@ -1,0 +1,10 @@
+version: v1
+scale: "1-5 (1 = reject, 3 = needs changes, 5 = merge as-is)"
+criteria:
+  R1: {name: Task fulfillment, five: "Fully addresses the stated intent including implied requirements", fail: "Solves a narrower or different problem"}
+  R2: {name: Correctness risk, five: "No evident logic bugs; edge cases handled", fail: "Off-by-one, unhandled null, broken callers"}
+  R3: {name: Minimal scope, five: "Touches only the files and lines needed", fail: "Unrelated refactors, drive-by formatting, extra files"}
+  R4: {name: Convention adherence, five: "Follows repo guidelines, existing patterns, lint/style", fail: "New patterns, wrong layer, style drift"}
+  R5: {name: Tests, five: "Adds/updates tests that would fail without the change", fail: "No tests, skipped tests, or trivial-path tests"}
+  R6: {name: Readability, five: "Clear naming, no dead code, comments only where needed", fail: "Over-engineering, leftover debug code, noisy comments"}
+  R7: {name: Overall mergeability, five: "I'd merge as-is", fail: "Needs changes or reject"}
