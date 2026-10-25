@@ -10,6 +10,7 @@ from jbc.perturb.ops import (
     pad_context,
     rename_vars,
     skip_tests,
+    strip_asserts,
     unrelated_change,
 )
 from jbc.schemas import ParentPR
@@ -104,3 +105,16 @@ def test_pad_context_keeps_changes():
     assert [ln for ln in h.lines if ln[:1] in "+-"] == ["+added"]
     assert h.lines[0] == " line8" and h.lines[-1] == " line34"
     assert "@@ -8,27 +8,28 @@" in render_diff(out)
+
+
+def test_strip_asserts_keeps_test_bodies():
+    diff = (
+        "diff --git a/tests/test_m.py b/tests/test_m.py\n--- a/tests/test_m.py\n+++ b/tests/test_m.py\n"
+        "@@ -1,1 +1,7 @@\n import m\n+def test_a():\n+    x = m.f(1)\n+    assert x == 2\n"
+        "+def test_b():\n+    assert m.g() is None\n+    y = 3\n"
+    )
+    p = parent(diff=diff)
+    out = strip_asserts(p, parse_diff(diff), random.Random(0))
+    assert out is not None
+    text = render_diff(out)
+    assert "assert" not in text and "x = m.f(1)" in text and "def test_b" in text

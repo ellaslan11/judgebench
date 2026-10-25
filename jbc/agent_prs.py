@@ -20,18 +20,19 @@ def _lang(paths: list[str]) -> str | None:
     return None
 
 
-def search(gh: GH, agent: str, state: str, since: str, pages: int = 10):
+def search(gh: GH, agent: str, state: str, since: str, pages: int = 20):
     q = f"is:pr author:{agent} {state} created:>={since}"
     for page in range(1, pages + 1):
         d = gh.get("/search/issues", q=q, per_page=50, page=page, sort="created", order="desc")
         yield from d.get("items", [])
 
 
-def collect(gh: GH, since: str, per_bucket: int, min_stars: int = 100, log=print
-            ) -> tuple[list[Item], dict[str, bool]]:
+def collect(gh: GH, since: str, per_bucket: int, min_stars: int = 100, log=print,
+            max_per_repo: int = 4) -> tuple[list[Item], dict[str, bool]]:
     stars: dict[str, int] = {}
     items: list[Item] = []
     outcome: dict[str, bool] = {}
+    per_repo: dict[str, int] = {}
     for agent in AGENTS:
         for state, merged in (("is:merged", True), ("is:unmerged is:closed", False)):
             n = 0
@@ -44,7 +45,8 @@ def collect(gh: GH, since: str, per_bucket: int, min_stars: int = 100, log=print
                         stars[repo] = gh.get(f"/repos/{repo}").get("stargazers_count", 0)
                     except httpx.HTTPStatusError:
                         stars[repo] = 0
-                if stars[repo] < min_stars or it.get("comments", 0) < 1:
+                if stars[repo] < min_stars or it.get("comments", 0) < 1 \
+                        or per_repo.get(repo, 0) >= max_per_repo:
                     continue
                 num = it["number"]
                 try:
@@ -64,6 +66,7 @@ def collect(gh: GH, since: str, per_bucket: int, min_stars: int = 100, log=print
                     diff=diff, language=lang, url=it["html_url"], label_source="maintainer",
                 ))
                 outcome[iid] = merged
+                per_repo[repo] = per_repo.get(repo, 0) + 1
                 n += 1
                 log(f"  {agent} {'merged' if merged else 'closed'} {iid}")
     return items, outcome

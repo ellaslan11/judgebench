@@ -13,6 +13,7 @@ export type JudgeCard = {
 export type Scorecard = {
   axes: Record<string, { direction: "higher" | "lower" | "zero"; desc: string }>;
   judges: Record<string, JudgeCard>;
+  rank_robustness?: Record<string, { top1: number; mean_rank: number; top1_linear: number; axes: string[] }>;
   n_items: number;
   n_pairs: number;
   n_parents: number;

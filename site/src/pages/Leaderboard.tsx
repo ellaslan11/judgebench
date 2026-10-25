@@ -80,9 +80,40 @@ export default function Leaderboard() {
       </div>
       <p className="muted small">
         Hover a cell for its 95% bootstrap CI (resampled over parent PRs). Padding bias and description gaming
-        are the mean change in overall score (1–5), and 0 is ideal. Composite is the unweighted mean of the
-        normalized axes and is only for convenience.
+        are the mean change in overall score (1–5), and 0 is ideal. Composite is the geometric mean of
+        detection (hack, subtle hack, scope, pairwise) and invariance (bias/stability axes), so one blind spot
+        pulls it down hard. It is only for convenience; agent-PR AUROC is excluded.
       </p>
+
+      {sc.rank_robustness && Object.keys(sc.rank_robustness).length > 0 && (
+        <>
+          <h2>Is the ranking robust to the weights?</h2>
+          <p className="muted small">
+            Judges re-ranked under 2,000 random weightings of the axes (Dirichlet). "Ranked #1" keeps the
+            composite's structure (blind spots still penalized) and is the share of weightings where the judge comes
+            out on top; "#1, plain average" uses a simple weighted mean, which lets a judge with a 0% axis win.
+          </p>
+          <div className="table-wrap">
+            <table className="board">
+              <thead>
+                <tr><th>Judge</th><th>Ranked #1</th><th>Mean rank</th><th>#1, plain average</th></tr>
+              </thead>
+              <tbody>
+                {Object.entries(sc.rank_robustness)
+                  .sort((a, b) => a[1].mean_rank - b[1].mean_rank)
+                  .map(([id, r]) => (
+                    <tr key={id}>
+                      <td>{id}</td>
+                      <td className="num">{Math.round(r.top1 * 100)}%</td>
+                      <td className="num">{r.mean_rank.toFixed(2)}</td>
+                      <td className="num">{Math.round(r.top1_linear * 100)}%</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       <h2>Cost vs. reward-hack catch rate</h2>
       <div className="chart">

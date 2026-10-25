@@ -13,6 +13,7 @@ export function useData<T>(name: string): T | null {
 
 export const AXIS_LABELS: Record<string, string> = {
   hack_catch_rate: "Hack catch",
+  subtle_hack_catch: "Subtle hack",
   scope_sensitivity: "Scope",
   length_bias: "Comment-pad bias",
   context_bias: "Context-pad bias",
@@ -28,6 +29,7 @@ export const PERTURBATION_LABELS: Record<string, string> = {
   none: "Original (merged)",
   delete_tests: "Delete tests",
   skip_tests: "Skip tests",
+  strip_asserts: "Strip assertions",
   pad: "Pad with comments",
   pad_context: "Pad with unchanged context",
   polish_desc: "Polished description",

@@ -64,12 +64,14 @@ def fetch_context():
 
 
 @app.command("agent-fetch")
-def agent_fetch(since: str = "2026-06-01", per_bucket: int = 15, min_stars: int = 100):
+def agent_fetch(since: str = "2026-06-01", per_bucket: int = 15, min_stars: int = 100,
+                max_per_repo: int = 4):
     """Collect agent-authored PRs (merged vs closed) -> data/agent_items.jsonl + agent_outcomes.json."""
     from jbc.agent_prs import collect
     from jbc.github import GH
 
-    items, outcome = collect(GH(), since, per_bucket, min_stars, log=typer.echo)
+    items, outcome = collect(GH(), since, per_bucket, min_stars, log=typer.echo,
+                             max_per_repo=max_per_repo)
     write_jsonl(DATA / "agent_items.jsonl", items)
     dump_json(DATA / "agent_outcomes.json", outcome)
     typer.echo(f"{len(items)} agent PRs ({sum(outcome.values())} merged)")
@@ -182,7 +184,7 @@ def run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Opti
 @app.command()
 def score():
     """Compute scorecard.json and failures.json from results/."""
-    from jbc.metrics import AXES, failures, judge_scorecard, merge_auroc
+    from jbc.metrics import AXES, failures, judge_scorecard, merge_auroc, rank_robustness
 
     op = DATA / "agent_outcomes.json"
     outcomes = json.loads(op.read_text()) if op.exists() else {}
@@ -200,7 +202,7 @@ def score():
             board[d.name]["metrics"]["merge_auroc"] = merge_auroc(agent, outcomes)
         fails += failures(items, ratings, d.name)
     out = {"axes": {k: {"direction": v[0], "desc": v[1]} for k, v in AXES.items()},
-           "judges": board, "n_items": len(items), "n_pairs": len(pairs),
+           "judges": board, "rank_robustness": rank_robustness(board), "n_items": len(items), "n_pairs": len(pairs),
            "n_parents": len({i.parent_id for i in items})}
     dump_json(RESULTS / "scorecard.json", out)
     dump_json(RESULTS / "failures.json", fails)
@@ -210,7 +212,7 @@ def score():
 
     for jid, s in sorted(board.items(), key=lambda kv: -(kv[1]["composite"] or 0)):
         m = s["metrics"]
-        typer.echo(f"{jid:22s} comp={s['composite'] or 0:.2f} hack={fmt(m, 'hack_catch_rate')} "
+        typer.echo(f"{jid:22s} comp={'  - ' if s['composite'] is None else format(s['composite'], '.2f')} hack={fmt(m, 'hack_catch_rate')} "
                    f"scope={fmt(m, 'scope_sensitivity')} pad={fmt(m, 'length_bias')} "
                    f"desc={fmt(m, 'desc_gaming')} stab={fmt(m, 'stability')} "
                    f"pair={fmt(m, 'pairwise_acc')} flip={fmt(m, 'position_flip_rate')} "
