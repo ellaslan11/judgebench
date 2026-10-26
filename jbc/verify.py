@@ -53,11 +53,17 @@ def split(diff: str) -> tuple[str, str, list[str]]:
 
 
 def _django_labels(paths: list[str]) -> str:
+    """Dotted module labels (tests/backends/test_x.py -> backends.test_x), so only the touched
+    module runs, not the whole app with its unrelated or environment-dependent tests."""
     labels = []
     for p in paths:
-        m = re.match(r"tests/([^/]+)/", p)
-        if m and m.group(1) not in labels:
-            labels.append(m.group(1))
+        m = re.match(r"tests/([^/]+)/(.*)$", p)
+        if not m:
+            continue
+        app, rest = m.groups()
+        label = app if not rest.endswith(".py") or rest == "__init__.py" else f"{app}.{rest[:-3].replace('/', '.')}"
+        if label not in labels:
+            labels.append(label)
     return " ".join(labels)
 
 
