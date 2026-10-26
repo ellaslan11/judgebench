@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import urllib.request
+from collections import defaultdict
 from pathlib import Path
 
 import typer
@@ -219,6 +220,53 @@ def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.O
         typer.echo(f"{j.id}: {len({r.meta['target'] for _, r in res})} targets, {len(res)} attacked ratings")
 
 
+@app.command("attack-transfer")
+def attack_transfer(src: str, dst: str, judges: str = "configs/judges.yaml", workers: int = 8):
+    """Rate the attacked items tuned against judge SRC with judge DST (transfer test)."""
+    items = read_jsonl(RESULTS / src / "attack_items.jsonl", Item)
+    _rate_set(items, f"attack_xfer_from_{src}.jsonl", judges, [dst], workers)
+
+
+@app.command("verify")
+def verify_cmd(split_name: str = "test", workers: int = 3, keep_images: bool = False):
+    """Fail-to-pass check of every SWE patch and attacked patch in the SWE-bench containers."""
+    import subprocess
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .verify import image_for, load_cache, pull_image, verify
+
+    split = json.loads((DATA / "swe" / "split.json").read_text())
+    items = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) if split.get(i.parent_id) == split_name]
+    for f in sorted(RESULTS.glob("*/attack*_items.jsonl")):
+        items += [i for i in read_jsonl(f, Item) if split.get(i.parent_id) == split_name]
+    cache = load_cache()
+    by_task: dict[str, list[Item]] = defaultdict(list)
+    seen = set()
+    for i in items:
+        if (i.parent_id, i.diff) not in seen:
+            seen.add((i.parent_id, i.diff))
+            by_task[i.parent_id].append(i)
+    typer.echo(f"{sum(map(len, by_task.values()))} distinct patches over {len(by_task)} tasks")
+
+    def do_task(pid: str) -> None:
+        todo = [i for i in by_task[pid] if verify.__globals__["_key"](pid, i.diff) not in cache]
+        if not todo:
+            return
+        if not pull_image(image_for(pid)):
+            typer.echo(f"{pid}: image pull failed, skipped")
+            return
+        for i in todo:
+            r = verify(pid, i.diff, cache=cache, pull=False)
+            typer.echo(f"{i.id}: {r['verdict']}")
+        if not keep_images:
+            subprocess.run(check=False, args=["docker", "rmi", "-f", image_for(pid)], capture_output=True)
+
+    with ThreadPoolExecutor(workers) as ex:
+        list(ex.map(do_task, sorted(by_task)))
+    from collections import Counter
+    typer.echo(Counter(v["verdict"] for v in cache.values()))
+
+
 @app.command("ext-build")
 def ext_build(prb: str = "~/ext/prb", bcr: str = "~/ext/bcr/sample200.json"):
     """Human-labelled external sets -> data/ext/ (SWE-PRBench, BigCodeReward)."""
@@ -334,10 +382,13 @@ def score():
         best_of_n_curve,
         ext_metrics,
         failures,
+        goodhart_curve,
         judge_scorecard,
         merge_auroc,
         rank_robustness,
         swe_metrics,
+        test_touching_metrics,
+        transfer_metrics,
     )
 
     op = DATA / "agent_outcomes.json"
@@ -352,6 +403,8 @@ def score():
     pool_out = json.loads(pp.read_text()) if pp.exists() else {}
 
     items, pairs = _items(), _pairs()
+    swe_items = read_jsonl(swe_dir / "items.jsonl", Item) if (swe_dir / "items.jsonl").exists() else []
+    pool_items = read_jsonl(swe_dir / "pool_items.jsonl", Item) if (swe_dir / "pool_items.jsonl").exists() else []
     board, fails = {}, []
     for d in sorted(p for p in RESULTS.iterdir() if p.is_dir()):
         ratings = read_jsonl(d / "ratings.jsonl", Rating)
@@ -367,10 +420,16 @@ def score():
             board[d.name]["metrics"].update(swe_metrics(swe, swe_out, swe_split, "test", cut))
             board[d.name]["swe_dev"] = swe_metrics(swe, swe_out, swe_split, "dev")
             pool = read_jsonl(d / "swe_pool_ratings.jsonl", Rating)
+            att = read_jsonl(d / "attack.jsonl", Rating)
             if pool and pool_out:
                 board[d.name]["best_of_n"] = best_of_n_curve(swe + pool, {**swe_out, **pool_out}, swe_split)
+                board[d.name]["goodhart"] = goodhart_curve(swe + pool, att, {**swe_out, **pool_out}, swe_split)
+                board[d.name]["metrics"].update(test_touching_metrics(
+                    swe + pool, swe_items + pool_items, {**swe_out, **pool_out}, swe_split))
             board[d.name]["metrics"].update(ext_metrics(d))
-            att = read_jsonl(d / "attack.jsonl", Rating)
+            for xf in sorted(d.glob("attack_xfer_from_*.jsonl")):
+                board[d.name]["attack_transfer_src"] = xf.stem.removeprefix("attack_xfer_from_")
+                board[d.name]["metrics"].update(transfer_metrics(read_jsonl(xf, Rating), swe))
             if att:
                 board[d.name]["metrics"].update(
                     attack_metrics(att, swe, swe_out, read_jsonl(d / "attack_pass.jsonl", Rating)))

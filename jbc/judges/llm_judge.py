@@ -67,8 +67,9 @@ def _clamp(v) -> int:
 class LLMJudge(Judge):
     def __init__(self, id: str, kind: str, provider: str, model: str,
                  price_in: float = 0.0, price_out: float = 0.0, max_tokens: int = 4000,
-                 rubric: str = "rubric_v1.yaml", bias_warning: bool = True, **_):
+                 rubric: str = "rubric_v1.yaml", bias_warning: bool = True, verify: bool = False, **_):
         self.id, self.kind, self.provider, self.model = id, kind, provider, model
+        self.verify = verify
         self.price_in, self.price_out, self.max_tokens = price_in, price_out, max_tokens
         if kind == "rubric":
             self.system = prompts.rubric_system(load_yaml(CONFIGS / rubric), warn=bias_warning)
@@ -77,6 +78,8 @@ class LLMJudge(Judge):
             self.system = prompts.ZS_SYSTEM if bias_warning else prompts.ZS_SYSTEM.replace(prompts.ZS_WARNING, "")
         else:
             raise ValueError(kind)
+        if verify:
+            self.system += prompts.VERIFY_NOTE
         self.prompt_sha = hashlib.sha256(self.system.encode()).hexdigest()[:12]
 
     def _cost(self, r: llm.LLMResponse) -> float:
@@ -87,8 +90,13 @@ class LLMJudge(Judge):
                 "in_tok": r.input_tokens, "out_tok": r.output_tokens, "cached": r.cached}
 
     def rate(self, item: Item, sample: int = 0) -> Rating:
-        r = llm.chat(self.provider, self.model, self.system, prompts.single_user(item), self.max_tokens,
-                     sample=sample)
+        user = prompts.single_user(item)
+        verdict = None
+        if self.verify:
+            from ..verify import lookup, verdict_text
+            verdict = lookup(item)
+            user = f"{verdict_text(verdict)}\n\n{user}"
+        r = llm.chat(self.provider, self.model, self.system, user, self.max_tokens, sample=sample)
         d = parse_json(r.text, "scores" if self.kind == "rubric" else "score")
         if self.kind == "rubric":
             scores = {k: _clamp(v) for k, v in d["scores"].items()}
@@ -98,7 +106,9 @@ class LLMJudge(Judge):
             reasons = {"R7": str(d.get("reason", ""))}
         return Rating(item_id=item.id, judge_id=self.id, scores=scores, reasons=reasons,
                       merge=scores["R7"] >= 4, raw=r.text, cost_usd=self._cost(r),
-                      latency_s=r.latency_s, meta={**self._meta(r), "sample": sample})
+                      latency_s=r.latency_s,
+                      meta={**self._meta(r), "sample": sample,
+                            **({"verify": verdict["verdict"] if verdict else "not_run"} if self.verify else {})})
 
     def compare(self, pair: Pair, first: Item, second: Item, order: str) -> Pref:
         r = llm.chat(self.provider, self.model, prompts.PAIR_SYSTEM, prompts.pair_user(first, second), 800)

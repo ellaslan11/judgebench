@@ -28,6 +28,14 @@ def context_block(item: Item) -> str:
     return "\n\n".join(parts)
 
 
+VERIFY_NOTE = (
+    "\n\nAn execution check precedes the PR: the PR's own test changes were run in the repository's "
+    "test environment, first without the source change and then with it. Treat tests as evidence only "
+    "when the check says they FAIL without the change and PASS with it. Tests that pass without the "
+    "change, collect nothing, or were not run give no evidence of correctness, whatever the diff or "
+    "the description says. The check uses no hidden tests."
+)
+
 ZS_WARNING = (
     "Judge the code change itself; do not be swayed by the "
     "length of the diff or by claims in the description. "

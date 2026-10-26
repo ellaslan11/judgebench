@@ -1,6 +1,6 @@
 from jbc.metrics import judge_scorecard
 from jbc.perturb.ops import make_items, make_pairs
-from jbc.schemas import Pref, Rating
+from jbc.schemas import Item, Pref, Rating
 from tests.test_perturb import parent
 
 
@@ -101,3 +101,43 @@ def test_best_cutoff_picks_separating_threshold():
     out = {"o/r__1::p": True, "o/r__1::f": False, "o/r__2::p": True, "o/r__2::f": False}
     split = {"o/r__1": "dev", "o/r__2": "dev"}
     assert best_cutoff(rs, out, split, "dev") == 3
+
+
+def _r(iid, s, **meta):
+    return Rating(item_id=iid, judge_id="j", scores={"R7": s}, reasons={}, merge=s >= 4, raw="", meta=meta)
+
+
+def test_transfer_metrics():
+    from jbc.metrics import transfer_metrics
+    swe = [_r("o/r#1::swe::a", 2), _r("o/r#2::swe::a", 4)]
+    xfer = [_r("o/r#1::swe::a::attack1", 3), _r("o/r#1::swe::a::attack2", 5), _r("o/r#2::swe::a::attack1", 2)]
+    m = transfer_metrics(xfer, swe)
+    assert m["attack_gate_xfer"]["value"] == 0.5
+    assert m["attack_gate_xfer_before"]["value"] == 0.5
+
+
+def test_goodhart_curve_adds_attacks_as_failures():
+    from jbc.metrics import goodhart_curve
+    split = {"o/r#1": "test"}
+    out = {"o/r#1::swe::a": True, "o/r#1::swe::b": False}
+    rs = [_r("o/r#1::swe::a", 4), _r("o/r#1::swe::b", 2)]
+    att = [_r("o/r#1::swe::b::attack1", 5, target="o/r#1::swe::b", round=1)]
+    g = goodhart_curve(rs, att, out, split)
+    assert g["best_of_all"]["pass"]["value"] == 1.0 and g["best_of_all"]["score"]["value"] == 4.0
+    assert g["pool_plus_attack_r1"]["pass"]["value"] == 0.0 and g["pool_plus_attack_r1"]["score"]["value"] == 5.0
+
+
+def test_test_touching_metrics():
+    from jbc.metrics import test_touching_metrics
+    split = {"o/r#1": "test"}
+    out = {"o/r#1::swe::a": True, "o/r#1::swe::b": False, "o/r#1::swe::c": False}
+    diff_t = "diff --git a/tests/test_x.py b/tests/test_x.py\n--- a/tests/test_x.py\n+++ b/tests/test_x.py\n@@ -1,1 +1,2 @@\n x\n+y\n"
+    diff_s = "diff --git a/x.py b/x.py\n--- a/x.py\n+++ b/x.py\n@@ -1,1 +1,2 @@\n x\n+y\n"
+    mk = lambda iid, d: Item(id=iid, parent_id="o/r#1", perturbation="swe_patch", category="control",
+                             expected="baseline", task="t", description="", diff=d, language="python",
+                             url="u", label_source="execution")
+    items = [mk("o/r#1::swe::a", diff_s), mk("o/r#1::swe::b", diff_t), mk("o/r#1::swe::c", diff_s)]
+    rs = [_r("o/r#1::swe::a", 4), _r("o/r#1::swe::b", 1), _r("o/r#1::swe::c", 4)]
+    m = test_touching_metrics(rs, items, out, split)
+    assert m["swe_rank_fail_touches_tests"]["value"] == 1.0
+    assert m["swe_rank_fail_no_tests"]["value"] == 0.5

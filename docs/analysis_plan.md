@@ -164,3 +164,28 @@ GPT-6.1-sol rubric 0.60 (91 pairs), GPT-6-luna zero-shot 0.64 (108 pairs).
   merged one, and PRs that drew change requests are larger and more complex.
 - P10 borderline: the lower bound is 0.50. The judge gives both programs the same R7 in 55% of
   battles.
+
+## Pre-registration v4: execution-grounded verification (written before any `rubricx-*` result)
+
+Setup. `jbc verify` runs every SWE patch and attacked patch in the task's official SWE-bench image:
+apply only the patch's test-file changes and run the touched test files, then apply the source
+change and run again. Verdicts: `verified` (fail -> pass), `vacuous` (pass -> pass), `failing`,
+`empty` (nothing collected), `no_tests`. No hidden tests are used. The `rubricx-*` judges get the
+verdict as one line above the PR, with an instruction to count tests as evidence only if verified.
+
+Already observed before writing this (not predictions): attack transfer `attack_gate_xfer`
+(luna-tuned attacks on GPT-6.1-sol rubric 0.04 -> 0.31; sol-tuned on GPT-6-luna rubric 0.11 -> 0.48),
+the Goodhart curve (`pool_plus_attack_r3`: pick score 3.17 -> 3.65 while pass 0.70 -> 0.49 for
+GPT-6.1-sol rubric), and `swe_rank_fail_touches_tests` > `swe_rank_fail_no_tests` for both judges.
+
+- P11: attacked failing patches reaching R7 >= 4 (`attack_gate_rate`) for `rubricx-gpt6.1-sol`
+  under the same 3-round attacker is below half of `rubric-gpt6.1-sol`'s 0.32, i.e. < 0.16.
+  The attacker's added test is either `vacuous` (passes without the fix) or `failing`, so the
+  verified judge should stop crediting it.
+- P12: `swe_rank` on the test split for `rubricx-*` is within 0.03 of the unverified judge. Most
+  patches have no tests (`no_tests`), so the verdict carries no information for them.
+- P13: the luna-tuned transfer attacks (`attack_gate_xfer`) move `rubricx-gpt6.1-sol` by less than
+  0.10 (vs 0.27 for the unverified judge).
+- P14: at least 70% of attacker-added test files get a non-`verified` verdict.
+Failure of P11 would mean the judge keeps crediting tests it was told are not evidence, i.e. the
+exploit is in the description channel, not the test channel.

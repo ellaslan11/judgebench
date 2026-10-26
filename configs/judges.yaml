@@ -12,6 +12,8 @@ judges:
   - {id: rubric-sonnet5, kind: rubric, provider: anthropic, model: claude-sonnet-5, price_in: 2.0, price_out: 10.0}
   - {id: merge-zs-haiku4.5, kind: zero_shot, provider: anthropic, model: claude-haiku-4-5-20251001, price_in: 1.0, price_out: 5.0}
   - {id: rubric-haiku4.5, kind: rubric, provider: anthropic, model: claude-haiku-4-5-20251001, price_in: 1.0, price_out: 5.0}
+  - {id: rubricx-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, verify: true}
+  - {id: rubricx-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, verify: true}
   - {id: rubricblind-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, rubric: rubric_blind.yaml, bias_warning: false}
   - {id: merge-zs-neutral-gpt6.1-sol, kind: zero_shot, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, bias_warning: false}
   - {id: merge-zs-neutral-gpt6-luna, kind: zero_shot, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, bias_warning: false}
