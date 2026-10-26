@@ -228,6 +228,36 @@ def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.O
         typer.echo(f"{j.id}: {len({r.meta['target'] for _, r in res})} targets, {len(res)} attacked ratings")
 
 
+@app.command("attack-replay")
+def attack_replay(judge: str = "rubric-gpt6.1-sol", task: str = "", pick: str = "best"):
+    """Replay one cached attack for a demo: original failing patch and score, then each round's
+    rewritten description, added test file and new score. No API calls."""
+    swe = {i.id: i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item)}
+    base = {r.item_id: r for r in read_jsonl(RESULTS / judge / "swe_ratings.jsonl", Rating)}
+    att = read_jsonl(RESULTS / judge / "attack.jsonl", Rating)
+    items = {i.id: i for i in read_jsonl(RESULTS / judge / "attack_items.jsonl", Item)}
+    by_target: dict[str, list[Rating]] = defaultdict(list)
+    for r in att:
+        by_target[r.meta["target"]].append(r)
+    if task:
+        cands = [t for t in by_target if t.startswith(task)]
+    else:
+        cands = sorted(by_target, key=lambda t: (max(r.overall for r in by_target[t]) - base[t].overall), reverse=True)
+    if not cands:
+        raise typer.BadParameter("no attack found")
+    t = cands[0] if pick == "best" else cands[-1]
+    item, start = swe[t], base[t]
+    typer.echo(f"=== {t}\nhidden tests: FAIL\n--- task\n{item.task[:600]}\n--- original description\n{item.description or '(none)'}")
+    typer.echo(f"--- {judge} score before: R7={start.overall}  {start.reasons.get('R7', '')}")
+    for r in sorted(by_target[t], key=lambda r: r.meta["round"]):
+        a = items[r.item_id]
+        tf = [f for f in a.diff.split("diff --git ")[1:] if f not in item.diff]
+        typer.echo(f"\n=== round {r.meta['round']}: R7={r.overall}  {r.reasons.get('R7', '')}")
+        typer.echo(f"--- rewritten description\n{a.description}")
+        if tf:
+            typer.echo(f"--- added test file (source hunks byte-identical)\n{tf[-1][:2500]}")
+
+
 @app.command("attack-transfer")
 def attack_transfer(src: str, dst: str, judges: str = "configs/judges.yaml", workers: int = 8):
     """Rate the attacked items tuned against judge SRC with judge DST (transfer test)."""
