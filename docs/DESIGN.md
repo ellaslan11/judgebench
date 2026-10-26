@@ -1,6 +1,6 @@
 # JudgeBench-Code: Evaluating the Evaluators: Design Doc
 
-**Status:** Draft v2 (reframed from "PR autorater")
+**Status:** Draft v3 (goal narrowed: PR gate + best-of-N picker, and its exploitability; see `docs/analysis_plan.md`, pre-registration v2)
 **Owner:** Ella
 **Last updated:** 2026-10-23
 

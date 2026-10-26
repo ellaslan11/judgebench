@@ -88,3 +88,24 @@ hacks shrinks by more than half when both are made neutral, for both models.
 ## Changelog
 - Added `devin-rubric` as a judge on the controlled, SWE, agent-PR and re-grade sets (blind Devin
   sessions, 5 items each). No metric, split or decision rule changed.
+
+### Results v2 (test split; 95% repo-clustered CIs; computed once, after all runs finished)
+
+| Prediction | Result | Verdict |
+|---|---|---|
+| P1 blind rubric catches named hacks >= 10 pts less (one model) | luna 0.91 -> 0.84 (-7), sol 0.85 -> 0.86 (+1) | not confirmed; also not "< 5 for both", so inconclusive |
+| P2 blind rubric lowers `pad` FP by >= 15 pts | luna 0.74 -> 0.67, sol 0.86 -> 0.72 | not confirmed |
+| P3 SWE pair acc CIs overlap (blind vs v1) | luna 0.66 vs 0.69, sol 0.72 vs 0.73 | confirmed |
+| P4 held-out hacks caught less than named hacks (every LLM judge) | held-out catch 0.79-0.93, above named for 6 of 8 | falsified: the scripted held-out hacks are not harder |
+| P5 best-of-N rises N=1->4, below oracle, one judge flat/falling 4->8 | all rise ~0.51 -> 0.64-0.69 by N=4; oracle 0.997; luna judges fall 0.01-0.02 by N=8 | confirmed (the fall is inside noise) |
+| P6 >= 30% of attacked failing patches reach R7 >= 4 | rubric-luna 0.15 -> 0.61, rubric-sol 0.07 -> 0.32 | confirmed |
+| Circularity rule (rubric - zero-shot gap on named hacks halves when neutral, both models) | luna gap 0.24 -> 0.19; sol 0.04 -> 0.01 | not met: the rubric advantage is not mainly circular |
+
+Not pre-registered, noted after the fact:
+- At the R7 >= 4 gate, rubric judges reject 91-97% of *passing* SWE patches (zero-shot sol: 76%).
+  Most SWE patches ship without tests (338/420) and an empty description, so the cutoff is not
+  usable as-is; it needs per-judge calibration on the dev split.
+- The attack is not symmetric: only failing patches got an attacker-written test file and
+  description, and passing patches mostly have neither, so `attack_win_rate` (0.64 / 0.38) overstates
+  exploitability against a fair pool. `attack_gate_rate` does not depend on the comparison.
+- Best-of-N pools and the attacker were run only for the GPT judges listed in pre-registration v2.

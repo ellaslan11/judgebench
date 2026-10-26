@@ -8,6 +8,17 @@ A/B order?
 
 It does **not** benchmark coding agents. It benchmarks the thing that grades them.
 
+**Goal (v2, `docs/analysis_plan.md`).** Choose and harden the judge an agent platform would use as a
+PR gate and a best-of-N picker, and measure how exploitable it is under optimization. Prompts may
+name known hacks; judges are scored on what they were not told about: execution labels (SWE-bench
+hidden tests), held-out hacks named in no prompt, a best-of-N curve, gate false-accept/false-reject
+rates, and an adaptive attacker that may only rewrite the description and add a test file.
+Results v2 and which predictions held are in `docs/analysis_plan.md`. In short: the best GPT judges'
+top pick passes ~0.70 of the time at N=4-8 (random 0.51, oracle 0.997), and the curve is flat after
+N=4; an attacker that only edits the description and adds a test lifts 32% (GPT-6.1-sol rubric) to
+61% (GPT-6-luna rubric) of failing patches to "would merge"; the blind rubric performs about the same
+as the original, so the rubric's advantage is mostly not from naming the hacks.
+
 ## How it works
 
 1. **Parents** – recent merged PRs from active OSS repos (Python, TypeScript, Go, Rust) that change
