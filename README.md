@@ -48,24 +48,39 @@ held-out test (72); the analysis plan was written before any judging (`docs/anal
 - `swe_best_of_4`: pass rate of the judge's top pick out of the 4 (random 0.5).
 - `swe_auroc`: pooled AUROC for pass vs fail.
 
-Held-out test results so far (95% CI, repo bootstrap):
+Held-out test results (72 tasks; 95% CI, repo bootstrap):
 
 | judge | pass>fail | best-of-4 | AUROC |
 |---|---|---|---|
+| GPT-6.1-sol rubric | 0.72 (0.67-0.78) | 0.72 (0.66-0.77) | 0.73 |
+| GPT-6.1-sol zero-shot | 0.69 (0.62-0.77) | 0.66 (0.57-0.74) | 0.70 |
 | GPT-6-luna zero-shot | 0.66 (0.58-0.76) | 0.64 (0.52-0.75) | 0.67 |
 | GPT-6-luna rubric | 0.66 (0.59-0.74) | 0.63 (0.54-0.73) | 0.66 |
+| Haiku 4.5 zero-shot | 0.61 (0.54-0.68) | 0.57 (0.42-0.68) | 0.61 |
+| Haiku 4.5 rubric | 0.61 (0.55-0.70) | 0.56 (0.45-0.70) | 0.61 |
 | test-line heuristic | 0.45 (0.40-0.51) | 0.39 (0.31-0.51) | 0.45 |
 
-Passing hidden tests is narrower than correctness or maintainability, and SWE-bench is public, so
-judges may have seen these issues or fixes. 2 of 420 zero-shot outputs were unparseable and dropped.
+Every LLM judge beats chance; the heuristic does not. The LLM judges' intervals overlap, so this set
+does not separate them reliably. Passing hidden tests is narrower than correctness or maintainability, and SWE-bench is public, so
+judges may have seen these issues or fixes. Unparseable outputs are dropped: 2 of 420 for GPT-6-luna
+zero-shot, 21 of 420 for Haiku rubric.
 
 ## Noise floor
 
 `jbc retest --k 3` grades each unchanged original 2 more times. `retest_drop` is how often a
 re-grade of the *same* PR scores lower, i.e. how often noise alone looks like a "catch".
-`hack_catch_net` / `subtle_catch_net` subtract it. For GPT-6-luna: retest_drop 0.13 (zero-shot) and
-0.16 (rubric), so hack catch falls from 0.67 to 0.52 and from 0.91 to 0.74. These report-only axes
-are not in the composite.
+`hack_catch_net` / `subtle_catch_net` subtract it.
+
+| judge | retest_drop | hack catch -> net | subtle hack -> net |
+|---|---|---|---|
+| GPT-6.1-sol rubric | 0.03 | 0.85 -> 0.82 | 0.83 -> 0.79 |
+| GPT-6.1-sol zero-shot | 0.03 | 0.81 -> 0.79 | 0.80 -> 0.76 |
+| GPT-6-luna rubric | 0.16 | 0.91 -> 0.74 | 0.91 -> 0.74 |
+| GPT-6-luna zero-shot | 0.13 | 0.67 -> 0.52 | 0.83 -> 0.70 |
+| Haiku 4.5 rubric | 0.15 | 0.77 -> 0.58 | 0.75 -> 0.58 |
+| Haiku 4.5 zero-shot | 0.03 | 0.40 -> 0.35 | 0.31 -> 0.29 |
+
+These report-only axes are not in the composite.
 
 ## Quickstart
 
