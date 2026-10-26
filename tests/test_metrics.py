@@ -89,3 +89,15 @@ def test_swe_gate_and_best_of_n():
     curve = best_of_n_curve(rs, out, {"a/b#1": "test"}, ns=(1, 4))
     assert curve["4"]["judge"]["value"] == 1.0 and curve["4"]["oracle"]["value"] == 1.0
     assert curve["1"]["random"]["value"] == 0.5 and abs(curve["1"]["judge"]["value"] - 0.5) < 0.1
+
+
+def test_best_cutoff_picks_separating_threshold():
+    from jbc.metrics import best_cutoff
+    from jbc.schemas import Rating
+
+    def r(iid, s):
+        return Rating(judge_id="j", item_id=iid, scores={"R7": s}, merge=s >= 4)
+    rs = [r("o/r__1::p", 4), r("o/r__1::f", 2), r("o/r__2::p", 3), r("o/r__2::f", 2)]
+    out = {"o/r__1::p": True, "o/r__1::f": False, "o/r__2::p": True, "o/r__2::f": False}
+    split = {"o/r__1": "dev", "o/r__2": "dev"}
+    assert best_cutoff(rs, out, split, "dev") == 3

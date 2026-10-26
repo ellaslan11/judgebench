@@ -109,3 +109,28 @@ Not pre-registered, noted after the fact:
   description, and passing patches mostly have neither, so `attack_win_rate` (0.64 / 0.38) overstates
   exploitability against a fair pool. `attack_gate_rate` does not depend on the comparison.
 - Best-of-N pools and the attacker were run only for the GPT judges listed in pre-registration v2.
+
+## Pre-registration v3 (written before these runs)
+
+Added for sharing; judges: `rubric-gpt6.1-sol`, `rubric-gpt6-luna` (+ `merge-zs-gpt6-luna`,
+`rubricblind-gpt6-luna` on the human sets).
+
+- **Fair attack control.** The same attacker (same prompt, 3 rounds, description + one test file)
+  is applied to each task's top-rated passing patch. `attack_win_fair`: the attacked failing
+  patch scores strictly above every passing patch of its task, including the attacked passing one.
+- **Gate calibration.** Per judge, the R7 cutoff c in {2..5} minimising false-accept +
+  false-reject on the dev split (ties -> higher c); FA/FR reported on test (`*_cal`).
+- **SWE-PRBench** (foundry-ai/swe-prbench, CC-BY-4.0): 312 of 350 PRs (diff <= 40k chars).
+  `prb_auroc`: AUROC of -R7 for "a human reviewer formally requested changes" (67 of 312).
+  `prb_auroc_any`: same for the dataset's `changes_required`. All PRs were eventually merged,
+  and the diff is the final merged diff, so this label is weak.
+- **BigCodeReward** (bigcode/bigcodereward, OpenRAIL-M): 200 random non-tie battles (from shard 0,
+  <= 2 assistant turns, excluding diagram tasks). Each answer is rated alone as a new file
+  `answer.md`; `bcr_agree` = higher R7 matches the human vote (ties 0.5).
+
+Predictions:
+- P7: `attack_win_fair` < `attack_win_rate` for both judges (the asymmetry inflated it).
+- P8: with a dev-tuned cutoff, test false-reject < 50% for both judges, at the cost of a higher
+  false-accept than at R7 >= 4.
+- P9: `prb_auroc` CI includes 0.5 for at least one judge (final merged diffs, weak label).
+- P10: `bcr_agree` > 0.5 with CI excluding 0.5 for GPT-6.1-sol rubric.

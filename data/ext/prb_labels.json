@@ -1,0 +1,1250 @@
+{
+  "sqlfluff/sqlfluff#7294::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "cupy/cupy#9507::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "livekit/agents#4099::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pyodide/pyodide#6033::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vibrantlabsai/ragas#2474::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "optuna/optuna#6428::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "cupy/cupy#9660::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20282::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9549::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "simonw/datasette#2539::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3020::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "numba/numba#10226::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20166::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5290::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pypa/pip#9058::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9567::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "espnet/espnet#6272::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "spyder-ide/spyder#25194::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "kedro-org/kedro#5181::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2262::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "stylelint/stylelint#9022::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "dask/dask#12119::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9401::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "json-schema-org/JSON-Schema-Test-Suite#791::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25559::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "huggingface/accelerate#3890::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "wix/Detox#4847::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9231::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#3933::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "treeverse/dvc#10866::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "espnet/espnet#6340::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "CesiumGS/cesium#13098::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5250::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9928::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vibrantlabsai/ragas#2376::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6283::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20213::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#2612::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "envoyproxy/ratelimit#1016::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dagster-io/dagster#33235::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25451::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9010::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "wix/Detox#4793::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9588::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "autogluon/autogluon#5572::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "aws/serverless-application-model#3863::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25595::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "triton-inference-server/server#8458::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20019::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9621::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#2872::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vibrantlabsai/ragas#2354::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20458::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Effect-TS/effect#6065::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vega/vega#4200::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "xorbitsai/inference#4197::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5173::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#4145::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "tektoncd/operator#3078::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#3524::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6293::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "redis/redis-py#3939::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "webpack/webpack-bundle-analyzer#699::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6284::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20351::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3360::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9626::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9570::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "falconry/falcon#2541::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "numba/numba#10237::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5352::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dask/dask#12002::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "boto/boto3#4629::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9021::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25281::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "spyder-ide/spyder#23761::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "prowler-cloud/prowler#9834::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9528::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9518::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "kedro-org/kedro#5142::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5273::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Netflix/metaflow#2441::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "firebase/firebase-android-sdk#7741::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2188::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "livekit/agents#4310::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "firebase/firebase-android-sdk#7599::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9561::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "falconry/falcon#2446::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "redis/redis-py#3899::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#2745::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "redis/redis-py#3938::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "envoyproxy/ratelimit#1017::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20239::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9039::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "numba/numba#10390::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "Lightning-AI/litgpt#2134::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8972::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dagster-io/dagster#33243::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "wix/Detox#4894::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vibrantlabsai/ragas#2401::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "redis/redis-py#3880::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "xorbitsai/inference#4393::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9774::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "unit8co/darts#2984::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9018::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "triton-inference-server/server#8538::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "dask/dask#12205::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "confident-ai/deepeval#2113::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "firebase/firebase-android-sdk#7734::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "openbao/openbao#2321::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dask/dask#12103::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "sqlfluff/sqlfluff#7436::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "triton-inference-server/server#8570::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kornia/kornia#3302::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "numba/numba#10224::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "livekit/agents#4131::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8987::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "sktime/sktime#9107::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "envoyproxy/ratelimit#1015::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "dagster-io/dagster#33336::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "webpack/webpack-bundle-analyzer#698::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3214::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "coreos/coreos-assembler#4298::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kornia/kornia#3334::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2232::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Effect-TS/effect#6021::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "projectnessie/nessie#11873::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vitest-dev/vitest#9523::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "colinhacks/zod#5589::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "dask/dask#12206::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vitest-dev/vitest#9204::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "espnet/espnet#6255::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "unit8co/darts#2994::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2419::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pypa/pip#13732::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20237::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "numba/numba#10223::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4253::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9525::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "sqlfluff/sqlfluff#7471::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20235::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vibrantlabsai/ragas#2526::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#2937::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6302::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "sqlfluff/sqlfluff#7496::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9064::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "sqlfluff/sqlfluff#7329::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "prowler-cloud/prowler#9876::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "firebase/firebase-android-sdk#7649::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "unit8co/darts#2989::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "kedro-org/kedro#4686::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "unit8co/darts#3000::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9837::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "dagster-io/dagster#33242::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "aws/serverless-application-model#3856::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "stylelint/stylelint#9080::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "aws/serverless-application-model#3869::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "xorbitsai/inference#4482::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "webpack/webpack-bundle-analyzer#679::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9829::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "dask/dask#12153::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "firebase/firebase-android-sdk#7679::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#4237::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Netflix/metaflow#2616::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "spyder-ide/spyder#25544::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "envoyproxy/ratelimit#1018::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Effect-TS/effect#6019::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8973::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "projectnessie/nessie#11886::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9011::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "kornia/kornia#3470::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "sqlfluff/sqlfluff#7314::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "aws/serverless-application-model#3824::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "sqlfluff/sqlfluff#7491::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "dbcli/mycli#1436::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "firebase/firebase-android-sdk#7698::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "simonw/datasette#2587::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2445::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25501::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "deepchem/deepchem#4489::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#2821::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "deepchem/deepchem#4539::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "confident-ai/deepeval#2140::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "cupy/cupy#9488::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vega/vega#4202::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20216::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "firebase/firebase-android-sdk#7669::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "tektoncd/operator#3197::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "unit8co/darts#2958::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "livekit/agents#4835::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8992::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "statsmodels/statsmodels#9716::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "kornia/kornia#3330::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "firebase/firebase-android-sdk#7619::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "wix/Detox#4816::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9557::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4286::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9023::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kornia/kornia#3482::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5296::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "treeverse/dvc#10945::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6295::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "cupy/cupy#9554::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "kairos-io/kairos#3823::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "firebase/firebase-android-sdk#7706::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "openbao/openbao#2301::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "scipy/scipy#24123::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9773::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#20326::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "espnet/espnet#6280::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9862::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "Lightning-AI/litgpt#2195::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "wix/Detox#4812::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Chia-Network/chia-blockchain#19848::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vega/vega#4203::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3038::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "numba/numba#10242::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3431::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "prowler-cloud/prowler#9865::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9026::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "sissbruecker/linkding#1261::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9512::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9062::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "vibrantlabsai/ragas#2331::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "Effect-TS/effect#5952::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vega/altair#3936::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20099::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3428::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dask/dask#12144::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6278::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5334::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9074::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "confident-ai/deepeval#2394::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "spyder-ide/spyder#25609::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6352::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#3948::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4381::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "bufbuild/protocompile#630::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "falconry/falcon#2581::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "qutebrowser/qutebrowser#8845::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3392::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#24990::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "autogluon/autogluon#5586::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20321::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "brianc/node-postgres#3547::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "dask/dask#12106::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9702::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9561::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "pypa/pip#13482::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "backstage/backstage#32466::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Lightning-AI/litgpt#2188::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "spyder-ide/spyder#25481::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4386::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Chia-Network/chia-blockchain#20317::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "kubeflow/kale#593::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "dask/dask#12221::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kedro-org/kedro#5107::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "livekit/agents#4846::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6248::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "spyder-ide/spyder#25460::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "kubeflow/kale#601::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8985::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9606::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "livekit/agents#4713::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#2792::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "falconry/falcon#2572::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "redis/redis-py#3949::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3233::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#2735::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "bufbuild/protocompile#569::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4359::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "colinhacks/zod#5578::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Netflix/metaflow#2653::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "vitest-dev/vitest#9152::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "livekit/agents#3909::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "falconry/falcon#2540::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "coreos/coreos-assembler#4394::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#2266::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9044::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "projectnessie/nessie#11676::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#2307::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3025::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3113::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "triton-inference-server/server#8569::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "dbcli/mycli#1517::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "numba/numba#10276::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "wakatime/wakatime-cli#1245::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3410::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "colinhacks/zod#5672::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "openbao/openbao#1906::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "envoyproxy/ratelimit#996::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "deepchem/deepchem#4601::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "sktime/sktime#9042::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "bufbuild/protocompile#590::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "Rapptz/discord.py#10307::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#9060::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6325::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "huggingface/transformers.js#1436::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vega/vega#4219::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "prowler-cloud/prowler#9718::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "livekit/agents#3608::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "espnet/espnet#6356::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3328::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "firebase/firebase-android-sdk#7617::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#2819::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "pipecat-ai/pipecat#3692::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "pipecat-ai/pipecat#3041::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "bufbuild/protocompile#645::prb": {
+    "requested_changes": false,
+    "changes_required": true
+  },
+  "sqlfluff/sqlfluff#7499::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "numba/numba#10366::prb": {
+    "requested_changes": false,
+    "changes_required": false
+  },
+  "vitest-dev/vitest#9521::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  },
+  "stylelint/stylelint#8953::prb": {
+    "requested_changes": true,
+    "changes_required": true
+  }
+}

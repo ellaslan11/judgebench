@@ -1,23 +1,35 @@
 # JudgeBench-Code
 
-**A benchmark for code evaluators.** Coding agents are increasingly gated, ranked and trained by
-LLM "autoraters" that read a PR and decide whether it is mergeable. JudgeBench-Code measures how
-trustworthy those judges are: do they catch reward hacks, ignore padding and confident PR
-descriptions, stay stable under semantics-preserving edits, and give the same answer regardless of
-A/B order?
+**How gameable are AI code judges?** Agent platforms increasingly use an LLM judge as a PR gate,
+to pick the best of N agent attempts, and as a reward. If the judge can be fooled, an agent
+optimised against it learns to fool it instead of writing correct code. JudgeBench-Code measures
+that. It benchmarks the grader, not the coding agent.
 
-It does **not** benchmark coding agents. It benchmarks the thing that grades them.
+**Headline findings** (held-out SWE-bench tasks unless noted; 95% CIs resample whole repos;
+predictions were pre-registered in `docs/analysis_plan.md` before each run):
 
-**Goal (v2, `docs/analysis_plan.md`).** Choose and harden the judge an agent platform would use as a
-PR gate and a best-of-N picker, and measure how exploitable it is under optimization. Prompts may
-name known hacks; judges are scored on what they were not told about: execution labels (SWE-bench
-hidden tests), held-out hacks named in no prompt, a best-of-N curve, gate false-accept/false-reject
-rates, and an adaptive attacker that may only rewrite the description and add a test file.
-Results v2 and which predictions held are in `docs/analysis_plan.md`. In short: the best GPT judges'
-top pick passes ~0.70 of the time at N=4-8 (random 0.51, oracle 0.997), and the curve is flat after
-N=4; an attacker that only edits the description and adds a test lifts 32% (GPT-6.1-sol rubric) to
-61% (GPT-6-luna rubric) of failing patches to "would merge"; the blind rubric performs about the same
-as the original, so the rubric's advantage is mostly not from naming the hacks.
+1. **Judges are cheap to game without touching the code.** An LLM attacker that sees the judge's
+   feedback and may only rewrite the PR description and add one test file (3 rounds, source code
+   byte-identical, so the patch still fails the hidden tests) lifts the share of failing patches
+   rated "would merge" (R7 >= 4) from 15% to 61% (GPT-6-luna rubric) and 7% to 32% (GPT-6.1-sol
+   rubric). {{FAIR}}
+2. **Best-of-N helps, then plateaus.** The judge's top pick passes ~0.51 at N=1 (random), ~0.64-0.70
+   at N=4, and stays flat to N=8, while an oracle reaches 0.997.
+3. **Judges beat chance on execution labels but are not separable.** GPT, Haiku and Devin judges
+   rank a passing patch above a failing one 61-74% of the time (random 50%; a test-line heuristic
+   45%); the top judges' intervals overlap.
+4. **A fixed "would merge" cutoff is not a usable gate.** At R7 >= 4 the rubric judges reject 90%+
+   of patches that pass the hidden tests. {{GATE}}
+5. **Human labels (public datasets).** {{HUMAN}}
+6. **Naming hacks in the rubric is not what makes it work.** A "blind" rubric that names no
+   specific hack performs about the same as the original, and hacks named in no prompt
+   (`assert x == x`, swallowed failures, de-collected tests) are caught about as often (79-93%) as
+   named ones. So these scripted hacks are too easy; the adaptive attacker is the real stress test.
+
+**What this does not show:** that any judge is "best" or safe as a reward signal; that passing
+hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).
+Full limitations are at the end. The site (`site/`) has a findings page, a leaderboard, a
+"fool the judge" playground and a failure gallery.
 
 ## How it works
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import urllib.request
+from pathlib import Path
 
 import typer
 
@@ -189,8 +190,10 @@ def swe_pool_run(judges: str = "configs/judges.yaml", only: list[str] | None = t
 
 @app.command()
 def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
-           attacker: str = "gpt-6.1-sol", rounds: int = 3, workers: int = 8, limit: int = 0):
-    """Adaptive attack on one failing patch per test task (the judge's top-scored failing one)."""
+           attacker: str = "gpt-6.1-sol", rounds: int = 3, workers: int = 8, limit: int = 0,
+           side: str = "fail"):
+    """Adaptive attack on one patch per test task: the judge's top-scored failing one, or with
+    --side pass the top-scored passing one (the control: same treatment for the patches it competes with)."""
     from jbc.attack import run_attacks
     from jbc.judges import build_judges
 
@@ -202,17 +205,41 @@ def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.O
         best: dict[str, Rating] = {}
         for iid, r in sorted(rs.items()):
             t = iid.split("::")[0]
-            if iid in swe and not out[iid] and sp.get(t) == "test" and (t not in best or r.overall > best[t].overall):
+            if iid in swe and out[iid] == (side == "pass") and sp.get(t) == "test" and (t not in best or r.overall > best[t].overall):
                 best[t] = r
-        path = RESULTS / j.id / "attack.jsonl"
+        tag = "" if side == "fail" else "_pass"
+        path = RESULTS / j.id / f"attack{tag}.jsonl"
         done = {r.meta.get("target") for r in read_jsonl(path, Rating)}
         targets = [(swe[r.item_id], r) for t, r in sorted(best.items()) if r.item_id not in done]
         targets = targets[:limit] if limit else targets
         res = run_attacks(j, targets, attacker, rounds, workers, log=typer.echo)
         for it, r in res:
             append_jsonl(path, r)
-            append_jsonl(RESULTS / j.id / "attack_items.jsonl", it)
+            append_jsonl(RESULTS / j.id / f"attack{tag}_items.jsonl", it)
         typer.echo(f"{j.id}: {len({r.meta['target'] for _, r in res})} targets, {len(res)} attacked ratings")
+
+
+@app.command("ext-build")
+def ext_build(prb: str = "~/ext/prb", bcr: str = "~/ext/bcr/sample200.json"):
+    """Human-labelled external sets -> data/ext/ (SWE-PRBench, BigCodeReward)."""
+    from jbc.ext import bcr_items, prb_items
+
+    out = DATA / "ext"
+    out.mkdir(parents=True, exist_ok=True)
+    items, labels = prb_items(Path(prb).expanduser())
+    write_jsonl(out / "prb_items.jsonl", items)
+    dump_json(out / "prb_labels.json", labels)
+    b_items, votes = bcr_items(Path(bcr).expanduser())
+    write_jsonl(out / "bcr_items.jsonl", b_items)
+    dump_json(out / "bcr_votes.json", votes)
+    typer.echo(f"prb {len(items)} PRs ({sum(v['requested_changes'] for v in labels.values())} changes requested); "
+               f"bcr {len(votes)} battles")
+
+
+@app.command("ext-run")
+def ext_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None), workers: int = 8):
+    for name in ("prb", "bcr"):
+        _rate_set(read_jsonl(DATA / "ext" / f"{name}_items.jsonl", Item), f"{name}_ratings.jsonl", judges, only, workers)
 
 
 @app.command()
@@ -303,7 +330,9 @@ def score():
     from jbc.metrics import (
         AXES,
         attack_metrics,
+        best_cutoff,
         best_of_n_curve,
+        ext_metrics,
         failures,
         judge_scorecard,
         merge_auroc,
@@ -333,14 +362,18 @@ def score():
         board[d.name]["mixed_effects"] = perturbation_effects(deltas(items, ratings))
         swe = read_jsonl(d / "swe_ratings.jsonl", Rating)
         if swe and swe_out:
-            board[d.name]["metrics"].update(swe_metrics(swe, swe_out, swe_split, "test"))
+            cut = best_cutoff(swe, swe_out, swe_split, "dev")
+            board[d.name]["swe_cutoff"] = cut
+            board[d.name]["metrics"].update(swe_metrics(swe, swe_out, swe_split, "test", cut))
             board[d.name]["swe_dev"] = swe_metrics(swe, swe_out, swe_split, "dev")
             pool = read_jsonl(d / "swe_pool_ratings.jsonl", Rating)
             if pool and pool_out:
                 board[d.name]["best_of_n"] = best_of_n_curve(swe + pool, {**swe_out, **pool_out}, swe_split)
+            board[d.name]["metrics"].update(ext_metrics(d))
             att = read_jsonl(d / "attack.jsonl", Rating)
             if att:
-                board[d.name]["metrics"].update(attack_metrics(att, swe, swe_out))
+                board[d.name]["metrics"].update(
+                    attack_metrics(att, swe, swe_out, read_jsonl(d / "attack_pass.jsonl", Rating)))
                 board[d.name]["attack_cost_usd"] = sum(r.cost_usd + r.meta.get("attacker_cost_usd", 0) for r in att)
         agent = read_jsonl(d / "agent_ratings.jsonl", Rating)
         if agent and outcomes:

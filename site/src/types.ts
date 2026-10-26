@@ -8,6 +8,9 @@ export type JudgeCard = {
   cost_per_rating_usd: number;
   p50_latency_s: number;
   composite: number | null;
+  best_of_n?: Record<string, { judge: Metric; random: Metric; oracle: Metric }>;
+  attack_cost_usd?: number;
+  swe_cutoff?: number;
 };
 
 export type Scorecard = {

@@ -29,6 +29,11 @@ export const AXIS_LABELS: Record<string, string> = {
   swe_auroc: "SWE AUROC",
   swe_pair_acc: "SWE pass>fail",
   swe_best_of_4: "SWE best-of-4",
+  prb_auroc: "SWE-PRBench AUROC (human)",
+  bcr_agree: "BigCodeReward agree (human)",
+  attack_gate_rate: "Attacked fail → merge",
+  swe_false_accept_cal: "Gate false accept",
+  swe_false_reject_cal: "Gate false reject",
 };
 
 export const PERTURBATION_LABELS: Record<string, string> = {
@@ -51,7 +56,7 @@ export const EXPECTED_TEXT: Record<string, string> = {
 
 export function fmtMetric(axis: string, v: number): string {
   if (axis === "length_bias" || axis === "context_bias" || axis === "desc_gaming") return (v >= 0 ? "+" : "") + v.toFixed(2);
-  if (axis === "merge_auroc" || axis === "swe_auroc") return v.toFixed(2);
+  if (axis.endsWith("auroc") || axis.startsWith("prb_auroc")) return v.toFixed(2);
   return `${Math.round(v * 100)}%`;
 }
 
