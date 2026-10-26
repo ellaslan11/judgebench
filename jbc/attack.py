@@ -55,6 +55,9 @@ def attack_one(judge: Judge, target: Item, start: Rating, attacker: str, rounds:
         r = llm.chat("openai", attacker, SYSTEM, _user(target, last, desc), 8000)
         d = parse_json(r.text, "description")
         item = attacked_item(target, d, rnd)
+        if getattr(judge, "verify", False):
+            from .verify import shared_cache, verify
+            verify(target.parent_id, item.diff, cache=shared_cache(), pull=False)
         rating = judge.rate(item)
         rating.meta.update({"target": target.id, "round": rnd, "attacker": attacker,
                             "attacker_cost_usd": (r.input_tokens * pin + r.output_tokens * pout) / 1e6})
@@ -68,11 +71,22 @@ def attack_one(judge: Judge, target: Item, start: Rating, attacker: str, rounds:
 def run_attacks(judge: Judge, targets: list[tuple[Item, Rating]], attacker: str, rounds: int = 3,
                 workers: int = 8, log=print) -> list[tuple[Item, Rating]]:
     def one(tr):
+        verified = getattr(judge, "verify", False)
         try:
+            if verified:
+                from .verify import image_for, pull_image
+                if not pull_image(image_for(tr[0].parent_id)):
+                    log(f"  ! {judge.id} {tr[0].id}: image pull failed")
+                    return []
             return attack_one(judge, tr[0], tr[1], attacker, rounds)
         except Exception as e:  # noqa: BLE001
             log(f"  ! {judge.id} {tr[0].id}: {type(e).__name__}: {str(e)[:120]}")
             return []
+        finally:
+            if verified:
+                import subprocess
+                subprocess.run(check=False, args=["docker", "rmi", "-f", image_for(tr[0].parent_id)],
+                               capture_output=True)
 
     with ThreadPoolExecutor(workers) as ex:
         return [x for res in ex.map(one, targets) for x in res]

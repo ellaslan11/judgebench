@@ -70,6 +70,9 @@ def _key(parent_id: str, diff: str) -> str:
     return hashlib.sha256(f"{parent_id}\n{diff}".encode()).hexdigest()[:16]
 
 
+_CACHE: dict[str, dict] | None = None
+
+
 def load_cache() -> dict[str, dict]:
     if not CACHE.exists():
         return {}
@@ -96,6 +99,8 @@ def verify(parent_id: str, diff: str, repo: str | None = None, cache: dict | Non
         return res
     if cache is not None:
         cache[key] = res
+        if _CACHE is not None and _CACHE is not cache:
+            _CACHE[key] = res
         with CACHE.open("a") as f:
             f.write(json.dumps(res) + "\n")
     return res
@@ -156,15 +161,16 @@ echo "JBC_RESULT $A $B"
         return {"verdict": v, "a": a, "b": b, "tail": blog}
 
 
-_CACHE: dict[str, dict] | None = None
-
-
 def lookup(item) -> dict | None:
     """Cached verdict for an Item, or None if the check has not been run for it."""
+    return shared_cache().get(_key(item.parent_id, item.diff))
+
+
+def shared_cache() -> dict[str, dict]:
     global _CACHE
     if _CACHE is None:
         _CACHE = load_cache()
-    return _CACHE.get(_key(item.parent_id, item.diff))
+    return _CACHE
 
 
 def verdict_text(v: dict | None) -> str:

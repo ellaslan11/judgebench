@@ -192,9 +192,10 @@ def swe_pool_run(judges: str = "configs/judges.yaml", only: list[str] | None = t
 @app.command()
 def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
            attacker: str = "gpt-6.1-sol", rounds: int = 3, workers: int = 8, limit: int = 0,
-           side: str = "fail"):
+           side: str = "fail", targets_from: str = ""):
     """Adaptive attack on one patch per test task: the judge's top-scored failing one, or with
-    --side pass the top-scored passing one (the control: same treatment for the patches it competes with)."""
+    --side pass the top-scored passing one (the control: same treatment for the patches it competes with).
+    --targets-from J reuses judge J's targets (same patches, so judges can be compared directly)."""
     from jbc.attack import run_attacks
     from jbc.judges import build_judges
 
@@ -204,11 +205,18 @@ def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.O
     for j in build_judges(load_yaml(ROOT / judges), only):
         rs = {r.item_id: r for r in read_jsonl(RESULTS / j.id / "swe_ratings.jsonl", Rating)}
         best: dict[str, Rating] = {}
+        tag = "" if side == "fail" else "_pass"
+        if targets_from:
+            src = read_jsonl(RESULTS / targets_from / f"attack{tag}.jsonl", Rating)
+            for iid in sorted({r.meta["target"] for r in src}):
+                if iid in rs:
+                    best[iid.split("::")[0]] = rs[iid]
         for iid, r in sorted(rs.items()):
             t = iid.split("::")[0]
+            if targets_from:
+                break
             if iid in swe and out[iid] == (side == "pass") and sp.get(t) == "test" and (t not in best or r.overall > best[t].overall):
                 best[t] = r
-        tag = "" if side == "fail" else "_pass"
         path = RESULTS / j.id / f"attack{tag}.jsonl"
         done = {r.meta.get("target") for r in read_jsonl(path, Rating)}
         targets = [(swe[r.item_id], r) for t, r in sorted(best.items()) if r.item_id not in done]
