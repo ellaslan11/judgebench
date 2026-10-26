@@ -27,6 +27,8 @@ from .perturb.diffutil import is_test_path, parse_diff, render_diff
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "data" / "swe" / "verify.jsonl"
 TIMEOUT = 900
+# Google's mirror of Docker Hub: no anonymous pull throttle, unlike registry-1.docker.io.
+REGISTRY = "mirror.gcr.io"
 
 PYTEST = "python -m pytest -rA -p no:cacheprovider -x -q {files}"
 TEST_CMD = {
@@ -39,7 +41,7 @@ TEST_CMD = {
 def image_for(parent_id: str) -> str:
     repo, num = parent_id.split("#")
     inst = f"{repo.replace('/', '_1776_')}-{num}"
-    return f"swebench/sweb.eval.x86_64.{inst}:latest"
+    return f"{REGISTRY}/swebench/sweb.eval.x86_64.{inst}:latest"
 
 
 def split(diff: str) -> tuple[str, str, list[str]]:
