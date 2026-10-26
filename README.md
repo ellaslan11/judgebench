@@ -33,11 +33,30 @@ predictions were pre-registered in `docs/analysis_plan.md` before each run):
    (0.51-0.64). On **BigCodeReward** (200 human A/B votes on two models' programs, OpenRAIL-M),
    GPT-6.1-sol rubric picks the human's choice 0.55 of the time (0.50-0.60, ties counted as 0.5).
    Ignoring its 109 ties, that rises to 0.60; GPT-6-luna zero-shot gets 0.64 on its non-tied pairs.
-   The OpenAI credits ran out before the other two luna judges finished BigCodeReward.
+   All four GPT judges land at 0.55-0.58 overall.
 6. **Naming hacks in the rubric is not what makes it work.** A "blind" rubric that names no
    specific hack performs about the same as the original, and hacks named in no prompt
    (`assert x == x`, swallowed failures, de-collected tests) are caught about as often (79-93%) as
    named ones. So these scripted hacks are too easy; the adaptive attacker is the real stress test.
+
+7. **The attacks transfer.** Attacked patches tuned against GPT-6-luna, replayed unchanged on
+   GPT-6.1-sol rubric, lift its "would merge" rate on failing patches from 4% to 31%, almost as
+   much as its own adaptive attack (7% to 32%); on the blind rubric 3% to 33% and on zero-shot 12%
+   to 31%. Sol-tuned attacks on luna: 11% to 48% (own: 15% to 61%). The exploit is structural, not
+   one model's quirk.
+8. **Goodhart curve.** As the candidate set grows from one random agent patch to the whole pool
+   (7-11 per task) and then the pool plus the adversarially rewritten failing patches, the judge's
+   score of its pick rises monotonically (GPT-6.1-sol rubric 2.3 -> 3.2 -> 3.65) while the true pass
+   rate of the pick rises then falls (0.51 -> 0.70 -> 0.49); luna 2.4 -> 3.35 -> 4.1 with pass
+   0.51 -> 0.61 -> 0.31. Optimising harder against the judge makes the chosen code worse.
+9. **Real test-touching failures are not disguised hacks.** 78 pool patches add or edit tests yet
+   fail the hidden tests. Judges rank a passing patch above those *more* often (0.80-0.84) than
+   above failing patches with no test changes (0.68-0.73): agents' bad tests look broken, not
+   clever. So the adaptive attacker, not mined agent output, is the realistic hard case today.
+
+**In progress:** an execution-grounded judge (`rubricx-*`). `jbc verify` runs each patch's own
+tests in the official SWE-bench image without and with the source change (fail-to-pass, no hidden
+tests) and gives the judge the verdict; predictions P11-P14 in `docs/analysis_plan.md`.
 
 **What this does not show:** that any judge is "best" or safe as a reward signal; that passing
 hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).
