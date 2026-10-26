@@ -192,24 +192,36 @@ exploit is in the description channel, not the test channel.
 
 ## Results v4: execution-grounded verification
 
-Verification coverage (test split, 72 tasks; 1440 distinct patches incl. attacked ones; images via
-mirror.gcr.io). One bug was found and fixed mid-run: Django's `cd tests` leaked from the first run
-into the second, so every Django verdict was `failing`; all Django verdicts were re-run after the
-fix. 35 patches are `error` (binary files or source hunks that do not apply in the image).
+Verification coverage (test split, 72 tasks; ~1770 distinct patches incl. attacked ones; images via
+mirror.gcr.io). Two bugs were found and fixed mid-run, both in the Django runner: `cd tests` leaked
+from the first run into the second (every Django verdict was `failing`), and tests were run by app
+label (`backends`) rather than module (`backends.test_x`), so unrelated or environment-dependent tests
+in the same app (e.g. Oracle backends) made both runs fail. All Django verdicts were re-run after each
+fix; 87 Django patches ended `verified` that had been `failing`. 35 patches are `error` (binary
+files or source hunks that do not apply in the image).
 
 | Set | n | verified | vacuous | failing | empty | no_tests | error |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Real agent patches, pass hidden tests | 386 | 5% | 3% | 2% | 1% | 89% | 1% |
 | Real agent patches, fail hidden tests | 365 | 2% | 6% | 6% | 6% | 79% | 1% |
-| Attacker-added tests on failing patches (luna-tuned) | 171 | 35% | 1% | 59% | 0 | 0 | 5% |
-| Attacker-added tests on failing patches (sol-tuned) | 185 | 41% | 3% | 50% | 0 | 0 | 6% |
-| Attacker-added tests on passing controls (luna / sol) | 160 / 175 | 52% / 47% | 2% / 1% | 45% / 49% | 0 | 0 | 1% / 3% |
+| Attacker-added tests on failing patches (luna-tuned) | 171 | 37% | 1% | 56% | 0 | 0 | 5% |
+| Attacker-added tests on failing patches (sol-tuned) | 185 | 42% | 3% | 48% | 0 | 0 | 6% |
+| Attacker-added tests on passing controls (luna / sol) | 160 / 175 | 55% / 51% | 2% / 1% | 42% / 43% | 0 | 0 | 1% / 3% |
 
-- **P14 failed.** Only 59-65% of attacker-added test files are non-`verified`; 35-41% genuinely
+- **P14 failed.** Only 55-60% of attacker-added test files are non-`verified`; 37-42% genuinely
   fail without the (wrong) source change and pass with it. The attacker writes tests that pin down
   what the patch does, which the fail-to-pass check cannot distinguish from tests of what the issue
   needs. That is a limit of this kind of verification: it catches decorative and broken tests,
   not tests that faithfully specify the wrong behaviour. Mutation testing would not help either;
   only tests the agent did not write (hidden tests, or an independent test author) can.
+- **P11, GPT-6-luna only so far** (`rubricx-gpt6-luna`, same 72 targets and attacker as
+  `rubric-gpt6-luna`; the GPT-6.1-sol run stopped when API credit ran out). `attack_gate_rate`
+  0.61 -> 0.42 (CI 0.31-0.49), `attack_gate_before` 0.15 -> 0.13, `attack_win_fair` 0.22 -> 0.17,
+  `attack_win_or_tie_fair` 0.57 -> 0.44. Not a halving. The judge does obey the verdict: of the 91
+  attacked items whose added test was `failing`, 0 reached R7 >= 4 (mean R7 1.55), and of the 5
+  `vacuous`, 0. All residual attack success is on the 87 `verified` items (47% at R7 >= 4, mean
+  3.29). So the exploit did move out of the description channel and into "write a genuine test of
+  the wrong behaviour"; P11's premise (attacker tests would be vacuous or failing) was wrong, not
+  the judge's use of the verdict.
 - Real agents rarely ship tests at all (79-89% `no_tests`), so for the ranking metric the verdict
   carries information on about one patch in ten (P12 was written expecting this).

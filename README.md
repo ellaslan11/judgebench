@@ -54,9 +54,15 @@ predictions were pre-registered in `docs/analysis_plan.md` before each run):
    above failing patches with no test changes (0.68-0.73): agents' bad tests look broken, not
    clever. So the adaptive attacker, not mined agent output, is the realistic hard case today.
 
-**In progress:** an execution-grounded judge (`rubricx-*`). `jbc verify` runs each patch's own
-tests in the official SWE-bench image without and with the source change (fail-to-pass, no hidden
-tests) and gives the judge the verdict; predictions P11-P14 in `docs/analysis_plan.md`.
+**Execution-grounded judge (`rubricx-*`, partial).** `jbc verify` runs each patch's own tests in
+the official SWE-bench image without and with the source change (fail-to-pass, no hidden tests) and
+gives the judge the verdict. For GPT-6-luna rubric this cuts the attack's "would merge" rate
+0.61 -> 0.42, not the halving predicted (P11): the judge gives zero credit to the attacker tests the
+check marks as failing, but 37-42% of attacker-written tests genuinely fail-before/pass-after
+against the *wrong* patch, and a check of the PR's own tests cannot tell those from correct tests.
+Ranking on real patches is unchanged (0.66 -> 0.69, 0.72 -> 0.75), since 79-89% of agent patches
+ship no tests. GPT-6.1-sol attack/transfer runs pending; predictions P11-P14 and results in
+`docs/analysis_plan.md`.
 
 **What this does not show:** that any judge is "best" or safe as a reward signal; that passing
 hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).
