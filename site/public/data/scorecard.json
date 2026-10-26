@@ -73,65 +73,208 @@
     "devin-rubric": {
       "metrics": {
         "hack_catch_rate": {
-          "value": 0.85,
-          "lo": 0.7272727272727273,
+          "value": 0.9560439560439561,
+          "lo": 0.9276951556224899,
+          "hi": 0.9885057471264368,
+          "n": 91,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "subtle_hack_catch": {
+          "value": 0.9142857142857143,
+          "lo": 0.8408541055718476,
           "hi": 1.0,
-          "n": 20,
-          "n_parents": 20,
+          "n": 35,
+          "n_parents": 35,
           "n_repos": 8
         },
-        "subtle_hack_catch": null,
         "scope_sensitivity": {
-          "value": 0.95,
-          "lo": 0.8569642857142856,
+          "value": 0.9375,
+          "lo": 0.8518055555555556,
           "hi": 1.0,
-          "n": 20,
-          "n_parents": 20,
-          "n_repos": 8
+          "n": 48,
+          "n_parents": 48,
+          "n_repos": 9
         },
-        "length_bias": null,
-        "context_bias": null,
-        "desc_gaming": null,
-        "stability": null,
+        "length_bias": {
+          "value": -1.930232558139535,
+          "lo": -2.2174443266171795,
+          "hi": -1.6744059656218404,
+          "n": 43,
+          "n_parents": 43,
+          "n_repos": 9
+        },
+        "context_bias": {
+          "value": -0.14,
+          "lo": -0.30434782608695654,
+          "hi": 0.03711111111111104,
+          "n": 50,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "desc_gaming": {
+          "value": -0.32,
+          "lo": -0.46296296296296297,
+          "hi": -0.16666666666666666,
+          "n": 50,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "stability": {
+          "value": 0.5909090909090909,
+          "lo": 0.42857142857142855,
+          "hi": 0.75,
+          "n": 22,
+          "n_parents": 22,
+          "n_repos": 9
+        },
         "pairwise_acc": null,
         "position_flip_rate": null,
-        "merge_auroc": null,
+        "merge_auroc": {
+          "value": 0.5344827586206896,
+          "lo": 0.4043798326556947,
+          "hi": 0.6629899900256483,
+          "n": 62,
+          "n_repos": 36
+        },
         "parent_merge_rate": {
-          "value": 0.75,
-          "lo": 0.6,
-          "hi": 0.8888888888888888,
-          "n": 20,
-          "n_parents": 20,
+          "value": 0.88,
+          "lo": 0.8,
+          "hi": 0.9444444444444444,
+          "n": 50,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "retest_drop": {
+          "value": 0.13333333333333333,
+          "lo": 0.09876543209876541,
+          "hi": 0.16666666666666666,
+          "n": 50,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "hack_catch_net": {
+          "value": 0.8066666666666668,
+          "lo": 0.7354528985507248,
+          "hi": 0.8809523809523809,
+          "n": 50,
+          "n_parents": 50,
+          "n_repos": 9
+        },
+        "subtle_catch_net": {
+          "value": 0.761904761904762,
+          "lo": 0.6895855102751657,
+          "hi": 0.8383838383838385,
+          "n": 35,
+          "n_parents": 35,
           "n_repos": 8
         },
-        "retest_drop": null,
-        "hack_catch_net": null,
-        "subtle_catch_net": null,
-        "swe_auroc": null,
-        "swe_pair_acc": null,
-        "swe_best_of_4": null
+        "swe_auroc": {
+          "value": 0.736352237654321,
+          "lo": 0.6893824273177697,
+          "hi": 0.785115350486374,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.7447916666666666,
+          "lo": 0.6909505208333333,
+          "hi": 0.7988398162411972,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.7569444444444444,
+          "lo": 0.6611999089253188,
+          "hi": 0.8424533799533798,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        }
       },
-      "n_ratings": 60,
+      "n_ratings": 389,
       "n_prefs": 0,
-      "cost_usd_total": 0.0,
-      "cost_per_rating_usd": 0.0,
+      "cost_usd_total": 27.02785949506027,
+      "cost_per_rating_usd": 0.06948035859912666,
       "p50_latency_s": 0.0,
-      "composite": null,
+      "composite": 0.7829999285095935,
       "mixed_effects": {
         "delete_tests": {
-          "value": -1.2492160808140003,
-          "lo": -1.6447405613426425,
-          "hi": -0.8536916002853581,
-          "n": 20
+          "value": -1.3668971498087574,
+          "lo": -1.6123866728018386,
+          "hi": -1.1214076268156763,
+          "n": 50
+        },
+        "pad": {
+          "value": -1.937223501399838,
+          "lo": -2.194037437011736,
+          "hi": -1.6804095657879403,
+          "n": 43
+        },
+        "pad_context": {
+          "value": -0.14689714980875734,
+          "lo": -0.3923866728018385,
+          "hi": 0.09859237318432379,
+          "n": 50
+        },
+        "polish_desc": {
+          "value": -0.32689714980875745,
+          "lo": -0.5723866728018385,
+          "hi": -0.08140762681567631,
+          "n": 50
+        },
+        "rename_vars": {
+          "value": -0.4558093691455825,
+          "lo": -0.7800117272935353,
+          "hi": -0.13160701099762973,
+          "n": 22
+        },
+        "skip_tests": {
+          "value": -1.897677104584465,
+          "lo": -2.1591356677555353,
+          "hi": -1.6362185414133945,
+          "n": 41
+        },
+        "strip_asserts": {
+          "value": -1.5246639792274084,
+          "lo": -1.80070383743174,
+          "hi": -1.2486241210230768,
+          "n": 35
         },
         "unrelated_change": {
-          "value": -1.549216080814,
-          "lo": -1.9447405613426423,
-          "hi": -1.1536916002853579,
-          "n": 20
+          "value": -1.5926960644205634,
+          "lo": -1.8412010844727538,
+          "hi": -1.3441910443683731,
+          "n": 48
         },
-        "_repo_sd": 0.3506693838502611,
-        "_resid_sd": 0.6989210548483384
+        "_repo_sd": 0.24227798881098844,
+        "_resid_sd": 0.6729116980998917
+      },
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.7796143250688705,
+          "lo": 0.7144261267006803,
+          "hi": 0.8570336117775635,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.7878787878787878,
+          "lo": 0.7326388888888888,
+          "hi": 0.8534830367074526,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.7979797979797979,
+          "lo": 0.7222222222222222,
+          "hi": 0.8763490641178813,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        }
       }
     },
     "heuristic-tests": {
@@ -1657,10 +1800,25 @@
     }
   },
   "rank_robustness": {
+    "devin-rubric": {
+      "top1": 0.3575,
+      "mean_rank": 3.7265,
+      "top1_linear": 0.175,
+      "axes": [
+        "hack_catch_rate",
+        "subtle_hack_catch",
+        "scope_sensitivity",
+        "length_bias",
+        "context_bias",
+        "desc_gaming",
+        "stability",
+        "parent_merge_rate"
+      ]
+    },
     "heuristic-tests": {
       "top1": 0.0705,
-      "mean_rank": 6.39,
-      "top1_linear": 0.3075,
+      "mean_rank": 7.2515,
+      "top1_linear": 0.3055,
       "axes": [
         "hack_catch_rate",
         "subtle_hack_catch",
@@ -1674,7 +1832,7 @@
     },
     "merge-zs-gpt6-luna": {
       "top1": 0.0125,
-      "mean_rank": 4.4665,
+      "mean_rank": 5.106,
       "top1_linear": 0.003,
       "axes": [
         "hack_catch_rate",
@@ -1689,7 +1847,7 @@
     },
     "merge-zs-gpt6.1-sol": {
       "top1": 0.146,
-      "mean_rank": 2.8185,
+      "mean_rank": 3.331,
       "top1_linear": 0.1,
       "axes": [
         "hack_catch_rate",
@@ -1704,7 +1862,7 @@
     },
     "merge-zs-haiku4.5": {
       "top1": 0.039,
-      "mean_rank": 5.345,
+      "mean_rank": 6.102,
       "top1_linear": 0.005,
       "axes": [
         "hack_catch_rate",
@@ -1718,9 +1876,9 @@
       ]
     },
     "rubric-gpt6-luna": {
-      "top1": 0.314,
-      "mean_rank": 2.617,
-      "top1_linear": 0.2155,
+      "top1": 0.166,
+      "mean_rank": 3.075,
+      "top1_linear": 0.1595,
       "axes": [
         "hack_catch_rate",
         "subtle_hack_catch",
@@ -1733,9 +1891,9 @@
       ]
     },
     "rubric-gpt6.1-sol": {
-      "top1": 0.414,
-      "mean_rank": 2.131,
-      "top1_linear": 0.363,
+      "top1": 0.2055,
+      "mean_rank": 2.538,
+      "top1_linear": 0.251,
       "axes": [
         "hack_catch_rate",
         "subtle_hack_catch",
@@ -1748,9 +1906,9 @@
       ]
     },
     "rubric-haiku4.5": {
-      "top1": 0.004,
-      "mean_rank": 4.232,
-      "top1_linear": 0.006,
+      "top1": 0.003,
+      "mean_rank": 4.87,
+      "top1_linear": 0.001,
       "axes": [
         "hack_catch_rate",
         "subtle_hack_catch",

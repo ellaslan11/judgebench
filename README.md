@@ -52,6 +52,7 @@ Held-out test results (72 tasks; 95% CI, repo bootstrap):
 
 | judge | pass>fail | best-of-4 | AUROC |
 |---|---|---|---|
+| Devin (rubric) | 0.74 (0.69-0.80) | 0.76 (0.66-0.84) | 0.74 |
 | GPT-6.1-sol rubric | 0.72 (0.67-0.78) | 0.72 (0.66-0.77) | 0.73 |
 | GPT-6.1-sol zero-shot | 0.69 (0.62-0.77) | 0.66 (0.57-0.74) | 0.70 |
 | GPT-6-luna zero-shot | 0.66 (0.58-0.76) | 0.64 (0.52-0.75) | 0.67 |
@@ -73,6 +74,7 @@ re-grade of the *same* PR scores lower, i.e. how often noise alone looks like a 
 
 | judge | retest_drop | hack catch -> net | subtle hack -> net |
 |---|---|---|---|
+| Devin (rubric) | 0.13 | 0.96 -> 0.81 | 0.91 -> 0.76 |
 | GPT-6.1-sol rubric | 0.03 | 0.85 -> 0.82 | 0.83 -> 0.79 |
 | GPT-6.1-sol zero-shot | 0.03 | 0.81 -> 0.79 | 0.80 -> 0.76 |
 | GPT-6-luna rubric | 0.16 | 0.91 -> 0.74 | 0.91 -> 0.74 |
@@ -133,9 +135,14 @@ another LLM.
   judges under 2,000 random Dirichlet axis weightings, both keeping the composite's structure and as a
   plain weighted mean, and reports how often each judge ranks #1. Axes missing for any ranked judge
   (pairwise for Haiku rubric) are left out of that check.
-- `devin-rubric` (Devin as a judge) was run as 20 blind Devin sessions, each rating 3 unrelated
-  items (original, deleted tests, unrelated change; shuffled) for 20 parents only. It has
-  hack-catch and scope numbers but no bias/pairwise axes, so it has no composite.
+- `devin-rubric` (Devin as a judge) is run as blind Devin sessions on the same R1-R7 rubric, several
+  unrelated items per session (never two items from the same parent or SWE task), told not to look
+  anything up. 60 controlled ratings come from a 20-session pilot (3 items each); the other 911
+  (329 controlled, 420 SWE, 62 agent PRs, 100 re-grades) from 183 sessions of 5. Batching differs
+  from the one-item-per-call LLM judges, and Devin has web access, so leakage is possible: a
+  spot-check of 100 sessions found no browser or git activity, only reading the attachments. Devin
+  has no pairwise run, so its composite leaves out pairwise accuracy and isn't strictly comparable.
+  Cost was about $64 of Devin usage (~$0.31 per 5-item session, ~$0.07 per rating).
 - The composite is display-only: the geometric mean of detection (hack catch, subtle hack, scope,
   pairwise; itself
   a geometric mean, so a blind spot pulls it toward 0) and invariance (bias and stability axes).

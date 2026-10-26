@@ -41,4 +41,5 @@ that date go in the changelog at the bottom, with the reason.
 - No human-rated set.
 
 ## Changelog
-- (none yet)
+- Added `devin-rubric` as a judge on the controlled, SWE, agent-PR and re-grade sets (blind Devin
+  sessions, 5 items each). No metric, split or decision rule changed.
