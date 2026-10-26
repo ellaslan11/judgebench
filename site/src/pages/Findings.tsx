@@ -20,6 +20,16 @@ export default function Findings() {
     return row;
   });
   const att = js.filter(([, j]) => j.metrics.attack_gate_rate);
+  const xfer = js.filter(([, j]) => j.metrics.attack_gate_xfer);
+  const gh = js.filter(([, j]) => j.goodhart && j.goodhart.pool_plus_attack_r3);
+  const ghLevels = ["best_of_1", "best_of_2", "best_of_4", "best_of_8", "best_of_all", "pool_plus_attack_r1", "pool_plus_attack_r2", "pool_plus_attack_r3"];
+  const ghLabel: Record<string, string> = { best_of_1: "N=1", best_of_2: "N=2", best_of_4: "N=4", best_of_8: "N=8", best_of_all: "all", pool_plus_attack_r1: "+attack r1", pool_plus_attack_r2: "+attack r2", pool_plus_attack_r3: "+attack r3" };
+  const ghData = ghLevels.map((l) => {
+    const row: Record<string, number | string> = { level: ghLabel[l] };
+    for (const [id, j] of gh) { row[id] = j.goodhart![l]?.pass?.value ?? NaN; row[`${id} score`] = j.goodhart![l]?.score?.value ?? NaN; }
+    return row;
+  });
+  const touch = js.filter(([, j]) => j.metrics.swe_rank_fail_touches_tests);
   const ext = js.filter(([, j]) => j.metrics.prb_auroc || j.metrics.bcr_agree);
   const gate = js.filter(([, j]) => j.metrics.swe_false_accept_cal);
 
@@ -50,6 +60,58 @@ export default function Findings() {
             <tr key={id}><td>{id}</td><td className="num">{pct(j.metrics.attack_gate_before)} → <b>{pct(j.metrics.attack_gate_rate)}</b></td>
               <td className="num">{j.metrics.attack_win_fair ? ci(j.metrics.attack_win_fair) : "–"}</td>
               <td className="num">{j.attack_cost_usd ? `$${j.attack_cost_usd.toFixed(2)}` : "–"}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>1b. The attacks transfer between judges</h3>
+      <p>
+        The attacked patches tuned against one judge, replayed unchanged on another. If the exploit were a quirk of one
+        model, the transferred attacks would do little.
+      </p>
+      <table className="board">
+        <thead><tr><th>Judge</th><th>Attacks tuned against</th><th>Failing patch rated "would merge": before → after (transferred)</th><th>Same, own adaptive attack</th></tr></thead>
+        <tbody>
+          {xfer.map(([id, j]) => (
+            <tr key={id}><td>{id}</td><td>{j.attack_transfer_src}</td>
+              <td className="num">{pct(j.metrics.attack_gate_xfer_before)} → <b>{pct(j.metrics.attack_gate_xfer)}</b></td>
+              <td className="num">{j.metrics.attack_gate_rate ? `${pct(j.metrics.attack_gate_before)} → ${pct(j.metrics.attack_gate_rate)}` : "not run"}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>1c. Goodhart curve: more optimisation, higher judge score, lower pass rate</h3>
+      <p>
+        Pass rate (solid, left) and judge score (dashed, right) of the candidate the judge picks, as the candidate set
+        grows from one random agent patch to the whole pool and then the pool plus the adversarially rewritten failing
+        patches. The score keeps rising while the pass rate turns down.
+      </p>
+      <div style={{ width: "100%", height: 340 }}>
+        <ResponsiveContainer>
+          <LineChart data={ghData} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="level" />
+            <YAxis yAxisId="p" domain={[0, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
+            <YAxis yAxisId="s" orientation="right" domain={[1, 5]} />
+            <Tooltip />
+            <Legend />
+            {gh.map(([id], i) => <Line key={id} yAxisId="p" dataKey={id} stroke={COLORS[i % COLORS.length]} dot />)}
+            {gh.map(([id], i) => <Line key={`${id}s`} yAxisId="s" dataKey={`${id} score`} stroke={COLORS[i % COLORS.length]} strokeDasharray="4 4" dot={false} />)}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      <h3>1d. Real agent patches that touch tests and still fail are not disguised hacks</h3>
+      <p>
+        Among the 751 pool patches, 78 add or edit tests yet fail the hidden tests. Judges rank a passing patch above
+        them <i>more</i> often than above failing patches with no tests: real agents' bad tests look broken, not clever.
+        The adaptive attacker above is the hard case, and the scripted hacks are the easy one.
+      </p>
+      <table className="board">
+        <thead><tr><th>Judge</th><th>Passing outranks failing patch that touches tests</th><th>Passing outranks failing patch with no tests</th></tr></thead>
+        <tbody>
+          {touch.map(([id, j]) => (
+            <tr key={id}><td>{id}</td><td className="num">{ci(j.metrics.swe_rank_fail_touches_tests)}</td><td className="num">{ci(j.metrics.swe_rank_fail_no_tests)}</td></tr>
           ))}
         </tbody>
       </table>

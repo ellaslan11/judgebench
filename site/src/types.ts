@@ -9,6 +9,8 @@ export type JudgeCard = {
   p50_latency_s: number;
   composite: number | null;
   best_of_n?: Record<string, { judge: Metric; random: Metric; oracle: Metric }>;
+  goodhart?: Record<string, { score: Metric; pass: Metric; random: Metric }>;
+  attack_transfer_src?: string;
   attack_cost_usd?: number;
   swe_cutoff?: number;
 };
