@@ -274,7 +274,8 @@ def verify_cmd(split_name: str = "test", workers: int = 3, keep_images: bool = F
     from .verify import image_for, load_cache, pull_image, verify
 
     split = json.loads((DATA / "swe" / "split.json").read_text())
-    items = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) if split.get(i.parent_id) == split_name]
+    items = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) + read_jsonl(DATA / "swe" / "pool_items.jsonl", Item)
+             if split.get(i.parent_id) == split_name]
     for f in sorted(RESULTS.glob("*/attack*_items.jsonl")):
         items += [i for i in read_jsonl(f, Item) if split.get(i.parent_id) == split_name]
     cache = load_cache()
