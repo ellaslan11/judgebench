@@ -92,6 +92,30 @@
       "direction": "lower",
       "desc": "Gate: passing SWE patches the judge would not merge (R7<4)"
     },
+    "prb_auroc": {
+      "direction": "higher",
+      "desc": "SWE-PRBench: lower R7 on PRs where a human reviewer requested changes (AUROC)"
+    },
+    "prb_auroc_any": {
+      "direction": "higher",
+      "desc": "SWE-PRBench: lower R7 on PRs whose human review required any change (AUROC)"
+    },
+    "bcr_agree": {
+      "direction": "higher",
+      "desc": "BigCodeReward: higher-rated program matches the human vote (ties 0.5)"
+    },
+    "bcr_agree_wc": {
+      "direction": "higher",
+      "desc": "bcr_agree with missing ratings counted as disagreement"
+    },
+    "swe_false_accept_cal": {
+      "direction": "lower",
+      "desc": "Failing patches accepted at the R7 cutoff tuned on the dev split"
+    },
+    "swe_false_reject_cal": {
+      "direction": "lower",
+      "desc": "Passing patches rejected at the R7 cutoff tuned on the dev split"
+    },
     "swe_false_accept_wc": {
       "direction": "lower",
       "desc": "swe_false_accept with missing failing-patch ratings counted as accepts"
@@ -103,6 +127,14 @@
     "attack_win_or_tie": {
       "direction": "lower",
       "desc": "Attacked failing patch scores >= every passing patch of its task"
+    },
+    "attack_win_fair": {
+      "direction": "lower",
+      "desc": "Attacked failing patch beats every passing patch, passing patches attacked too"
+    },
+    "attack_win_or_tie_fair": {
+      "direction": "lower",
+      "desc": "attack_win_fair counting ties"
     },
     "attack_win_before": {
       "direction": "lower",
@@ -275,6 +307,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.5,
+          "lo": 0.42140873015873015,
+          "hi": 0.5656010928961748,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.1111111111111111,
+          "lo": 0.07255184331797236,
+          "hi": 0.1575542237442922,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.04861111111111111,
           "lo": 0.013157894736842105,
@@ -292,6 +344,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -364,6 +418,7 @@
         "_repo_sd": 0.24227798881098844,
         "_resid_sd": 0.6729116980998917
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.7796143250688705,
@@ -423,6 +478,22 @@
         "swe_false_reject_wc": {
           "value": 0.9393939393939394,
           "lo": 0.8653409090909091,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.030303030303030304,
+          "lo": 0.0,
+          "hi": 0.06756756756756757,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9393939393939394,
+          "lo": 0.8703703703703703,
           "hi": 1.0,
           "n": 66,
           "n_parents": 33,
@@ -593,6 +664,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 1.0,
+          "lo": 1.0,
+          "hi": 1.0,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.2361111111111111,
           "lo": 0.15214315012305168,
@@ -610,6 +701,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -682,6 +775,7 @@
         "_repo_sd": 0.026641974039065864,
         "_resid_sd": 0.25890295896284976
       },
+      "swe_cutoff": 5,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.3939393939393939,
@@ -739,6 +833,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.8939393939393939,
+          "lo": 0.8375,
+          "hi": 0.975,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.3181818181818182,
+          "lo": 0.22972972972972974,
+          "hi": 0.4166666666666667,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.8939393939393939,
           "lo": 0.8375,
           "hi": 0.975,
@@ -932,6 +1042,52 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": {
+          "value": 0.42851050868108437,
+          "lo": 0.35359482025953715,
+          "hi": 0.5106431685261669,
+          "n": 312,
+          "n_repos": 62
+        },
+        "prb_auroc_any": {
+          "value": 0.5176187297348847,
+          "lo": 0.45125787307154375,
+          "hi": 0.5785362893669539,
+          "n": 312,
+          "n_repos": 62
+        },
+        "bcr_agree": {
+          "value": 0.575,
+          "lo": 0.525,
+          "hi": 0.6275,
+          "n": 200,
+          "n_parents": 200,
+          "n_repos": 200
+        },
+        "bcr_agree_wc": {
+          "value": 0.575,
+          "lo": 0.525,
+          "hi": 0.6275,
+          "n": 200,
+          "n_parents": 200,
+          "n_repos": 200
+        },
+        "swe_false_accept_cal": {
+          "value": 0.5492957746478874,
+          "lo": 0.453781512605042,
+          "hi": 0.623856880733945,
+          "n": 142,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.13286713286713286,
+          "lo": 0.08369126284875184,
+          "hi": 0.20833333333333334,
+          "n": 143,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.25,
           "lo": 0.16417298752140935,
@@ -949,6 +1105,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -1039,6 +1197,7 @@
         "_repo_sd": 0.4631218474256273,
         "_resid_sd": 1.2311610202141012
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.7494172494172494,
@@ -1096,6 +1255,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.6212121212121212,
+          "lo": 0.5227025691699605,
+          "hi": 0.7222222222222222,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.16923076923076924,
+          "lo": 0.08329081632653061,
+          "hi": 0.23171173559561684,
+          "n": 65,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.6212121212121212,
           "lo": 0.5227025691699605,
           "hi": 0.7222222222222222,
@@ -1499,6 +1674,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.4375,
+          "lo": 0.3046852550287356,
+          "hi": 0.5431061089825457,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.2013888888888889,
+          "lo": 0.12875,
+          "hi": 0.26351658476658474,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.10416666666666667,
           "lo": 0.0571031746031746,
@@ -1516,6 +1711,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -1606,6 +1803,7 @@
         "_repo_sd": 0.2178133965687621,
         "_resid_sd": 0.7696746672065506
       },
+      "swe_cutoff": 3,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.7959136822773186,
@@ -1663,6 +1861,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.7272727272727273,
+          "lo": 0.5868659420289856,
+          "hi": 0.8333333333333334,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.07575757575757576,
+          "lo": 0.0,
+          "hi": 0.17318548387096763,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.7272727272727273,
           "lo": 0.5868659420289856,
           "hi": 0.8333333333333334,
@@ -2039,6 +2253,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.4305555555555556,
+          "lo": 0.3359319196428571,
+          "hi": 0.5115193965517241,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.4236111111111111,
+          "lo": 0.35,
+          "hi": 0.5169718523002421,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.4305555555555556,
           "lo": 0.3359319196428571,
@@ -2056,6 +2290,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -2128,6 +2364,7 @@
         "_repo_sd": 0.23713583355506837,
         "_resid_sd": 0.8622354238306325
       },
+      "swe_cutoff": 4,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.6166207529843893,
@@ -2185,6 +2422,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.5,
+          "lo": 0.4,
+          "hi": 0.6251157407407406,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.3181818181818182,
+          "lo": 0.18518518518518517,
+          "hi": 0.43478260869565216,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.5,
           "lo": 0.4,
           "hi": 0.6251157407407406,
@@ -2358,6 +2611,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.6083916083916084,
+          "lo": 0.5378787878787878,
+          "hi": 0.6711592911073826,
+          "n": 143,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.1388888888888889,
+          "lo": 0.07368034055727554,
+          "hi": 0.2279803519768563,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.14583333333333334,
           "lo": 0.0768987341772152,
@@ -2375,6 +2648,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -2465,6 +2740,7 @@
         "_repo_sd": 0.22264374168049375,
         "_resid_sd": 1.0839341076166964
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.6895087235996327,
@@ -2522,6 +2798,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.8939393939393939,
+          "lo": 0.8529411764705882,
+          "hi": 0.939409090909091,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.06060606060606061,
+          "lo": 0.016666666666666666,
+          "hi": 0.10869565217391304,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.8939393939393939,
           "lo": 0.8529411764705882,
           "hi": 0.939409090909091,
@@ -2905,6 +3197,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.5277777777777778,
+          "lo": 0.4393706293706294,
+          "hi": 0.6120689655172413,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.10416666666666667,
+          "lo": 0.045439976689976694,
+          "hi": 0.15585430194805194,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.034722222222222224,
           "lo": 0.0,
@@ -2922,6 +3234,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -3012,6 +3326,7 @@
         "_repo_sd": 0.0,
         "_resid_sd": 0.7606269378825204
       },
+      "swe_cutoff": 3,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.7478191000918274,
@@ -3069,6 +3384,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.9393939393939394,
+          "lo": 0.8599285714285714,
+          "hi": 0.9883720930232558,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.015151515151515152,
+          "lo": 0.0,
+          "hi": 0.05174682395644281,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.9393939393939394,
           "lo": 0.8599285714285714,
           "hi": 0.9883720930232558,
@@ -3262,6 +3593,38 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": {
+          "value": 0.4147426134632958,
+          "lo": 0.34229894364945784,
+          "hi": 0.502270127097307,
+          "n": 312,
+          "n_repos": 62
+        },
+        "prb_auroc_any": {
+          "value": 0.5354520312798017,
+          "lo": 0.4617869421520464,
+          "hi": 0.6024373974694591,
+          "n": 312,
+          "n_repos": 62
+        },
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.625,
+          "lo": 0.5297531512605043,
+          "hi": 0.7256146734854445,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.0763888888888889,
+          "lo": 0.03998684210526316,
+          "hi": 0.13001086956521737,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.08333333333333333,
           "lo": 0.03123798076923077,
@@ -3282,6 +3645,22 @@
           "value": 0.75,
           "lo": 0.6323487153482082,
           "hi": 0.8481108553893364,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_fair": {
+          "value": 0.2222222222222222,
+          "lo": 0.13636363636363635,
+          "hi": 0.2941417550626808,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie_fair": {
+          "value": 0.5694444444444444,
+          "lo": 0.4461538461538462,
+          "hi": 0.6885336976320583,
           "n": 72,
           "n_parents": 72,
           "n_repos": 10
@@ -3404,6 +3783,7 @@
         "_repo_sd": 0.17774847354017634,
         "_resid_sd": 0.8603232725995764
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.6868686868686869,
@@ -3461,6 +3841,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.10416666666666667,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.9696969696969697,
           "lo": 0.9333333333333333,
           "hi": 1.0,
@@ -3865,6 +4261,52 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": {
+          "value": 0.43176972281449894,
+          "lo": 0.3539633489698413,
+          "hi": 0.5216719299580628,
+          "n": 312,
+          "n_repos": 62
+        },
+        "prb_auroc_any": {
+          "value": 0.5815134465000954,
+          "lo": 0.5127101226884465,
+          "hi": 0.6428338900770989,
+          "n": 312,
+          "n_repos": 62
+        },
+        "bcr_agree": {
+          "value": 0.5475,
+          "lo": 0.5024375,
+          "hi": 0.595,
+          "n": 200,
+          "n_parents": 200,
+          "n_repos": 200
+        },
+        "bcr_agree_wc": {
+          "value": 0.5475,
+          "lo": 0.5024375,
+          "hi": 0.595,
+          "n": 200,
+          "n_parents": 200,
+          "n_repos": 200
+        },
+        "swe_false_accept_cal": {
+          "value": 0.5763888888888888,
+          "lo": 0.4596680420105026,
+          "hi": 0.6727272727272727,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.10416666666666667,
+          "lo": 0.04929288847841145,
+          "hi": 0.14894653219121304,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.034722222222222224,
           "lo": 0.009255050505050504,
@@ -3885,6 +4327,22 @@
           "value": 0.6338028169014085,
           "lo": 0.5172413793103449,
           "hi": 0.741405433646813,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_fair": {
+          "value": 0.2535211267605634,
+          "lo": 0.14704901960784314,
+          "hi": 0.3858275261324041,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_or_tie_fair": {
+          "value": 0.4788732394366197,
+          "lo": 0.3787878787878788,
+          "hi": 0.573344262295082,
           "n": 71,
           "n_parents": 71,
           "n_repos": 10
@@ -4007,6 +4465,7 @@
         "_repo_sd": 0.2045501780237226,
         "_resid_sd": 0.7508584793999681
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.8099173553719008,
@@ -4064,6 +4523,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.9696969696969697,
           "lo": 0.9333333333333333,
           "hi": 1.0,
@@ -4427,6 +4902,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.6296296296296297,
+          "lo": 0.5065291525832931,
+          "hi": 0.7205172589349353,
+          "n": 135,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.10218978102189781,
+          "lo": 0.0643150429264651,
+          "hi": 0.15001106194690264,
+          "n": 137,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.1388888888888889,
           "lo": 0.09800759013282732,
@@ -4444,6 +4939,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -4516,6 +5013,7 @@
         "_repo_sd": 0.108265700505151,
         "_resid_sd": 0.960612977094165
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.6279761904761905,
@@ -4577,6 +5075,22 @@
           "lo": 0.8683771929824562,
           "hi": 0.9838954056695992,
           "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.07936507936507936,
+          "lo": 0.021265514184397163,
+          "hi": 0.13751077586206897,
+          "n": 63,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9375,
+          "lo": 0.8627450980392157,
+          "hi": 0.9836317780580075,
+          "n": 64,
           "n_parents": 33,
           "n_repos": 11
         }
@@ -4746,6 +5260,38 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": {
+          "value": 0.44876637222053,
+          "lo": 0.3735630906386824,
+          "hi": 0.5367159689474728,
+          "n": 312,
+          "n_repos": 62
+        },
+        "prb_auroc_any": {
+          "value": 0.5666603089834065,
+          "lo": 0.5016694301077286,
+          "hi": 0.6229758819398854,
+          "n": 312,
+          "n_repos": 62
+        },
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.6388888888888888,
+          "lo": 0.5723664394419784,
+          "hi": 0.7,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.05555555555555555,
+          "lo": 0.024096385542168676,
+          "hi": 0.10185185185185185,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.0625,
           "lo": 0.03225806451612903,
@@ -4763,6 +5309,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -4853,6 +5401,7 @@
         "_repo_sd": 0.2166779684512608,
         "_resid_sd": 0.7952666946226803
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.6664370982552801,
@@ -4910,6 +5459,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.8939393939393939,
+          "lo": 0.8181818181818182,
+          "hi": 0.9605263157894737,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.10349364791288562,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.8939393939393939,
           "lo": 0.8181818181818182,
           "hi": 0.9605263157894737,
@@ -5293,6 +5858,26 @@
           "n_parents": 72,
           "n_repos": 10
         },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.5902777777777778,
+          "lo": 0.5080522971652004,
+          "hi": 0.6759395424836602,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.0763888888888889,
+          "lo": 0.03944838056680162,
+          "hi": 0.11941791044776118,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
         "swe_false_accept_wc": {
           "value": 0.020833333333333332,
           "lo": 0.0,
@@ -5310,6 +5895,8 @@
           "n_repos": 10
         },
         "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
         "attack_win_before": null,
         "attack_gate_before": null,
         "swe_pair_acc_wc": {
@@ -5400,6 +5987,7 @@
         "_repo_sd": 0.0,
         "_resid_sd": 0.7640989576044577
       },
+      "swe_cutoff": 2,
       "swe_dev": {
         "swe_auroc": {
           "value": 0.7978650137741047,
@@ -5457,6 +6045,22 @@
           "n_repos": 11
         },
         "swe_false_reject_wc": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.015151515151515152,
+          "lo": 0.0,
+          "hi": 0.05174682395644281,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
           "value": 0.9696969696969697,
           "lo": 0.9333333333333333,
           "hi": 1.0,

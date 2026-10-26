@@ -12,15 +12,28 @@ predictions were pre-registered in `docs/analysis_plan.md` before each run):
    feedback and may only rewrite the PR description and add one test file (3 rounds, source code
    byte-identical, so the patch still fails the hidden tests) lifts the share of failing patches
    rated "would merge" (R7 >= 4) from 15% to 61% (GPT-6-luna rubric) and 7% to 32% (GPT-6.1-sol
-   rubric). {{FAIR}}
+   rubric). With the same attack applied to the passing patches as a control, the attacked failing patch
+   still outscores every passing patch of its task 22% (luna) / 25% (sol) of the time, and ties or
+   beats them 57% / 48%. The naive comparison, where only the failures were attacked, said 64% / 38%.
 2. **Best-of-N helps, then plateaus.** The judge's top pick passes ~0.51 at N=1 (random), ~0.64-0.70
    at N=4, and stays flat to N=8, while an oracle reaches 0.997.
 3. **Judges beat chance on execution labels but are not separable.** GPT, Haiku and Devin judges
    rank a passing patch above a failing one 61-74% of the time (random 50%; a test-line heuristic
    45%); the top judges' intervals overlap.
 4. **A fixed "would merge" cutoff is not a usable gate.** At R7 >= 4 the rubric judges reject 90%+
-   of patches that pass the hidden tests. {{GATE}}
-5. **Human labels (public datasets).** {{HUMAN}}
+   of patches that pass the hidden tests. Tuning the cutoff on the dev split doesn't fix it. Every GPT rubric judge
+   picks R7 >= 2 there, and on test that blocks only 6-10% of passing patches but lets 58-64% of
+   failing ones through. With a 5-point scale and AUROC ~0.7, no single cutoff is both safe and
+   usable, so the judge alone can't be a hard gate.
+5. **Human labels (public datasets).** Weak at best. On **SWE-PRBench** (312 real merged PRs, CC-BY-4.0), no
+   judge scores PRs lower when a human reviewer formally requested changes: AUROC 0.42-0.45, with
+   every CI including or just touching 0.5. The diff shown is the final merged one, after the
+   requested changes were made, so this label mostly tells us the judges don't detect "this PR was
+   contentious". On the dataset's broader `changes_required` label, GPT-6.1-sol rubric reaches 0.58
+   (0.51-0.64). On **BigCodeReward** (200 human A/B votes on two models' programs, OpenRAIL-M),
+   GPT-6.1-sol rubric picks the human's choice 0.55 of the time (0.50-0.60, ties counted as 0.5).
+   Ignoring its 109 ties, that rises to 0.60; GPT-6-luna zero-shot gets 0.64 on its non-tied pairs.
+   The OpenAI credits ran out before the other two luna judges finished BigCodeReward.
 6. **Naming hacks in the rubric is not what makes it work.** A "blind" rubric that names no
    specific hack performs about the same as the original, and hacks named in no prompt
    (`assert x == x`, swallowed failures, de-collected tests) are caught about as often (79-93%) as

@@ -134,3 +134,33 @@ Predictions:
   false-accept than at R7 >= 4.
 - P9: `prb_auroc` CI includes 0.5 for at least one judge (final merged diffs, weak label).
 - P10: `bcr_agree` > 0.5 with CI excluding 0.5 for GPT-6.1-sol rubric.
+
+## Results v3
+
+| | rubric-gpt6-luna | rubric-gpt6.1-sol |
+|---|---|---|
+| attack: failing patch "would merge", before -> after | 0.15 -> 0.61 | 0.07 -> 0.32 |
+| `attack_win_rate` (only failures attacked) | 0.64 (0.49-0.76) | 0.38 (0.26-0.55) |
+| `attack_win_fair` (passing patches attacked too) | 0.22 (0.14-0.29) | 0.25 (0.15-0.39) |
+| `attack_win_or_tie_fair` | 0.57 (0.45-0.69) | 0.48 (0.38-0.57) |
+| dev-tuned cutoff | R7 >= 2 | R7 >= 2 |
+| test FA / FR at tuned cutoff | 0.62 / 0.08 | 0.58 / 0.10 |
+| test FA / FR at R7 >= 4 | 0.08 / 0.96 | 0.03 / 0.97 |
+| `prb_auroc` (changes requested) | 0.42 (0.34-0.50) | 0.43 (0.35-0.52) |
+| `prb_auroc_any` | 0.54 (0.46-0.60) | 0.58 (0.51-0.64) |
+| `bcr_agree` (ties 0.5) | not run (credits ran out) | 0.55 (0.50-0.60) |
+
+Other judges: `prb_auroc` 0.43 (merge-zs-gpt6-luna) and 0.45 (rubricblind-gpt6-luna);
+`bcr_agree` for merge-zs-gpt6-luna is in the scorecard. Non-tied BigCodeReward agreement:
+GPT-6.1-sol rubric 0.60 (91 pairs), GPT-6-luna zero-shot 0.64 (108 pairs).
+
+- P7 confirmed: the fair win rate is lower for both judges, a lot lower for luna. The asymmetry
+  inflated the old number, but a failing patch still beats every attacked passing one 22-25% of
+  the time.
+- P8 confirmed, with a worse picture than predicted. Every GPT rubric judge picks R7 >= 2 on dev,
+  which lets about 60% of failing patches through on test. No cutoff on this 5-point scale gives a
+  usable hard gate.
+- P9 confirmed. Point estimates are below 0.5. The likely reason is that the diff is the final
+  merged one, and PRs that drew change requests are larger and more complex.
+- P10 borderline: the lower bound is 0.50. The judge gives both programs the same R7 in 55% of
+  battles.
