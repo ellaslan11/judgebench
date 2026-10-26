@@ -8,7 +8,7 @@ def test_scorecard_perfect_judge():
     items = make_items([parent()])
     pairs = make_pairs(items)
     want = {"none": 5, "delete_tests": 2, "skip_tests": 2, "unrelated_change": 3,
-            "pad": 5, "polish_desc": 5, "rename_vars": 5}
+            "pad": 5, "polish_desc": 5, "rename_vars": 5, "swallow_failures": 4, "exclude_tests": 5}
     ratings = [Rating(item_id=i.id, judge_id="j", scores={"R7": want[i.perturbation]},
                       merge=True) for i in items]
     prefs = [Pref(pair_id=p.id, judge_id="j", order=o, winner=p.expected_winner)
@@ -75,3 +75,17 @@ def test_parse_salvages_score_and_clamp():
     d = parse_json('{"reason":"checks that `encoding` has "chunks" key","score":2}', "score")
     assert _clamp(d["score"]) == 2
     assert _clamp(":3") == 3
+
+
+def test_swe_gate_and_best_of_n():
+    from jbc.metrics import best_of_n_curve, swe_metrics
+
+    out = {"a/b#1::swe::p1": True, "a/b#1::swe::p2": True, "a/b#1::swe::f1": False, "a/b#1::swe::f2": False}
+    sc = {"p1": 5, "p2": 3, "f1": 4, "f2": 1}
+    rs = [Rating(item_id=k, judge_id="j", scores={"R7": sc[k.rsplit("::", 1)[1]]}, merge=True) for k in out]
+    m = swe_metrics(rs[:-1], out, {"a/b#1": "test"})
+    assert m["swe_false_accept"]["value"] == 1.0 and m["swe_false_reject"]["value"] == 0.5
+    assert m["swe_pair_acc"]["value"] == 0.5 and m["swe_pair_acc_wc"]["value"] == 0.25
+    curve = best_of_n_curve(rs, out, {"a/b#1": "test"}, ns=(1, 4))
+    assert curve["4"]["judge"]["value"] == 1.0 and curve["4"]["oracle"]["value"] == 1.0
+    assert curve["1"]["random"]["value"] == 0.5 and abs(curve["1"]["judge"]["value"] - 0.5) < 0.1

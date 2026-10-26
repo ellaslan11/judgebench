@@ -7,7 +7,17 @@ import urllib.request
 import typer
 
 from jbc.config import DATA, RESULTS, ROOT, load_yaml
-from jbc.schemas import Item, Pair, ParentPR, Pref, Rating, dump_json, read_jsonl, write_jsonl
+from jbc.schemas import (
+    Item,
+    Pair,
+    ParentPR,
+    Pref,
+    Rating,
+    append_jsonl,
+    dump_json,
+    read_jsonl,
+    write_jsonl,
+)
 
 VERIFIED_URL = ("https://huggingface.co/datasets/SWE-bench/SWE-bench_Verified/resolve/main/"
                 "data/test-00000-of-00001.parquet")
@@ -149,6 +159,62 @@ def swe_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.
     _rate_set(items, "swe_ratings.jsonl", judges, only, workers)
 
 
+@app.command("swe-pool")
+def swe_pool(experiments: str = "../swe-experiments/evaluation/verified",
+             tasks: str = "data/swe/verified.parquet", which: str = "test"):
+    """All distinct submission patches per task of one split -> data/swe/pool_*.json(l)."""
+    import pandas as pd
+
+    from jbc.swe import collect_pool
+
+    sp = json.loads((DATA / "swe" / "split.json").read_text())
+    rows = pd.read_parquet(ROOT / tasks).to_dict("records")
+    items, outcome = collect_pool(ROOT / experiments, rows, sp, read_jsonl(DATA / "swe" / "items.jsonl", Item), which)
+    write_jsonl(DATA / "swe" / "pool_items.jsonl", items)
+    dump_json(DATA / "swe" / "pool_outcomes.json", outcome)
+    typer.echo(f"{len({i.parent_id for i in items})} tasks, {len(items)} patches ({sum(outcome.values())} resolved)")
+
+
+@app.command("swe-pool-run")
+def swe_pool_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+                 workers: int = 8):
+    """Rate pool patches not already in swe_ratings.jsonl -> results/<judge>/swe_pool_ratings.jsonl."""
+    from jbc.judges import build_judges
+
+    pool = read_jsonl(DATA / "swe" / "pool_items.jsonl", Item)
+    for j in build_judges(load_yaml(ROOT / judges), only):
+        have = {r.item_id for r in read_jsonl(RESULTS / j.id / "swe_ratings.jsonl", Rating)}
+        _rate_set([i for i in pool if i.id not in have], "swe_pool_ratings.jsonl", judges, [j.id], workers)
+
+
+@app.command()
+def attack(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+           attacker: str = "gpt-6.1-sol", rounds: int = 3, workers: int = 8, limit: int = 0):
+    """Adaptive attack on one failing patch per test task (the judge's top-scored failing one)."""
+    from jbc.attack import run_attacks
+    from jbc.judges import build_judges
+
+    sp = json.loads((DATA / "swe" / "split.json").read_text())
+    out = json.loads((DATA / "swe" / "outcomes.json").read_text())
+    swe = {i.id: i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item)}
+    for j in build_judges(load_yaml(ROOT / judges), only):
+        rs = {r.item_id: r for r in read_jsonl(RESULTS / j.id / "swe_ratings.jsonl", Rating)}
+        best: dict[str, Rating] = {}
+        for iid, r in sorted(rs.items()):
+            t = iid.split("::")[0]
+            if iid in swe and not out[iid] and sp.get(t) == "test" and (t not in best or r.overall > best[t].overall):
+                best[t] = r
+        path = RESULTS / j.id / "attack.jsonl"
+        done = {r.meta.get("target") for r in read_jsonl(path, Rating)}
+        targets = [(swe[r.item_id], r) for t, r in sorted(best.items()) if r.item_id not in done]
+        targets = targets[:limit] if limit else targets
+        res = run_attacks(j, targets, attacker, rounds, workers, log=typer.echo)
+        for it, r in res:
+            append_jsonl(path, r)
+            append_jsonl(RESULTS / j.id / "attack_items.jsonl", it)
+        typer.echo(f"{j.id}: {len({r.meta['target'] for _, r in res})} targets, {len(res)} attacked ratings")
+
+
 @app.command()
 def retest(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
            k: int = 3, workers: int = 8):
@@ -236,6 +302,8 @@ def score():
     """Compute scorecard.json and failures.json from results/."""
     from jbc.metrics import (
         AXES,
+        attack_metrics,
+        best_of_n_curve,
         failures,
         judge_scorecard,
         merge_auroc,
@@ -251,6 +319,8 @@ def score():
     swe_dir = DATA / "swe"
     swe_out = json.loads((swe_dir / "outcomes.json").read_text()) if (swe_dir / "outcomes.json").exists() else {}
     swe_split = json.loads((swe_dir / "split.json").read_text()) if (swe_dir / "split.json").exists() else {}
+    pp = swe_dir / "pool_outcomes.json"
+    pool_out = json.loads(pp.read_text()) if pp.exists() else {}
 
     items, pairs = _items(), _pairs()
     board, fails = {}, []
@@ -265,6 +335,13 @@ def score():
         if swe and swe_out:
             board[d.name]["metrics"].update(swe_metrics(swe, swe_out, swe_split, "test"))
             board[d.name]["swe_dev"] = swe_metrics(swe, swe_out, swe_split, "dev")
+            pool = read_jsonl(d / "swe_pool_ratings.jsonl", Rating)
+            if pool and pool_out:
+                board[d.name]["best_of_n"] = best_of_n_curve(swe + pool, {**swe_out, **pool_out}, swe_split)
+            att = read_jsonl(d / "attack.jsonl", Rating)
+            if att:
+                board[d.name]["metrics"].update(attack_metrics(att, swe, swe_out))
+                board[d.name]["attack_cost_usd"] = sum(r.cost_usd + r.meta.get("attacker_cost_usd", 0) for r in att)
         agent = read_jsonl(d / "agent_ratings.jsonl", Rating)
         if agent and outcomes:
             board[d.name]["metrics"]["merge_auroc"] = merge_auroc(agent, outcomes)

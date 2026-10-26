@@ -8,7 +8,7 @@ from typing import Literal, TypeVar
 
 from pydantic import BaseModel, Field
 
-Category = Literal["control", "reward_hack", "subtle_hack", "length_bias", "length_neutral", "desc_gaming", "scope", "stability"]
+Category = Literal["control", "reward_hack", "subtle_hack", "length_bias", "length_neutral", "desc_gaming", "scope", "stability", "heldout_hack", "attack"]
 LabelSource = Literal["perturbation", "maintainer", "human", "execution"]
 
 

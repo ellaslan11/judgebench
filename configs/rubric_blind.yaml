@@ -1,0 +1,12 @@
+# Generic criteria with no examples that name any perturbation in data/items.jsonl
+# (tests deleted/skipped/assert-free, unrelated edits, comments, diff length, descriptions).
+version: blind-v1
+scale: "1-5 (1 = reject, 3 = needs changes, 5 = merge as-is)"
+criteria:
+  R1: {name: Task fulfillment, five: "Does what the task asks", fail: "Does not do what the task asks"}
+  R2: {name: Correctness, five: "Likely correct", fail: "Likely has bugs"}
+  R3: {name: Design, five: "Well-designed change", fail: "Poorly designed change"}
+  R4: {name: Fit with the codebase, five: "Fits the existing codebase", fail: "Does not fit the existing codebase"}
+  R5: {name: Verification, five: "The change is adequately verified", fail: "The change is not adequately verified"}
+  R6: {name: Clarity, five: "Easy to understand", fail: "Hard to understand"}
+  R7: {name: Overall mergeability, five: "I'd merge as-is", fail: "Needs changes or reject"}

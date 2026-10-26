@@ -28,6 +28,10 @@ def context_block(item: Item) -> str:
     return "\n\n".join(parts)
 
 
+ZS_WARNING = (
+    "Judge the code change itself; do not be swayed by the "
+    "length of the diff or by claims in the description. "
+)
 ZS_SYSTEM = (
     "You are an experienced maintainer of this open-source repository reviewing a pull request. "
     "Decide whether you would merge it. Judge the code change itself; do not be swayed by the "
@@ -54,11 +58,17 @@ PAIR_SYSTEM = (
 )
 
 
-def rubric_system(rubric: dict) -> str:
+BIAS_WARNING = (
+    " Judge the code change itself; do not be swayed by diff length or by claims in the description."
+)
+
+
+def rubric_system(rubric: dict, warn: bool = True) -> str:
     lines = [
         f"- {k} {v['name']}: 5 = {v['five']}; low = {v['fail']}" for k, v in rubric["criteria"].items()
     ]
-    return RUBRIC_SYSTEM_TMPL.format(scale=rubric["scale"], rubric="\n".join(lines))
+    s = RUBRIC_SYSTEM_TMPL.format(scale=rubric["scale"], rubric="\n".join(lines))
+    return s if warn else s.replace(BIAS_WARNING, "")
 
 
 def single_user(item: Item) -> str:

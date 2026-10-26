@@ -106,3 +106,41 @@ def collect(experiments: Path, tasks: list[dict], seed: int = 0, per_side: int =
                 outcome[iid] = ok
             log(f"  {t['instance_id']}: {len(cands)} patches")
     return items, outcome
+
+
+def collect_pool(experiments: Path, tasks: list[dict], split: dict[str, str], existing: list[Item],
+                 which: str = "test", log=print) -> tuple[list[Item], dict[str, bool]]:
+    """Every distinct submission patch for each task of one split (the best-of-N candidate pool).
+    Patches already in the 4-patch set keep their ids; exact duplicate diffs are dropped."""
+    resolved = {s: set(json.loads((experiments / s / "results" / "results.json").read_text())["resolved"])
+                for s in SUBMISSIONS}
+    have = {i.id: i for i in existing}
+    chosen = [t for t in tasks if split.get(parent_id(t)) == which]
+
+    def pool(t: dict) -> list[tuple[str, str]]:
+        pid = parent_id(t)
+        subs = sorted(SUBMISSIONS, key=lambda s: f"{pid}::swe::{s}" not in have)
+        seen: set[str] = set()
+        out = []
+        for s in subs:
+            iid = f"{pid}::swe::{s}"
+            d = have[iid].diff if iid in have else _get(S3.format(sub=s, iid=t["instance_id"]))
+            if not d or not d.strip() or len(d) > MAX_DIFF_CHARS or d in seen:
+                continue
+            seen.add(d)
+            out.append((s, d))
+        return out
+
+    items, outcome = [], {}
+    with ThreadPoolExecutor(16) as ex:
+        for t, cands in zip(chosen, ex.map(pool, chosen)):
+            pid = parent_id(t)
+            for s, d in cands:
+                iid = f"{pid}::swe::{s}"
+                items.append(have.get(iid) or Item(
+                    id=iid, parent_id=pid, perturbation="swe_patch", category="control", expected="baseline",
+                    task=t["problem_statement"][:6000], description="", diff=d, language="python",
+                    url=f"https://github.com/{t['repo']}/tree/{t['base_commit']}", label_source="execution"))
+                outcome[iid] = t["instance_id"] in resolved[s]
+            log(f"  {t['instance_id']}: {len(cands)} distinct patches")
+    return items, outcome

@@ -66,14 +66,15 @@ def _clamp(v) -> int:
 
 class LLMJudge(Judge):
     def __init__(self, id: str, kind: str, provider: str, model: str,
-                 price_in: float = 0.0, price_out: float = 0.0, max_tokens: int = 4000, **_):
+                 price_in: float = 0.0, price_out: float = 0.0, max_tokens: int = 4000,
+                 rubric: str = "rubric_v1.yaml", bias_warning: bool = True, **_):
         self.id, self.kind, self.provider, self.model = id, kind, provider, model
         self.price_in, self.price_out, self.max_tokens = price_in, price_out, max_tokens
         if kind == "rubric":
-            self.system = prompts.rubric_system(load_yaml(CONFIGS / "rubric_v1.yaml"))
+            self.system = prompts.rubric_system(load_yaml(CONFIGS / rubric), warn=bias_warning)
             self.max_tokens = max(max_tokens, 6000)
         elif kind == "zero_shot":
-            self.system = prompts.ZS_SYSTEM
+            self.system = prompts.ZS_SYSTEM if bias_warning else prompts.ZS_SYSTEM.replace(prompts.ZS_WARNING, "")
         else:
             raise ValueError(kind)
         self.prompt_sha = hashlib.sha256(self.system.encode()).hexdigest()[:12]
