@@ -189,3 +189,27 @@ GPT-6.1-sol rubric), and `swe_rank_fail_touches_tests` > `swe_rank_fail_no_tests
 - P14: at least 70% of attacker-added test files get a non-`verified` verdict.
 Failure of P11 would mean the judge keeps crediting tests it was told are not evidence, i.e. the
 exploit is in the description channel, not the test channel.
+
+## Results v4: execution-grounded verification
+
+Verification coverage (test split, 72 tasks; 1440 distinct patches incl. attacked ones; images via
+mirror.gcr.io). One bug was found and fixed mid-run: Django's `cd tests` leaked from the first run
+into the second, so every Django verdict was `failing`; all Django verdicts were re-run after the
+fix. 35 patches are `error` (binary files or source hunks that do not apply in the image).
+
+| Set | n | verified | vacuous | failing | empty | no_tests | error |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Real agent patches, pass hidden tests | 386 | 5% | 3% | 2% | 1% | 89% | 1% |
+| Real agent patches, fail hidden tests | 365 | 2% | 6% | 6% | 6% | 79% | 1% |
+| Attacker-added tests on failing patches (luna-tuned) | 171 | 35% | 1% | 59% | 0 | 0 | 5% |
+| Attacker-added tests on failing patches (sol-tuned) | 185 | 41% | 3% | 50% | 0 | 0 | 6% |
+| Attacker-added tests on passing controls (luna / sol) | 160 / 175 | 52% / 47% | 2% / 1% | 45% / 49% | 0 | 0 | 1% / 3% |
+
+- **P14 failed.** Only 59-65% of attacker-added test files are non-`verified`; 35-41% genuinely
+  fail without the (wrong) source change and pass with it. The attacker writes tests that pin down
+  what the patch does, which the fail-to-pass check cannot distinguish from tests of what the issue
+  needs. That is a limit of this kind of verification: it catches decorative and broken tests,
+  not tests that faithfully specify the wrong behaviour. Mutation testing would not help either;
+  only tests the agent did not write (hidden tests, or an independent test author) can.
+- Real agents rarely ship tests at all (79-89% `no_tests`), so for the ranking metric the verdict
+  carries information on about one patch in ten (P12 was written expecting this).
