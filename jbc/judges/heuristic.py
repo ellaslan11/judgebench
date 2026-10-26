@@ -30,7 +30,7 @@ class HeuristicJudge(Judge):
     def __init__(self, id: str):
         self.id = id
 
-    def rate(self, item: Item) -> Rating:
+    def rate(self, item: Item, sample: int = 0) -> Rating:
         s, why = _score(item)
         return Rating(
             item_id=item.id, judge_id=self.id, scores={"R7": s}, reasons={"R7": why},

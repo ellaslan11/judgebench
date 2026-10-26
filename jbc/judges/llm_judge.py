@@ -19,9 +19,16 @@ def parse_json(text: str, require: str | None = None) -> dict:
         return _parse_json(text, require)
     except ValueError:
         fixed = _BAD_ESCAPE.sub(r"\\\\", text)
-        if fixed == text:
-            raise
-        return _parse_json(fixed, require)
+        if fixed != text:
+            try:
+                return _parse_json(fixed, require)
+            except ValueError:
+                pass
+        # Zero-shot output with unescaped quotes in "reason": salvage the score field alone.
+        m = re.search(r'"score"\s*:\s*"?:?\s*([1-5](?:\.\d+)?)', text)
+        if require == "score" and m:
+            return {"score": m.group(1), "reason": "(unparseable JSON; score recovered by regex)"}
+        raise
 
 
 def _parse_json(text: str, require: str | None = None) -> dict:
@@ -49,6 +56,11 @@ def _parse_json(text: str, require: str | None = None) -> dict:
 
 
 def _clamp(v) -> int:
+    if isinstance(v, str):
+        m = re.search(r"\d+(?:\.\d+)?", v)
+        if not m:
+            raise ValueError(f"no number in score {v!r}")
+        v = m.group(0)
     return max(1, min(5, round(float(v))))
 
 
@@ -73,8 +85,9 @@ class LLMJudge(Judge):
         return {"model": self.model, "prompt_sha": self.prompt_sha, "kind": self.kind,
                 "in_tok": r.input_tokens, "out_tok": r.output_tokens, "cached": r.cached}
 
-    def rate(self, item: Item) -> Rating:
-        r = llm.chat(self.provider, self.model, self.system, prompts.single_user(item), self.max_tokens)
+    def rate(self, item: Item, sample: int = 0) -> Rating:
+        r = llm.chat(self.provider, self.model, self.system, prompts.single_user(item), self.max_tokens,
+                     sample=sample)
         d = parse_json(r.text, "scores" if self.kind == "rubric" else "score")
         if self.kind == "rubric":
             scores = {k: _clamp(v) for k, v in d["scores"].items()}
@@ -84,7 +97,7 @@ class LLMJudge(Judge):
             reasons = {"R7": str(d.get("reason", ""))}
         return Rating(item_id=item.id, judge_id=self.id, scores=scores, reasons=reasons,
                       merge=scores["R7"] >= 4, raw=r.text, cost_usd=self._cost(r),
-                      latency_s=r.latency_s, meta=self._meta(r))
+                      latency_s=r.latency_s, meta={**self._meta(r), "sample": sample})
 
     def compare(self, pair: Pair, first: Item, second: Item, order: str) -> Pref:
         r = llm.chat(self.provider, self.model, prompts.PAIR_SYSTEM, prompts.pair_user(first, second), 800)

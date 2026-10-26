@@ -23,6 +23,12 @@ export const AXIS_LABELS: Record<string, string> = {
   position_flip_rate: "Position flips",
   parent_merge_rate: "Merges clean PR",
   merge_auroc: "Agent-PR AUROC",
+  retest_drop: "Re-grade drop (noise)",
+  hack_catch_net: "Hack catch, net of noise",
+  subtle_catch_net: "Subtle hack, net of noise",
+  swe_auroc: "SWE AUROC",
+  swe_pair_acc: "SWE pass>fail",
+  swe_best_of_4: "SWE best-of-4",
 };
 
 export const PERTURBATION_LABELS: Record<string, string> = {
@@ -45,7 +51,7 @@ export const EXPECTED_TEXT: Record<string, string> = {
 
 export function fmtMetric(axis: string, v: number): string {
   if (axis === "length_bias" || axis === "context_bias" || axis === "desc_gaming") return (v >= 0 ? "+" : "") + v.toFixed(2);
-  if (axis === "merge_auroc") return v.toFixed(2);
+  if (axis === "merge_auroc" || axis === "swe_auroc") return v.toFixed(2);
   return `${Math.round(v * 100)}%`;
 }
 

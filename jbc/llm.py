@@ -85,8 +85,11 @@ def chat(
     max_tokens: int = 2000,
     temperature: float = 0.0,
     retries: int = 4,
+    sample: int = 0,
 ) -> LLMResponse:
     params = {"max_tokens": max_tokens, "temperature": temperature}
+    if sample:
+        params["sample"] = sample
     key = cache_key(provider, model, system, user, params)
     with _lock:
         row = _conn().execute("SELECT v FROM cache WHERE k=?", (key,)).fetchone()

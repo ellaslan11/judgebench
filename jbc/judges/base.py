@@ -9,7 +9,8 @@ class Judge(ABC):
     id: str
 
     @abstractmethod
-    def rate(self, item: Item) -> Rating: ...
+    def rate(self, item: Item, sample: int = 0) -> Rating:
+        """`sample` > 0 requests an independent re-grade (separate cache entry)."""
 
     @abstractmethod
     def compare(self, pair: Pair, first: Item, second: Item, order: str) -> Pref:

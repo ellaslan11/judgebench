@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import urllib.request
 
 import typer
 
 from jbc.config import DATA, RESULTS, ROOT, load_yaml
 from jbc.schemas import Item, Pair, ParentPR, Pref, Rating, dump_json, read_jsonl, write_jsonl
+
+VERIFIED_URL = ("https://huggingface.co/datasets/SWE-bench/SWE-bench_Verified/resolve/main/"
+                "data/test-00000-of-00001.parquet")
 
 app = typer.Typer(add_completion=False, help="JudgeBench-Code: evaluate code autoraters.")
 
@@ -77,34 +81,80 @@ def agent_fetch(since: str = "2026-06-01", per_bucket: int = 15, min_stars: int 
     typer.echo(f"{len(items)} agent PRs ({sum(outcome.values())} merged)")
 
 
-@app.command("agent-run")
-def agent_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
-              workers: int = 8):
-    """Rate agent-authored PRs with each judge -> results/<judge>/agent_ratings.jsonl."""
+@app.command("swe-fetch")
+def swe_fetch(experiments: str = "../swe-experiments/evaluation/verified",
+              tasks: str = "data/swe/verified.parquet", seed: int = 0):
+    """Real agent patches on SWE-bench Verified with hidden-test labels -> data/swe/."""
+    import pyarrow.parquet as pq
+
+    tp = ROOT / tasks
+    if not tp.exists():
+        tp.parent.mkdir(parents=True, exist_ok=True)
+        urllib.request.urlretrieve(VERIFIED_URL, tp)
+
+    from jbc.swe import collect, split_of
+
+    rows = pq.read_table(tp).to_pylist()
+    items, outcome = collect((ROOT / experiments).resolve(), rows, seed=seed, log=typer.echo)
+    write_jsonl(DATA / "swe" / "items.jsonl", items)
+    dump_json(DATA / "swe" / "outcomes.json", outcome)
+    dump_json(DATA / "swe" / "split.json", {p: split_of(p) for p in sorted({i.parent_id for i in items})})
+    typer.echo(f"{len({i.parent_id for i in items})} tasks, {len(items)} patches "
+               f"({sum(outcome.values())} resolved)")
+
+
+def _rate_set(items: list[Item], fname: str, judges: str, only: list[str] | None, workers: int,
+              samples: tuple[int, ...] = (0,)):
     from concurrent.futures import ThreadPoolExecutor
 
     from jbc.judges import build_judges
 
-    items = read_jsonl(DATA / "agent_items.jsonl", Item)
     for j in build_judges(load_yaml(ROOT / judges), only):
-        path = RESULTS / j.id / "agent_ratings.jsonl"
+        path = RESULTS / j.id / fname
         path.parent.mkdir(parents=True, exist_ok=True)
-        done = {r.item_id: r for r in read_jsonl(path, Rating)}
-        todo = [it for it in items if it.id not in done]
+        done = {(r.item_id, r.meta.get("sample", 0)): r for r in read_jsonl(path, Rating)}
+        todo = [(it, s) for s in samples for it in items if (it.id, s) not in done]
 
-        def one(it, j=j):
+        def one(job, j=j):
+            it, s = job
             try:
-                return j.rate(it)
+                r = j.rate(it, sample=s)
             except Exception as e:  # noqa: BLE001
                 typer.echo(f"  ! {j.id} {it.id}: {type(e).__name__}: {str(e)[:120]}")
                 return None
+            r.meta = {**r.meta, "sample": s}
+            return r
 
         with ThreadPoolExecutor(workers) as ex:
             for r in ex.map(one, todo):
                 if r:
-                    done[r.item_id] = r
+                    done[(r.item_id, r.meta["sample"])] = r
         write_jsonl(path, done.values())
-        typer.echo(f"{j.id}: {len(done)}/{len(items)} agent PRs rated")
+        typer.echo(f"{j.id}: {len(done)} ratings in {fname}")
+
+
+@app.command("agent-run")
+def agent_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+              workers: int = 8):
+    """Rate agent-authored PRs with each judge -> results/<judge>/agent_ratings.jsonl."""
+    _rate_set(read_jsonl(DATA / "agent_items.jsonl", Item), "agent_ratings.jsonl", judges, only, workers)
+
+
+@app.command("swe-run")
+def swe_run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+            workers: int = 8, split: str = "all"):
+    """Rate SWE-bench agent patches -> results/<judge>/swe_ratings.jsonl."""
+    sp = json.loads((DATA / "swe" / "split.json").read_text())
+    items = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) if split == "all" or sp[i.parent_id] == split]
+    _rate_set(items, "swe_ratings.jsonl", judges, only, workers)
+
+
+@app.command()
+def retest(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Option(None),
+           k: int = 3, workers: int = 8):
+    """Re-grade each unchanged original k-1 more times -> results/<judge>/retest.jsonl (noise floor)."""
+    items = [i for i in _items() if i.perturbation == "none"]
+    _rate_set(items, "retest.jsonl", judges, only, workers, samples=tuple(range(1, k)))
 
 
 @app.command()
@@ -184,10 +234,23 @@ def run(judges: str = "configs/judges.yaml", only: list[str] | None = typer.Opti
 @app.command()
 def score():
     """Compute scorecard.json and failures.json from results/."""
-    from jbc.metrics import AXES, failures, judge_scorecard, merge_auroc, rank_robustness
+    from jbc.metrics import (
+        AXES,
+        failures,
+        judge_scorecard,
+        merge_auroc,
+        rank_robustness,
+        swe_metrics,
+    )
 
     op = DATA / "agent_outcomes.json"
     outcomes = json.loads(op.read_text()) if op.exists() else {}
+
+    from jbc.stats import deltas, perturbation_effects
+
+    swe_dir = DATA / "swe"
+    swe_out = json.loads((swe_dir / "outcomes.json").read_text()) if (swe_dir / "outcomes.json").exists() else {}
+    swe_split = json.loads((swe_dir / "split.json").read_text()) if (swe_dir / "split.json").exists() else {}
 
     items, pairs = _items(), _pairs()
     board, fails = {}, []
@@ -196,7 +259,12 @@ def score():
         prefs = read_jsonl(d / "prefs.jsonl", Pref)
         if not ratings and not prefs:
             continue
-        board[d.name] = judge_scorecard(items, pairs, ratings, prefs)
+        board[d.name] = judge_scorecard(items, pairs, ratings, prefs, read_jsonl(d / "retest.jsonl", Rating))
+        board[d.name]["mixed_effects"] = perturbation_effects(deltas(items, ratings))
+        swe = read_jsonl(d / "swe_ratings.jsonl", Rating)
+        if swe and swe_out:
+            board[d.name]["metrics"].update(swe_metrics(swe, swe_out, swe_split, "test"))
+            board[d.name]["swe_dev"] = swe_metrics(swe, swe_out, swe_split, "dev")
         agent = read_jsonl(d / "agent_ratings.jsonl", Rating)
         if agent and outcomes:
             board[d.name]["metrics"]["merge_auroc"] = merge_auroc(agent, outcomes)

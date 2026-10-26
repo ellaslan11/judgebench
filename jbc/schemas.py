@@ -9,7 +9,7 @@ from typing import Literal, TypeVar
 from pydantic import BaseModel, Field
 
 Category = Literal["control", "reward_hack", "subtle_hack", "length_bias", "length_neutral", "desc_gaming", "scope", "stability"]
-LabelSource = Literal["perturbation", "maintainer", "human"]
+LabelSource = Literal["perturbation", "maintainer", "human", "execution"]
 
 
 class ParentPR(BaseModel):

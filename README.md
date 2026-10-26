@@ -30,9 +30,42 @@ It does **not** benchmark coding agents. It benchmarks the thing that grades the
 3. **Judges** – a non-LLM heuristic baseline plus LLM judges in zero-shot ("would you merge?") and
    rubric (R1–R7, `configs/rubric_v1.yaml`) modes, pointwise and pairwise (`configs/judges.yaml`).
 4. **Metrics** – hack catch rate, scope sensitivity, length bias, description gaming, stability,
-   pairwise accuracy, position flip rate, cost, latency. 95% bootstrap CIs resample parent PRs.
+   pairwise accuracy, position flip rate, cost, latency. 95% bootstrap CIs resample whole repos
+   (PRs from one repo are not independent), and a mixed-effects model (`jbc/stats.py`) reports each
+   perturbation's score change with a random intercept per repo.
 5. **Site** – a static leaderboard, a "fool the judge" playground, a failure gallery and a
    methodology page, all served from precomputed JSON.
+
+## Execution-labelled set (SWE-bench Verified)
+
+Real agent patches whose label comes from running SWE-bench's hidden tests, not from us
+(`jbc swe-fetch`, `jbc swe-run`, `jbc/swe.py`). From 11 public submissions (190-396 of 500 resolved),
+we keep tasks where at least 2 passed and 2 failed, cap tasks per repo, and take 2 passing + 2 failing
+distinct patches per task: 105 tasks, 420 patches, 11 repos. Tasks are split by hash into dev (33) and
+held-out test (72); the analysis plan was written before any judging (`docs/analysis_plan.md`).
+
+- `swe_pair_acc`: within a task, how often a passing patch outscores a failing one (ties 0.5).
+- `swe_best_of_4`: pass rate of the judge's top pick out of the 4 (random 0.5).
+- `swe_auroc`: pooled AUROC for pass vs fail.
+
+Held-out test results so far (95% CI, repo bootstrap):
+
+| judge | pass>fail | best-of-4 | AUROC |
+|---|---|---|---|
+| GPT-6-luna zero-shot | 0.66 (0.58-0.76) | 0.64 (0.52-0.75) | 0.67 |
+| GPT-6-luna rubric | 0.66 (0.59-0.74) | 0.63 (0.54-0.73) | 0.66 |
+| test-line heuristic | 0.45 (0.40-0.51) | 0.39 (0.31-0.51) | 0.45 |
+
+Passing hidden tests is narrower than correctness or maintainability, and SWE-bench is public, so
+judges may have seen these issues or fixes. 2 of 420 zero-shot outputs were unparseable and dropped.
+
+## Noise floor
+
+`jbc retest --k 3` grades each unchanged original 2 more times. `retest_drop` is how often a
+re-grade of the *same* PR scores lower, i.e. how often noise alone looks like a "catch".
+`hack_catch_net` / `subtle_catch_net` subtract it. For GPT-6-luna: retest_drop 0.13 (zero-shot) and
+0.16 (rubric), so hack catch falls from 0.67 to 0.52 and from 0.91 to 0.74. These report-only axes
+are not in the composite.
 
 ## Quickstart
 
