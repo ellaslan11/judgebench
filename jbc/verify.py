@@ -126,12 +126,15 @@ def _run(image: str, repo: str, tests: str, src: str, paths: list[str], pull: bo
     if pull and not pull_image(image):
         return {"verdict": "error", "error": "pull_failed"}
     cmd = test_command(repo, paths)
+    if repo == "django/django" and not _django_labels(paths):
+        # Django's runner only collects tests/<app>/...; anything else is never run.
+        return {"verdict": "empty", "a": None, "b": None, "tail": "no tests/<app>/ label"}
     script = f"""set +e
 cd /testbed
 git apply --whitespace=nowarn /w/tests.patch || {{ echo JBC_APPLY_FAIL; exit 97; }}
-{cmd} > /w/a.log 2>&1; A=$?
+( {cmd} ) > /w/a.log 2>&1; A=$?
 if [ -s /w/src.patch ]; then git apply --whitespace=nowarn /w/src.patch || {{ echo JBC_APPLY_FAIL; exit 98; }}; fi
-{cmd} > /w/b.log 2>&1; B=$?
+( {cmd} ) > /w/b.log 2>&1; B=$?
 echo "JBC_RESULT $A $B"
 """
     with tempfile.TemporaryDirectory() as w:
