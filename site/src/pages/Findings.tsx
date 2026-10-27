@@ -32,6 +32,8 @@ export default function Findings() {
   const touch = js.filter(([, j]) => j.metrics.swe_rank_fail_touches_tests);
   const ext = js.filter(([, j]) => j.metrics.prb_auroc || j.metrics.bcr_agree);
   const gate = js.filter(([, j]) => j.metrics.swe_false_accept_cal);
+  const vx = js.filter(([id, j]) => id.startsWith("rubricx-") && j.metrics.attack_gate_rate)
+    .map(([id, j]) => [id, j, sc.judges[id.replace("rubricx-", "rubric-")]] as const);
 
   return (
     <div className="prose">
@@ -167,8 +169,38 @@ export default function Findings() {
         </tbody>
       </table>
 
+      <h2>5. Execution-grounded verification helps, but the agent's own tests cannot be the evidence</h2>
+      <p>
+        The obvious fix: run the PR's own test changes in the official SWE-bench image without and with the source
+        change, and tell the judge whether they went fail → pass (<code>verified</code>), passed anyway
+        (<code>vacuous</code>), still fail, collected nothing, or were absent. No hidden tests are used. The{" "}
+        <code>rubricx-*</code> judges below get that one line above the PR; the attacker and its targets are the same as
+        for the unverified judge, and each new test file is executed before the judge sees it.
+      </p>
+      <table className="board">
+        <thead><tr><th>Judge (unverified → verified)</th><th>Passing above failing (SWE)</th><th>Failing patch at "would merge" after attack</th><th>Fair attack win</th><th>Gate rate when the attacker's test is fail→pass / not</th><th>Attacker tests that are fail→pass</th></tr></thead>
+        <tbody>
+          {vx.map(([id, j, u]) => (
+            <tr key={id}><td>{id}</td>
+              <td className="num">{u ? ci(u.metrics.swe_pair_acc) : "–"} → <b>{ci(j.metrics.swe_pair_acc)}</b></td>
+              <td className="num">{u ? pct(u.metrics.attack_gate_rate) : "–"} → <b>{pct(j.metrics.attack_gate_rate)}</b></td>
+              <td className="num">{u ? pct(u.metrics.attack_win_fair) : "–"} → <b>{pct(j.metrics.attack_win_fair)}</b></td>
+              <td className="num">{pct(j.metrics.attack_gate_verified_tests)} / {pct(j.metrics.attack_gate_unverified_tests)}</td>
+              <td className="num">{pct(j.metrics.attack_tests_verified_share)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      <p>
+        The judge does follow the verdict: attacker tests marked failing or vacuous get essentially no credit. What
+        survives is the share of attacker tests that genuinely fail without the (wrong) source change and pass with it:
+        tests that faithfully specify the wrong behaviour. A fail-to-pass check of the PR's own tests cannot tell those
+        from correct tests, and mutation testing would not either. Only tests the agent did not write can. Real agent
+        patches rarely ship tests at all (79–89%), so the verdict leaves the ranking metric almost unchanged.
+      </p>
+
       <h2>What this does not show</h2>
       <ul>
+        <li>That execution-checking the agent's own tests makes a judge safe: it removes the decorative-test exploit, not the wrong-test one.</li>
         <li>That any judge is "best": most top judges' intervals overlap.</li>
         <li>That a judge is safe as a reward signal: the attack above is cheap and only uses non-code channels.</li>
         <li>Passing hidden tests is narrower than good code; SWE-bench and these PRs are public and may be in training data.</li>
