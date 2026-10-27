@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import Method from "./pages/Method";
 import Playground from "./pages/Playground";
+import { REPO_PUBLIC, REPO_URL } from "./config";
 
 export default function App() {
   return (
@@ -18,7 +19,7 @@ export default function App() {
           <NavLink to="/play">Fool the judge</NavLink>
           <NavLink to="/failures">Failures</NavLink>
           <NavLink to="/method">Method</NavLink>
-          <a href="https://github.com/ellaslan11/judgebench">GitHub</a>
+          {REPO_PUBLIC && <a href={REPO_URL}>GitHub</a>}
         </nav>
       </header>
       <main>
@@ -32,7 +33,7 @@ export default function App() {
         </Routes>
       </main>
       <footer className="foot muted small">
-        JudgeBench-Code · code, data and every rating at <a href="https://github.com/ellaslan11/judgebench">github.com/ellaslan11/judgebench</a>.
+        JudgeBench-Code · {REPO_PUBLIC ? <>code, data and every rating at <a href={REPO_URL}>github.com/ellaslan11/judgebench</a>.</> : <>the data behind every chart is in this site; the code is private for now and available on request.</>}{" "}
         Benchmarks the grader, not the agent. No judge here is endorsed as safe.
       </footer>
     </HashRouter>

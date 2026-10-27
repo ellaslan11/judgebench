@@ -1,3 +1,4 @@
+import { PLAN_URL } from "../config";
 export default function Method() {
   return (
     <div className="prose">
@@ -59,7 +60,7 @@ export default function Method() {
       <p>
         All 95% intervals are bootstrap intervals that resample whole repositories (or parent PRs), so correlated items
         from one codebase do not shrink them. Predictions for each experiment were written in{" "}
-        <a href="https://github.com/ellaslan11/judgebench/blob/main/docs/analysis_plan.md">docs/analysis_plan.md</a> before
+        <a href={PLAN_URL}>the analysis plan</a> before
         the run; held and failed predictions are both reported there.
       </p>
 

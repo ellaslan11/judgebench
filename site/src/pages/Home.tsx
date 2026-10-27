@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { AttackChart, GoodhartChart } from "../charts";
 import { useData } from "../data";
 import type { Metric, Scorecard } from "../types";
+import { PLAN_URL, REPO_PUBLIC, REPO_URL } from "../config";
 
 const pct = (m: Metric | undefined) => (m ? `${Math.round(m.value * 100)}%` : "–");
 const num = (m: Metric | undefined) => (m ? m.value.toFixed(2) : "–");
@@ -75,7 +76,7 @@ export default function Home() {
       <h2>All findings</h2>
       <p className="muted small">
         Held-out SWE-bench tasks unless noted. 95% CIs resample whole repositories. Predictions were written down in{" "}
-        <a href="https://github.com/ellaslan11/judgebench/blob/main/docs/analysis_plan.md">docs/analysis_plan.md</a> before
+        <a href={PLAN_URL}>the analysis plan</a> before
         each run; of 17 pre-registered predictions, 9 held, 7 failed and 1 was inconclusive, and the failures are reported
         as such. Full tables on the <Link to="/findings">Findings</Link> page.
       </p>
@@ -112,8 +113,8 @@ export default function Home() {
       <p>
         The harness is a regression suite for whoever picks or changes a code judge: pre-registered metrics, repo-clustered
         error bars, held-out hacks, an adaptive attacker with cached replays, fair controls, Goodhart and best-of-N curves,
-        and an execution verifier for SWE-bench images. Code, data and every rating are in the{" "}
-        <a href="https://github.com/ellaslan11/judgebench">repository</a>. <code>jbc attack-replay</code> replays a cached
+        and an execution verifier for SWE-bench images. {REPO_PUBLIC ? <>Code, data and every rating are in the <a href={REPO_URL}>repository</a>.</> : <>The code is private for now and available on request; the data behind every chart ships with this site.</>}{" "}
+        <code>jbc attack-replay</code> replays a cached
         attack in seconds with no API calls; see the <Link to="/method">Method</Link> page for how everything was built.
       </p>
     </div>

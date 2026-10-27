@@ -48,6 +48,9 @@ def export_site(out: Path, showcase: int = 10) -> None:
     items = read_jsonl(DATA / "items.jsonl", Item)
     judge_ids = sorted(p.name for p in RESULTS.iterdir() if p.is_dir())
     ratings = {j: {r.item_id: r for r in read_jsonl(ratings_path(j), Rating)} for j in judge_ids}
+    plan = Path("docs/analysis_plan.md")
+    if plan.exists():
+        (out.parent / "analysis_plan.md").write_text(plan.read_text())
     for name in ("scorecard.json", "failures.json"):
         src = RESULTS / name
         (out / name).write_text(src.read_text() if src.exists() else "{}")
