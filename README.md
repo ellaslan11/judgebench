@@ -54,15 +54,18 @@ predictions were pre-registered in `docs/analysis_plan.md` before each run):
    above failing patches with no test changes (0.68-0.73): agents' bad tests look broken, not
    clever. So the adaptive attacker, not mined agent output, is the realistic hard case today.
 
-**Execution-grounded judge (`rubricx-*`, partial).** `jbc verify` runs each patch's own tests in
-the official SWE-bench image without and with the source change (fail-to-pass, no hidden tests) and
-gives the judge the verdict. For GPT-6-luna rubric this cuts the attack's "would merge" rate
-0.61 -> 0.42, not the halving predicted (P11): the judge gives zero credit to the attacker tests the
-check marks as failing, but 37-42% of attacker-written tests genuinely fail-before/pass-after
-against the *wrong* patch, and a check of the PR's own tests cannot tell those from correct tests.
-Ranking on real patches is unchanged (0.66 -> 0.69, 0.72 -> 0.75), since 79-89% of agent patches
-ship no tests. GPT-6.1-sol attack/transfer runs pending; predictions P11-P14 and results in
-`docs/analysis_plan.md`.
+**Execution-grounded judge (`rubricx-*`).** `jbc verify` runs each patch's own tests in the
+official SWE-bench image without and with the source change (fail-to-pass, no hidden tests) and gives
+the judge the verdict. Under the same attacker and targets, the "would merge" rate of attacked failing
+patches falls 0.61 -> 0.42 (GPT-6-luna rubric) and 0.32 -> 0.28 (GPT-6.1-sol rubric), not the halving
+predicted (P11). The judge gives zero credit to attacker tests the check marks failing or vacuous; but
+37-46% of attacker-written tests genuinely fail-before/pass-after against the *wrong* patch, and a
+check of the PR's own tests cannot tell those from correct tests. The attacker, seeing the verified
+judge's feedback, writes slightly more such tests, not fewer. Attacks tuned on the unverified judges
+still transfer (0.03 -> 0.22 and 0.17 -> 0.28 at "would merge"), through the same verified-test items.
+Ranking on real patches is unchanged (0.66 -> 0.69, 0.72 -> 0.75), since 79-89% of agent patches ship
+no tests, and the dev-tuned cutoff is still R7 >= 2 with 58-63% false accepts. Of predictions P11-P14,
+only P12 held; details in `docs/analysis_plan.md`.
 
 **What this does not show:** that any judge is "best" or safe as a reward signal; that passing
 hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).

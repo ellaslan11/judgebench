@@ -207,6 +207,7 @@ files or source hunks that do not apply in the image).
 | Attacker-added tests on failing patches (luna-tuned) | 171 | 37% | 1% | 56% | 0 | 0 | 5% |
 | Attacker-added tests on failing patches (sol-tuned) | 185 | 42% | 3% | 48% | 0 | 0 | 6% |
 | Attacker-added tests on passing controls (luna / sol) | 160 / 175 | 55% / 51% | 2% / 1% | 42% / 43% | 0 | 0 | 1% / 3% |
+| Transferred attacks (luna-tuned on `rubricx-gpt6.1-sol` / sol-tuned on `rubricx-gpt6-luna`) | 171 / 185 | 37% / 42% | 1% / 3% | 57% / 49% | 0 | 0 | 5% / 6% |
 
 - **P14 failed.** Only 55-60% of attacker-added test files are non-`verified`; 37-42% genuinely
   fail without the (wrong) source change and pass with it. The attacker writes tests that pin down
@@ -214,8 +215,12 @@ files or source hunks that do not apply in the image).
   needs. That is a limit of this kind of verification: it catches decorative and broken tests,
   not tests that faithfully specify the wrong behaviour. Mutation testing would not help either;
   only tests the agent did not write (hidden tests, or an independent test author) can.
-- **P11, GPT-6-luna only so far** (`rubricx-gpt6-luna`, same 72 targets and attacker as
-  `rubric-gpt6-luna`; the GPT-6.1-sol run stopped when API credit ran out). `attack_gate_rate`
+- **P11 failed for both judges.** `rubricx-gpt6.1-sol` (same 71 targets and attacker as
+  `rubric-gpt6.1-sol`): `attack_gate_rate` 0.32 -> 0.28 (CI 0.16-0.42), `attack_gate_before` 0.07 -> 0.04.
+  Again 0 of 85 `failing`, 4 `vacuous` and 12 `error` items reached R7 >= 4 (mean R7 1.5-1.6); 30% of the
+  87 `verified` items did (mean 2.98). The attacker, seeing the verified judge's reasons, ends up with
+  46% of its tests `verified`, more than the 42% it reached against the unverified judge: it learns to
+  write tests that pass the check. `rubricx-gpt6-luna` (same 72 targets and attacker as `rubric-gpt6-luna`). `attack_gate_rate`
   0.61 -> 0.42 (CI 0.31-0.49), `attack_gate_before` 0.15 -> 0.13, `attack_win_fair` 0.22 -> 0.17,
   `attack_win_or_tie_fair` 0.57 -> 0.44. Not a halving. The judge does obey the verdict: of the 91
   attacked items whose added test was `failing`, 0 reached R7 >= 4 (mean R7 1.55), and of the 5
@@ -223,5 +228,18 @@ files or source hunks that do not apply in the image).
   3.29). So the exploit did move out of the description channel and into "write a genuine test of
   the wrong behaviour"; P11's premise (attacker tests would be vacuous or failing) was wrong, not
   the judge's use of the verdict.
-- Real agents rarely ship tests at all (79-89% `no_tests`), so for the ranking metric the verdict
-  carries information on about one patch in ten (P12 was written expecting this).
+- **P13 failed.** Luna-tuned attacks replayed on `rubricx-gpt6.1-sol`: `attack_gate_xfer_before`
+  0.03 -> `attack_gate_xfer` 0.22 (CI 0.13-0.31), a move of 0.19 against the predicted < 0.10 (0.27 for
+  the unverified judge). Reverse direction, sol-tuned attacks on `rubricx-gpt6-luna`: 0.17 -> 0.28
+  (0.37 unverified). Same mechanism as P11: 0 of 98 / 90 `failing`, 1 / 5 `vacuous` and 9 / 12 `error`
+  transferred items reach R7 >= 4; 32% / 46% of the 63 / 78 `verified` ones do. Attacks tuned against
+  an unverified judge transfer to the verified one exactly to the extent their tests happen to be
+  real fail-to-pass tests of the wrong behaviour.
+- **P12 held** (`swe_pair_acc` 0.72 -> 0.75 and 0.66 -> 0.69, both within noise). Real agents rarely
+  ship tests at all (79-89% `no_tests`), so for the ranking metric the verdict carries information
+  on about one patch in ten. The verdict does not make the score a usable gate either: the dev-tuned
+  cutoff is still R7 >= 2, with test-split false accept 0.58 / 0.63 and false reject 0.05 / 0.10
+  (`swe_false_accept_cal`, `swe_false_reject_cal`), the same as the unverified judges.
+- Net: of the four predictions for the execution-grounded judge, one held (P12) and three failed
+  (P11, P13, P14), all for the same reason. The check removes the "decorative test" exploit by
+  construction, and the attacker answers with tests that genuinely pass only with its wrong patch.

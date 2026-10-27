@@ -179,6 +179,18 @@
     "attack_win_rate": {
       "direction": "lower",
       "desc": "Attacked failing patch scored above every passing patch of its task"
+    },
+    "attack_gate_verified_tests": {
+      "direction": "lower",
+      "desc": "Attacked items at R7>=4 whose added test the execution check marked verified (fail->pass)"
+    },
+    "attack_gate_unverified_tests": {
+      "direction": "lower",
+      "desc": "Attacked items at R7>=4 whose added test was failing, vacuous, empty or errored"
+    },
+    "attack_tests_verified_share": {
+      "direction": "lower",
+      "desc": "Share of attacked items whose added test is fail->pass against the wrong patch"
     }
   },
   "judges": {
@@ -387,7 +399,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 389,
       "n_prefs": 0,
@@ -750,7 +765,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 389,
       "n_prefs": 534,
@@ -1188,7 +1206,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 534,
@@ -1576,6 +1597,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5145166947250279,
+            "lo": 0.461347481827622,
+            "hi": 0.5789072983670441,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -1591,6 +1620,14 @@
             "value": 0.6068055555555555,
             "lo": 0.5368637626262627,
             "hi": 0.6892206044823233,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5145166947250279,
+            "lo": 0.461347481827622,
+            "hi": 0.5789072983670441,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -1612,6 +1649,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5145166947250279,
+            "lo": 0.461347481827622,
+            "hi": 0.5789072983670441,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -1630,6 +1675,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5145166947250279,
+            "lo": 0.461347481827622,
+            "hi": 0.5789072983670441,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_all": {
@@ -1645,6 +1698,14 @@
             "value": 0.606547619047619,
             "lo": 0.5177102136923565,
             "hi": 0.7131634512744409,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5145166947250279,
+            "lo": 0.461347481827622,
+            "hi": 0.5789072983670441,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -1934,7 +1995,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 534,
@@ -2322,6 +2386,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -2337,6 +2409,14 @@
             "value": 0.6289814814814814,
             "lo": 0.56268671875,
             "hi": 0.7062597336065574,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -2358,6 +2438,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -2376,6 +2464,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_all": {
@@ -2391,6 +2487,14 @@
             "value": 0.6559208152958154,
             "lo": 0.5724488117615466,
             "hi": 0.7373479717813051,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -2612,7 +2716,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 389,
       "n_prefs": 364,
@@ -3004,7 +3111,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 0,
@@ -3392,6 +3502,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5146289281705949,
+            "lo": 0.4620183965826489,
+            "hi": 0.5787959597472175,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -3407,6 +3525,14 @@
             "value": 0.6050694444444445,
             "lo": 0.5304912773569024,
             "hi": 0.6922979797979797,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5146289281705949,
+            "lo": 0.4620183965826489,
+            "hi": 0.5787959597472175,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -3428,6 +3554,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5146289281705949,
+            "lo": 0.4620183965826489,
+            "hi": 0.5787959597472175,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -3446,6 +3580,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5146289281705949,
+            "lo": 0.4620183965826489,
+            "hi": 0.5787959597472175,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_all": {
@@ -3461,6 +3603,14 @@
             "value": 0.6453944203944205,
             "lo": 0.5158454890956281,
             "hi": 0.787304837164751,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5146289281705949,
+            "lo": 0.4620183965826489,
+            "hi": 0.5787959597472175,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -3688,7 +3838,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 0,
@@ -4207,7 +4360,10 @@
           "n": 72,
           "n_parents": 72,
           "n_repos": 10
-        }
+        },
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 534,
@@ -4595,6 +4751,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5131137766554433,
+            "lo": 0.4607313837782589,
+            "hi": 0.5756601613351294,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -4610,6 +4774,14 @@
             "value": 0.6106944444444444,
             "lo": 0.5444206790123457,
             "hi": 0.6888707912457913,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5131137766554433,
+            "lo": 0.4607313837782589,
+            "hi": 0.5756601613351294,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -4631,6 +4803,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5131137766554433,
+            "lo": 0.4607313837782589,
+            "hi": 0.5756601613351294,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -4646,6 +4826,14 @@
             "value": 0.6298058862433863,
             "lo": 0.5613553754708098,
             "hi": 0.6980259192692229,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5131137766554433,
+            "lo": 0.4607313837782589,
+            "hi": 0.5756601613351294,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -4667,6 +4855,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5131137766554433,
+            "lo": 0.4607313837782589,
+            "hi": 0.5756601613351294,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "pool_plus_attack_r1": {
@@ -4682,6 +4878,14 @@
             "value": 0.38406084656084655,
             "lo": 0.2893706445993031,
             "hi": 0.4915004420462168,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.46794332210998874,
+            "lo": 0.4206700376034488,
+            "hi": 0.5256312316058078,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -4703,6 +4907,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.43868330743330747,
+            "lo": 0.3961276522339141,
+            "hi": 0.4916194288336118,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "pool_plus_attack_r3": {
@@ -4718,6 +4930,14 @@
             "value": 0.30826018117684784,
             "lo": 0.20139065301281212,
             "hi": 0.42287645891690007,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.41738747363747364,
+            "lo": 0.37870076212544107,
+            "hi": 0.46651250535179106,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -5084,7 +5304,10 @@
           "n": 71,
           "n_parents": 71,
           "n_repos": 10
-        }
+        },
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 534,
@@ -5472,6 +5695,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -5487,6 +5718,14 @@
             "value": 0.6340277777777777,
             "lo": 0.5641889665702347,
             "hi": 0.715424603174603,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -5508,6 +5747,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -5523,6 +5770,14 @@
             "value": 0.7012264660493828,
             "lo": 0.6140730746818247,
             "hi": 0.8087795951751069,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -5544,6 +5799,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "pool_plus_attack_r1": {
@@ -5559,6 +5822,14 @@
             "value": 0.5425595238095239,
             "lo": 0.4210182836036661,
             "hi": 0.6877825877825877,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.46889029180695846,
+            "lo": 0.4206700376034488,
+            "hi": 0.5263636136749344,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -5580,6 +5851,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.43730844772511435,
+            "lo": 0.39346155696155705,
+            "hi": 0.4886476374581214,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "pool_plus_attack_r3": {
@@ -5595,6 +5874,14 @@
             "value": 0.4910584014750682,
             "lo": 0.36004423113118766,
             "hi": 0.6348245592635962,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.41204782871449536,
+            "lo": 0.3720596153846154,
+            "hi": 0.45856798862100195,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -5803,7 +6090,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 371,
       "n_prefs": 0,
@@ -6221,7 +6511,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 0,
@@ -6609,6 +6902,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_2": {
@@ -6624,6 +6925,14 @@
             "value": 0.6193287037037037,
             "lo": 0.5579210317460318,
             "hi": 0.6928563752276867,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -6645,6 +6954,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_8": {
@@ -6663,6 +6980,14 @@
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
           }
         },
         "best_of_all": {
@@ -6678,6 +7003,14 @@
             "value": 0.6410714285714286,
             "lo": 0.5631316073726789,
             "hi": 0.712953477443609,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
             "n": 72,
             "n_parents": 72,
             "n_repos": 10
@@ -6919,7 +7252,10 @@
           "n_repos": 10
         },
         "attack_gate_rate": null,
-        "attack_win_rate": null
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
       },
       "n_ratings": 464,
       "n_prefs": 0,
@@ -7081,6 +7417,1496 @@
         }
       },
       "attack_transfer_src": "rubric-gpt6-luna"
+    },
+    "rubricx-gpt6-luna": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.6833526234567902,
+          "lo": 0.6107032719017094,
+          "hi": 0.7525984091553287,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.6892361111111112,
+          "lo": 0.6120450191570881,
+          "hi": 0.7612026406429391,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.6805555555555556,
+          "lo": 0.57475,
+          "hi": 0.7910464344941956,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.09722222222222222,
+          "lo": 0.0384469696969697,
+          "hi": 0.14866806461634047,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.875,
+          "lo": 0.8176450715421304,
+          "hi": 0.9230867346938776,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": {
+          "value": 0.8727272727272727,
+          "lo": 0.8339199759326112,
+          "hi": 0.9114363636363636,
+          "n": 385,
+          "n_parents": 55,
+          "n_repos": 10
+        },
+        "swe_rank_fail_no_tests": {
+          "value": 0.6844106463878327,
+          "lo": 0.6147103487110284,
+          "hi": 0.726390241263659,
+          "n": 1315,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_fail_score_touches_tests": {
+          "value": 1.4487179487179487,
+          "lo": 1.2285389610389612,
+          "hi": 1.6306340956340957,
+          "n": 78,
+          "n_parents": 55,
+          "n_repos": 10
+        },
+        "swe_fail_score_no_tests": {
+          "value": 2.2083333333333335,
+          "lo": 2.044331573360912,
+          "hi": 2.332326732229464,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer": {
+          "value": 0.28169014084507044,
+          "lo": 0.13330188679245283,
+          "hi": 0.38893678160919537,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.16901408450704225,
+          "lo": 0.05660377358490566,
+          "hi": 0.2717638339920948,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.625,
+          "lo": 0.5185185185185185,
+          "hi": 0.7164510110736638,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.09722222222222222,
+          "lo": 0.061783421233662005,
+          "hi": 0.15577283372365336,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.09722222222222222,
+          "lo": 0.0384469696969697,
+          "hi": 0.14866806461634047,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.875,
+          "lo": 0.8176450715421304,
+          "hi": 0.9230867346938776,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": {
+          "value": 0.5416666666666666,
+          "lo": 0.4567901234567901,
+          "hi": 0.6666666666666666,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_fair": {
+          "value": 0.1527777777777778,
+          "lo": 0.057971014492753624,
+          "hi": 0.25009920634920624,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie_fair": {
+          "value": 0.4166666666666667,
+          "lo": 0.36269286403085826,
+          "hi": 0.4905746140651801,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_before": {
+          "value": 0.125,
+          "lo": 0.04838709677419355,
+          "hi": 0.20290421195652175,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_before": {
+          "value": 0.125,
+          "lo": 0.034468147282291056,
+          "hi": 0.2,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.6892361111111112,
+          "lo": 0.6120450191570881,
+          "hi": 0.7612026406429391,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": {
+          "value": 0.4166666666666667,
+          "lo": 0.3103448275862069,
+          "hi": 0.490924499229584,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_rate": {
+          "value": 0.3888888888888889,
+          "lo": 0.2833333333333333,
+          "hi": 0.4791875,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_verified_tests": {
+          "value": 0.47126436781609193,
+          "lo": 0.33698501872659176,
+          "hi": 0.5842855628577486,
+          "n": 87,
+          "n_parents": 48,
+          "n_repos": 10
+        },
+        "attack_gate_unverified_tests": {
+          "value": 0.009523809523809525,
+          "lo": 0.0,
+          "hi": 0.034482758620689655,
+          "n": 105,
+          "n_parents": 50,
+          "n_repos": 10
+        },
+        "attack_tests_verified_share": {
+          "value": 0.453125,
+          "lo": 0.3841577689837975,
+          "hi": 0.5439216944801026,
+          "n": 192,
+          "n_parents": 72,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 2,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.6774563820018366,
+          "lo": 0.604744798309949,
+          "hi": 0.7674311622069795,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.6628787878787878,
+          "lo": 0.5957217534849596,
+          "hi": 0.76923828125,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.6262626262626262,
+          "lo": 0.5043859649122807,
+          "hi": 0.7738270308123248,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.6628787878787878,
+          "lo": 0.5957217534849596,
+          "hi": 0.76923828125,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "best_of_n": {
+        "1": {
+          "judge": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "2": {
+          "judge": {
+            "value": 0.6208564814814815,
+            "lo": 0.548763440860215,
+            "hi": 0.7033333333333333,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.7509259259259259,
+            "lo": 0.6963853070175441,
+            "hi": 0.8143873456790124,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "3": {
+          "judge": {
+            "value": 0.657962962962963,
+            "lo": 0.5791522260492409,
+            "hi": 0.7438787752227463,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.8643518518518518,
+            "lo": 0.8220173611111112,
+            "hi": 0.9169232804232805,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "4": {
+          "judge": {
+            "value": 0.6720331790123457,
+            "lo": 0.5887486832611833,
+            "hi": 0.7634346089336158,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9247222222222224,
+            "lo": 0.892510336652442,
+            "hi": 0.9624100490196077,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "5": {
+          "judge": {
+            "value": 0.6762577160493827,
+            "lo": 0.589511709235209,
+            "hi": 0.7700454545454545,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9587962962962963,
+            "lo": 0.9387472694174758,
+            "hi": 0.9824170075978961,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "6": {
+          "judge": {
+            "value": 0.6751658950617284,
+            "lo": 0.5869043937198067,
+            "hi": 0.7689915824915825,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9781018518518518,
+            "lo": 0.9664806166056165,
+            "hi": 0.9917790322580645,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "7": {
+          "judge": {
+            "value": 0.6747037037037037,
+            "lo": 0.5861315989930023,
+            "hi": 0.7647089530252775,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9910648148148147,
+            "lo": 0.9847057216329155,
+            "hi": 0.9970058816089046,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "8": {
+          "judge": {
+            "value": 0.6689468694885361,
+            "lo": 0.5787497973710317,
+            "hi": 0.7580523248438721,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9967592592592595,
+            "lo": 0.9929619883040935,
+            "hi": 0.9989913469668146,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        }
+      },
+      "goodhart": {
+        "best_of_1": {
+          "score": {
+            "value": 2.4253240740740742,
+            "lo": 2.366946400740308,
+            "hi": 2.484818872821654,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_2": {
+          "score": {
+            "value": 2.9078703703703703,
+            "lo": 2.8348946994535513,
+            "hi": 2.9807540739268683,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6208564814814815,
+            "lo": 0.548763440860215,
+            "hi": 0.7033333333333333,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_4": {
+          "score": {
+            "value": 3.244074074074074,
+            "lo": 3.156054559426229,
+            "hi": 3.331270058708415,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6737422839506172,
+            "lo": 0.5901928083028083,
+            "hi": 0.7650736238326148,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_8": {
+          "score": {
+            "value": 3.47087962962963,
+            "lo": 3.3472583870967747,
+            "hi": 3.5843350574712636,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6709277998236333,
+            "lo": 0.5826047527281745,
+            "hi": 0.7586094866071428,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_all": {
+          "score": {
+            "value": 3.5416666666666665,
+            "lo": 3.410882299927902,
+            "hi": 3.661544117647059,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6552248677248677,
+            "lo": 0.5695330859616574,
+            "hi": 0.739991883116883,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r1": {
+          "score": {
+            "value": 3.7916666666666665,
+            "lo": 3.6034414340448824,
+            "hi": 3.9176650660264105,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5444058641975309,
+            "lo": 0.4418559025220536,
+            "hi": 0.657137487437975,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.4685746352413019,
+            "lo": 0.4206700376034488,
+            "hi": 0.5263636136749344,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r2": {
+          "score": {
+            "value": 3.875,
+            "lo": 3.706871196754564,
+            "hi": 3.986671052631579,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5057870370370371,
+            "lo": 0.4140942028985507,
+            "hi": 0.6012207070707072,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.4348144910644911,
+            "lo": 0.3924829341805148,
+            "hi": 0.48640690759334826,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r3": {
+          "score": {
+            "value": 3.9305555555555554,
+            "lo": 3.754695210449927,
+            "hi": 4.072747326203208,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.4709986772486773,
+            "lo": 0.38183563425370143,
+            "hi": 0.5590972392387487,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.4075258075258075,
+            "lo": 0.37008470233470236,
+            "hi": 0.4545603854346571,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6.1-sol",
+      "attack_cost_usd": 3.1083551000000003
+    },
+    "rubricx-gpt6.1-sol": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.7454427083333334,
+          "lo": 0.6841397267039814,
+          "hi": 0.8103400306607154,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.7482638888888888,
+          "lo": 0.677875,
+          "hi": 0.8180226715686274,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.7638888888888888,
+          "lo": 0.6644967532467533,
+          "hi": 0.8384722222222222,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.020833333333333332,
+          "lo": 0.0,
+          "hi": 0.039778409090909086,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.9791666666666666,
+          "lo": 0.944424882629108,
+          "hi": 1.0,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": {
+          "value": 0.8662337662337662,
+          "lo": 0.811870353702037,
+          "hi": 0.9229746681281209,
+          "n": 385,
+          "n_parents": 55,
+          "n_repos": 10
+        },
+        "swe_rank_fail_no_tests": {
+          "value": 0.7391634980988593,
+          "lo": 0.6827671437264715,
+          "hi": 0.7861558243252964,
+          "n": 1315,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_fail_score_touches_tests": {
+          "value": 1.4871794871794872,
+          "lo": 1.2833254716981133,
+          "hi": 1.6666666666666667,
+          "n": 78,
+          "n_parents": 55,
+          "n_repos": 10
+        },
+        "swe_fail_score_no_tests": {
+          "value": 1.9236111111111112,
+          "lo": 1.7777571251548945,
+          "hi": 2.0690019426906265,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer": {
+          "value": 0.2222222222222222,
+          "lo": 0.12697408077154912,
+          "hi": 0.3103987068965517,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.027777777777777776,
+          "lo": 0.0,
+          "hi": 0.05714285714285714,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.5833333333333334,
+          "lo": 0.45709488272921106,
+          "hi": 0.6718963068181818,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.04861111111111111,
+          "lo": 0.015384615384615385,
+          "hi": 0.08,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.020833333333333332,
+          "lo": 0.0,
+          "hi": 0.039778409090909086,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9791666666666666,
+          "lo": 0.944424882629108,
+          "hi": 1.0,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": {
+          "value": 0.5211267605633803,
+          "lo": 0.4209808612440191,
+          "hi": 0.6333333333333333,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_fair": {
+          "value": 0.15492957746478872,
+          "lo": 0.06096637102734664,
+          "hi": 0.29327586206896533,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_or_tie_fair": {
+          "value": 0.39436619718309857,
+          "lo": 0.27497983870967746,
+          "hi": 0.5294117647058824,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_before": {
+          "value": 0.07042253521126761,
+          "lo": 0.01665983606557377,
+          "hi": 0.11688311688311688,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_gate_before": {
+          "value": 0.04225352112676056,
+          "lo": 0.0,
+          "hi": 0.08000892857142856,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.7482638888888888,
+          "lo": 0.677875,
+          "hi": 0.8180226715686274,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": {
+          "value": 0.28169014084507044,
+          "lo": 0.16363636363636364,
+          "hi": 0.4183754208754207,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_win_rate": {
+          "value": 0.30985915492957744,
+          "lo": 0.1875,
+          "hi": 0.4626934770591487,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_gate_verified_tests": {
+          "value": 0.2988505747126437,
+          "lo": 0.1313013310676862,
+          "hi": 0.48757665094339614,
+          "n": 87,
+          "n_parents": 46,
+          "n_repos": 10
+        },
+        "attack_gate_unverified_tests": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 101,
+          "n_parents": 42,
+          "n_repos": 10
+        },
+        "attack_tests_verified_share": {
+          "value": 0.4627659574468085,
+          "lo": 0.35964804252009336,
+          "hi": 0.5838772998945271,
+          "n": 188,
+          "n_parents": 71,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 2,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.790633608815427,
+          "lo": 0.7019801499672401,
+          "hi": 0.9001343157655453,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.8106060606060606,
+          "lo": 0.724353448275862,
+          "hi": 0.9166666666666666,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.8232323232323232,
+          "lo": 0.7413633461047254,
+          "hi": 0.9166666666666666,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.8106060606060606,
+          "lo": 0.724353448275862,
+          "hi": 0.9166666666666666,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.0,
+          "lo": 0.0,
+          "hi": 0.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9696969696969697,
+          "lo": 0.9333333333333333,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "best_of_n": {
+        "1": {
+          "judge": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "2": {
+          "judge": {
+            "value": 0.6386111111111111,
+            "lo": 0.5677175724637681,
+            "hi": 0.7228545995670996,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.7509259259259259,
+            "lo": 0.6963853070175441,
+            "hi": 0.8143873456790124,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "3": {
+          "judge": {
+            "value": 0.6816666666666666,
+            "lo": 0.6006571087216249,
+            "hi": 0.775587542087542,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.8643518518518518,
+            "lo": 0.8220173611111112,
+            "hi": 0.9169232804232805,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "4": {
+          "judge": {
+            "value": 0.6982793209876542,
+            "lo": 0.6106287689933523,
+            "hi": 0.7926765274008744,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9247222222222224,
+            "lo": 0.892510336652442,
+            "hi": 0.9624100490196077,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "5": {
+          "judge": {
+            "value": 0.7069189814814815,
+            "lo": 0.6137514470097803,
+            "hi": 0.8066767275588395,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9587962962962963,
+            "lo": 0.9387472694174758,
+            "hi": 0.9824170075978961,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "6": {
+          "judge": {
+            "value": 0.7116049382716049,
+            "lo": 0.6187482744107744,
+            "hi": 0.8148335052910052,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9781018518518518,
+            "lo": 0.9664806166056165,
+            "hi": 0.9917790322580645,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "7": {
+          "judge": {
+            "value": 0.7176001984126983,
+            "lo": 0.6233239495293067,
+            "hi": 0.8213020677437641,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9910648148148147,
+            "lo": 0.9847057216329155,
+            "hi": 0.9970058816089046,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "8": {
+          "judge": {
+            "value": 0.7193757716049383,
+            "lo": 0.6229301325507055,
+            "hi": 0.8264502917209909,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "oracle": {
+            "value": 0.9967592592592595,
+            "lo": 0.9929619883040935,
+            "hi": 0.9989913469668146,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        }
+      },
+      "goodhart": {
+        "best_of_1": {
+          "score": {
+            "value": 2.257546296296296,
+            "lo": 2.186995703170363,
+            "hi": 2.3500667929292933,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5085185185185185,
+            "lo": 0.4579194797926241,
+            "hi": 0.5712522514916131,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_2": {
+          "score": {
+            "value": 2.6504166666666666,
+            "lo": 2.586063725490196,
+            "hi": 2.7386622172784567,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6386111111111111,
+            "lo": 0.5677175724637681,
+            "hi": 0.7228545995670996,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_4": {
+          "score": {
+            "value": 2.9107407407407404,
+            "lo": 2.842064536340852,
+            "hi": 2.9928863636363636,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.7015625,
+            "lo": 0.6156784060846562,
+            "hi": 0.7989880694381626,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_8": {
+          "score": {
+            "value": 3.080740740740741,
+            "lo": 2.998584259259259,
+            "hi": 3.172165897875992,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.7206919091710758,
+            "lo": 0.6227886749751984,
+            "hi": 0.8274970834150969,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "best_of_all": {
+          "score": {
+            "value": 3.125,
+            "lo": 3.0344681472822908,
+            "hi": 3.2241379310344827,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.7257430455347121,
+            "lo": 0.6272573381204333,
+            "hi": 0.839186023093448,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.5137450897867565,
+            "lo": 0.4607313837782589,
+            "hi": 0.5763620594988519,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r1": {
+          "score": {
+            "value": 3.4166666666666665,
+            "lo": 3.2062629399585925,
+            "hi": 3.6366083916083913,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.6210978835978835,
+            "lo": 0.4978415750915751,
+            "hi": 0.7614994331065759,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.46889029180695846,
+            "lo": 0.4206700376034488,
+            "hi": 0.5263636136749344,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r2": {
+          "score": {
+            "value": 3.513888888888889,
+            "lo": 3.308641975308642,
+            "hi": 3.7812642045454545,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5664902998236331,
+            "lo": 0.4180855286409483,
+            "hi": 0.6947198172198173,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.43619798411465077,
+            "lo": 0.3934684633105685,
+            "hi": 0.48834118042451374,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        },
+        "pool_plus_attack_r3": {
+          "score": {
+            "value": 3.5694444444444446,
+            "lo": 3.4,
+            "hi": 3.812544642857143,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "pass": {
+            "value": 0.5512014991181657,
+            "lo": 0.4062565587363728,
+            "hi": 0.6791293461829176,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          },
+          "random": {
+            "value": 0.40958917625584296,
+            "lo": 0.36997984094758296,
+            "hi": 0.45614874742091166,
+            "n": 72,
+            "n_parents": 72,
+            "n_repos": 10
+          }
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6-luna",
+      "attack_cost_usd": 5.057188
     }
   },
   "rank_robustness": {

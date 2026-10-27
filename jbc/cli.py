@@ -448,7 +448,7 @@ def score():
     for d in sorted(p for p in RESULTS.iterdir() if p.is_dir()):
         ratings = read_jsonl(d / "ratings.jsonl", Rating)
         prefs = read_jsonl(d / "prefs.jsonl", Pref)
-        if not ratings and not prefs:
+        if not ratings and not prefs and not (d / "swe_ratings.jsonl").exists():
             continue
         board[d.name] = judge_scorecard(items, pairs, ratings, prefs, read_jsonl(d / "retest.jsonl", Rating))
         board[d.name]["mixed_effects"] = perturbation_effects(deltas(items, ratings))

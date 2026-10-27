@@ -194,8 +194,10 @@ export default function Findings() {
         The judge does follow the verdict: attacker tests marked failing or vacuous get essentially no credit. What
         survives is the share of attacker tests that genuinely fail without the (wrong) source change and pass with it:
         tests that faithfully specify the wrong behaviour. A fail-to-pass check of the PR's own tests cannot tell those
-        from correct tests, and mutation testing would not either. Only tests the agent did not write can. Real agent
-        patches rarely ship tests at all (79–89%), so the verdict leaves the ranking metric almost unchanged.
+        from correct tests, and mutation testing would not either. Only tests the agent did not write can. Attacks tuned
+        on the unverified judges transfer to the verified ones through the same items (section 2 table). Real agent
+        patches rarely ship tests at all (79–89%), so the verdict leaves the ranking metric almost unchanged, and the
+        dev-tuned cutoff is still R7 ≥ 2 with 58–63% false accepts.
       </p>
 
       <h2>What this does not show</h2>
