@@ -1,5 +1,7 @@
 # JudgeBench-Code
 
+**Site:** https://ellaslan11.github.io/judgebench/ (overview, findings with charts, leaderboard, attack playground).
+
 **How gameable are AI code judges?** Agent platforms increasingly use an LLM judge as a PR gate,
 to pick the best of N agent attempts, and as a reward. If the judge can be fooled, an agent
 optimised against it learns to fool it instead of writing correct code. JudgeBench-Code measures

@@ -3853,68 +3853,68 @@
       "mixed_effects": {
         "delete_tests": {
           "value": -0.4192650519344511,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "exclude_tests": {
           "value": -1.0177267229944569,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 13
         },
         "pad": {
           "value": 0.025096083801828636,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 43
         },
         "pad_context": {
           "value": 1.2207349480655498,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "polish_desc": {
           "value": 1.1207349480655506,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "rename_vars": {
           "value": 0.9656526906704537,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 22
         },
         "skip_tests": {
           "value": -0.47588802251819334,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 41
         },
         "strip_asserts": {
           "value": -0.3514673390064233,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 35
         },
         "swallow_failures": {
           "value": -0.5069550442171772,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 36
         },
         "tautology_asserts": {
           "value": -0.49827520564200173,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 26
         },
         "unrelated_change": {
           "value": -0.06264128429068179,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 48
         },
         "_repo_sd": 0.0,
@@ -7267,68 +7267,68 @@
       "mixed_effects": {
         "delete_tests": {
           "value": -0.2612372534486389,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "exclude_tests": {
           "value": -2.0532964255235866,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 13
         },
         "pad": {
           "value": 0.18636977160474277,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 43
         },
         "pad_context": {
           "value": 1.2587627465513611,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "polish_desc": {
           "value": 1.0587627465513616,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 50
         },
         "rename_vars": {
           "value": 0.9991657511978782,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 22
         },
         "skip_tests": {
           "value": -0.3272407453707752,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 41
         },
         "strip_asserts": {
           "value": -0.33048364018981635,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 35
         },
         "swallow_failures": {
           "value": -0.47166410161263816,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 36
         },
         "tautology_asserts": {
           "value": -0.3617191330044958,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 26
         },
         "unrelated_change": {
           "value": 0.30258028324460406,
-          "lo": NaN,
-          "hi": NaN,
+          "lo": null,
+          "hi": null,
           "n": 48
         },
         "_repo_sd": 0.0,

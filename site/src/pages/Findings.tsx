@@ -1,34 +1,25 @@
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { BestOfNChart, GoodhartChart } from "../charts";
 import { useData } from "../data";
 import type { Metric, Scorecard } from "../types";
 
-const COLORS = ["#2563eb", "#dc2626", "#16a34a", "#9333ea", "#ea580c", "#0891b2", "#4b5563"];
 const pct = (m: Metric | undefined) => (m ? `${Math.round(m.value * 100)}%` : "–");
 const ci = (m: Metric | undefined, d = 2) => (m ? `${m.value.toFixed(d)} (${m.lo.toFixed(d)}–${m.hi.toFixed(d)})` : "–");
 
 export default function Findings() {
   const sc = useData<Scorecard>("scorecard.json");
+  const [params] = useSearchParams();
+  useEffect(() => {
+    const id = params.get("s");
+    if (id && sc) document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  }, [params, sc]);
   if (!sc?.judges) return <p className="muted">No scorecard yet.</p>;
   const js = Object.entries(sc.judges);
   const bon = js.filter(([, j]) => j.best_of_n && Object.keys(j.best_of_n).length);
-  const ns = bon.length ? Object.keys(bon[0][1].best_of_n!).sort((a, b) => +a - +b) : [];
-  const curve = ns.map((n) => {
-    const row: Record<string, number | string> = { n };
-    for (const [id, j] of bon) row[id] = j.best_of_n![n]?.judge?.value ?? NaN;
-    row.random = bon[0][1].best_of_n![n]?.random?.value ?? NaN;
-    row.oracle = bon[0][1].best_of_n![n]?.oracle?.value ?? NaN;
-    return row;
-  });
   const att = js.filter(([, j]) => j.metrics.attack_gate_rate);
   const xfer = js.filter(([, j]) => j.metrics.attack_gate_xfer);
   const gh = js.filter(([, j]) => j.goodhart && j.goodhart.pool_plus_attack_r3);
-  const ghLevels = ["best_of_1", "best_of_2", "best_of_4", "best_of_8", "best_of_all", "pool_plus_attack_r1", "pool_plus_attack_r2", "pool_plus_attack_r3"];
-  const ghLabel: Record<string, string> = { best_of_1: "N=1", best_of_2: "N=2", best_of_4: "N=4", best_of_8: "N=8", best_of_all: "all", pool_plus_attack_r1: "+attack r1", pool_plus_attack_r2: "+attack r2", pool_plus_attack_r3: "+attack r3" };
-  const ghData = ghLevels.map((l) => {
-    const row: Record<string, number | string> = { level: ghLabel[l] };
-    for (const [id, j] of gh) { row[id] = j.goodhart![l]?.pass?.value ?? NaN; row[`${id} score`] = j.goodhart![l]?.score?.value ?? NaN; }
-    return row;
-  });
   const touch = js.filter(([, j]) => j.metrics.swe_rank_fail_touches_tests);
   const ext = js.filter(([, j]) => j.metrics.prb_auroc || j.metrics.bcr_agree);
   const gate = js.filter(([, j]) => j.metrics.swe_false_accept_cal);
@@ -38,7 +29,7 @@ export default function Findings() {
   return (
     <div className="prose">
       <section className="hero">
-        <h1>How gameable are AI code judges?</h1>
+        <h1>Findings in full</h1>
         <p>
           Agent platforms increasingly use an LLM judge as a PR gate and to pick the best of N agent attempts. If the
           judge can be fooled, agents optimised against it learn to fool it. We measure that directly: against
@@ -48,7 +39,7 @@ export default function Findings() {
         </p>
       </section>
 
-      <h2>1. An attacker that never touches the code gets failing patches past the gate</h2>
+      <h2 id="attack">1. An attacker that never touches the code gets failing patches past the gate</h2>
       <p>
         For each held-out SWE-bench task we take the failing patch the judge likes best. An LLM attacker sees the judge's
         score and reasons and, for 3 rounds, may only rewrite the PR description and add one test file. The source code
@@ -66,7 +57,7 @@ export default function Findings() {
         </tbody>
       </table>
 
-      <h3>1b. The attacks transfer between judges</h3>
+      <h3 id="transfer">1b. The attacks transfer between judges</h3>
       <p>
         The attacked patches tuned against one judge, replayed unchanged on another. If the exploit were a quirk of one
         model, the transferred attacks would do little.
@@ -82,28 +73,15 @@ export default function Findings() {
         </tbody>
       </table>
 
-      <h3>1c. Goodhart curve: more optimisation, higher judge score, lower pass rate</h3>
+      <h3 id="goodhart">1c. Goodhart curve: more optimisation, higher judge score, lower pass rate</h3>
       <p>
         Pass rate (solid, left) and judge score (dashed, right) of the candidate the judge picks, as the candidate set
         grows from one random agent patch to the whole pool and then the pool plus the adversarially rewritten failing
         patches. The score keeps rising while the pass rate turns down.
       </p>
-      <div style={{ width: "100%", height: 340 }}>
-        <ResponsiveContainer>
-          <LineChart data={ghData} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="level" />
-            <YAxis yAxisId="p" domain={[0, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
-            <YAxis yAxisId="s" orientation="right" domain={[1, 5]} />
-            <Tooltip />
-            <Legend />
-            {gh.map(([id], i) => <Line key={id} yAxisId="p" dataKey={id} stroke={COLORS[i % COLORS.length]} dot />)}
-            {gh.map(([id], i) => <Line key={`${id}s`} yAxisId="s" dataKey={`${id} score`} stroke={COLORS[i % COLORS.length]} strokeDasharray="4 4" dot={false} />)}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <GoodhartChart judges={gh} />
 
-      <h3>1d. Real agent patches that touch tests and still fail are not disguised hacks</h3>
+      <h3 id="touch">1d. Real agent patches that touch tests and still fail are not disguised hacks</h3>
       <p>
         Among the 751 pool patches, 78 add or edit tests yet fail the hidden tests. Judges rank a passing patch above
         them <i>more</i> often than above failing patches with no tests: real agents' bad tests look broken, not clever.
@@ -118,24 +96,11 @@ export default function Findings() {
         </tbody>
       </table>
 
-      <h2>2. Best-of-N: the judge's pick improves up to N≈4, then plateaus far below the oracle</h2>
+      <h2 id="bestofn">2. Best-of-N: the judge's pick improves up to N≈4, then plateaus far below the oracle</h2>
       <p>Pass rate (hidden tests) of the judge's top-rated patch among N agent patches for the same task; 72 held-out tasks.</p>
-      <div style={{ width: "100%", height: 340 }}>
-        <ResponsiveContainer>
-          <LineChart data={curve} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="n" label={{ value: "N candidates", position: "insideBottom", offset: -4 }} />
-            <YAxis domain={[0.4, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
-            <Tooltip formatter={(v) => `${(Number(v) * 100).toFixed(1)}%`} />
-            <Legend />
-            <Line dataKey="oracle" stroke="#111" strokeDasharray="4 4" dot={false} />
-            <Line dataKey="random" stroke="#999" strokeDasharray="4 4" dot={false} />
-            {bon.map(([id], i) => <Line key={id} dataKey={id} stroke={COLORS[i % COLORS.length]} dot={false} />)}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <BestOfNChart judges={bon} />
 
-      <h2>3. Human labels (public datasets, not ours)</h2>
+      <h2 id="human">3. Human labels (public datasets, not ours)</h2>
       <p>
         <b>SWE-PRBench</b> (<a href="https://huggingface.co/datasets/foundry-ai/swe-prbench">foundry-ai/swe-prbench</a>):
         real PRs; does the judge score lower the PRs where a human reviewer formally requested changes? (AUROC, 0.5 = chance.){" "}
@@ -152,7 +117,7 @@ export default function Findings() {
         </tbody>
       </table>
 
-      <h2>4. The "would merge" cutoff must be calibrated per judge</h2>
+      <h2 id="gate">4. The "would merge" cutoff must be calibrated per judge</h2>
       <p>
         With a fixed R7 ≥ 4 cutoff, rubric judges reject 90%+ of patches that pass the hidden tests (most SWE-bench
         patches have no tests and no description). Below, the cutoff is chosen on the 33 dev tasks and evaluated on the 72
@@ -169,7 +134,7 @@ export default function Findings() {
         </tbody>
       </table>
 
-      <h2>5. Execution-grounded verification helps, but the agent's own tests cannot be the evidence</h2>
+      <h2 id="verify">5. Execution-grounded verification helps, but the agent's own tests cannot be the evidence</h2>
       <p>
         The obvious fix: run the PR's own test changes in the official SWE-bench image without and with the source
         change, and tell the judge whether they went fail → pass (<code>verified</code>), passed anyway

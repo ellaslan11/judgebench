@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
@@ -110,4 +111,15 @@ def append_jsonl(path: Path, row: BaseModel) -> None:
 
 def dump_json(path: Path, obj) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, default=str))
+    path.write_text(json.dumps(_finite(obj), indent=2, default=str))
+
+
+def _finite(obj):
+    """Replace NaN/inf with null so the output is valid JSON for browsers."""
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
+    if isinstance(obj, dict):
+        return {k: _finite(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_finite(v) for v in obj]
+    return obj
