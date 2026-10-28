@@ -65,4 +65,8 @@ export type DemoAttack = {
   judge: string; target: string; repo: string; url: string; task: string; description: string; diff: string;
   before: { r7: number; reason: string }; rounds: DemoRound[];
 };
-export type Demo = { attacks: DemoAttack[] };
+export type DemoHook = {
+  judge: string; item: string; repo: string; url: string; task: string; diff: string; r7: number; reason: string; n_false_accept: number;
+};
+export type DemoRetest = { judge: string; parent: string; url: string; spread: number; scores: number[]; reasons: string[] };
+export type Demo = { attacks: DemoAttack[]; hook?: DemoHook | null; retest?: DemoRetest[] };

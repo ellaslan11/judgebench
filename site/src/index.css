@@ -111,3 +111,21 @@ ol.findings li { margin: 10px 0; }
 .demo .tag.good { color: var(--good); border-color: var(--good); } .demo .tag.bad { color: var(--bad); border-color: var(--bad); }
 .demo .reason { color: var(--muted); font-size: 15px; margin: 8px 0 0; line-height: 1.5; }
 .demo select { background: var(--panel); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; }
+.demo .notes { border-left: 3px solid var(--accent); background: var(--panel); padding: 10px 14px; margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.demo .notes b { color: var(--fg); }
+.demo .preds { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 6px; margin: 14px 0; }
+.demo .pred { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; font-size: 13px; line-height: 1.35; padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
+.demo .pred .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+.demo .pred .note { color: var(--muted); }
+.demo .pred.held { border-left: 4px solid var(--good); } .demo .pred.failed { border-left: 4px solid var(--bad); }
+.demo .pred.ill-posed { border-left: 4px solid var(--mid); } .demo .pred.pending { border-left: 4px solid var(--muted); }
+.demo .tally { display: flex; gap: 18px; font-size: 17px; margin: 8px 0; }
+.demo .tally .held { color: var(--good); } .demo .tally .failed { color: var(--bad); } .demo .tally .ill-posed { color: var(--mid); }
+.demo .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.demo .cell { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--panel); font-size: 16px; line-height: 1.45; }
+.demo .cell h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .3px; color: var(--muted); }
+.demo .ladder { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 12px 0; }
+.demo .ladder .cell .big { font-size: 34px; }
+.demo .mode { font-size: 13px; color: var(--muted); }
+.demo kbd { font-family: ui-monospace, Menlo, monospace; font-size: 12px; border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; background: var(--panel); }
+@media (max-width: 900px) { .demo .grid2 { grid-template-columns: 1fr; } }

@@ -81,3 +81,25 @@ export function AttackChart({ judges, height = 300 }: { judges: Entry[]; height?
     </div>
   );
 }
+
+export type Step = { label: string; before: number | null; after: number | null };
+
+/** One bar per defence level: attacked failing patches rated "would merge". */
+export function DefenceChart({ steps, height = 300 }: { steps: Step[]; height?: number }) {
+  const data = steps.map((s) => ({ label: s.label, before: s.before ?? 0, after: s.after ?? 0 }));
+  return (
+    <div className="chart" style={{ width: "100%", height }}>
+      <ResponsiveContainer>
+        <BarChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
+          <XAxis dataKey="label" stroke="var(--muted)" />
+          <YAxis domain={[0, 1]} tickFormatter={pctTick} stroke="var(--muted)" />
+          <Tooltip formatter={(v) => pctTick(Number(v))} />
+          <Legend />
+          <Bar dataKey="before" name="untouched failing patch" fill="var(--muted)" isAnimationActive={false} />
+          <Bar dataKey="after" name="after the attack" fill="var(--bad)" isAnimationActive={false} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}

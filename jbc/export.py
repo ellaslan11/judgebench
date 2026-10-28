@@ -82,7 +82,8 @@ def export_site(out: Path, showcase: int = 10) -> None:
                            "task": first.task[:3000], "showcase": pid in show,
                            "variants": variants})
     (out / "playground.json").write_text(json.dumps(playground))
-    (out / "demo.json").write_text(json.dumps({"attacks": _demo_attacks()}))
+    (out / "demo.json").write_text(json.dumps({"attacks": _demo_attacks(), "hook": _demo_hook(),
+                                               "retest": _demo_retest(items, ratings)}))
 
 
 DEMO_JUDGES = ("rubric-gpt6.1-sol", "rubric-gpt6-luna", "rubricx-gpt6.1-sol", "rubricx-gpt6-luna")
@@ -128,4 +129,54 @@ def _demo_attacks(judges: tuple[str, ...] = DEMO_JUDGES, per_judge: int = 3) -> 
                 "description": item.description or "", "diff": item.diff[:MAX_DIFF],
                 "before": {"r7": start.overall, "reason": start.reasons.get("R7", "")}, "rounds": rounds,
             })
+    return out
+
+
+def _demo_hook(judge: str = "rubric-gpt6.1-sol") -> dict | None:
+    """A held-out agent patch that fails the hidden tests but the full judge rates "would merge"."""
+    from jbc.swe import split_of
+
+    swe_path, out_path = DATA / "swe" / "items.jsonl", DATA / "swe" / "outcomes.json"
+    d = RESULTS / judge
+    if not (swe_path.exists() and out_path.exists() and (d / "swe_ratings.jsonl").exists()):
+        return None
+    swe = {i.id: i for i in read_jsonl(swe_path, Item)}
+    outcomes = json.loads(out_path.read_text())
+    cands = [r for r in read_jsonl(d / "swe_ratings.jsonl", Rating)
+             if r.item_id in swe and outcomes.get(r.item_id) is False and r.overall >= 4
+             and split_of(r.item_id.split("::")[0]) == "test"]
+    if not cands:
+        return None
+    r = min(cands, key=lambda r: (-r.overall, len(swe[r.item_id].diff)))
+    it = swe[r.item_id]
+    return {"judge": judge, "item": it.id, "repo": it.id.split("#")[0], "url": it.url, "task": it.task[:3000],
+            "diff": it.diff[:MAX_DIFF], "r7": r.overall, "reason": r.reasons.get("R7", ""),
+            "n_false_accept": len(cands)}
+
+
+def _demo_retest(items: list[Item], ratings: dict[str, dict[str, Rating]],
+                 judges: tuple[str, ...] = ("rubric-gpt6.1-sol", "rubric-gpt6-luna"), per_judge: int = 3) -> list[dict]:
+    """Unchanged PRs whose repeated gradings disagree: the noise floor, shown on one PR."""
+    by_id = {i.id: i for i in items}
+    out: list[dict] = []
+    for j in judges:
+        p = RESULTS / j / "retest.jsonl"
+        if not p.exists():
+            continue
+        runs: dict[str, list[Rating]] = defaultdict(list)
+        base = ratings.get(j, {})
+        for r in read_jsonl(p, Rating):
+            runs[r.item_id].append(r)
+        rows = []
+        for iid, rs in runs.items():
+            if iid not in by_id or iid not in base:
+                continue
+            all_r = [base[iid]] + sorted(rs, key=lambda r: r.meta.get("sample", 0))
+            scores = [r.overall for r in all_r]
+            rows.append((max(scores) - min(scores), len(by_id[iid].diff), iid, all_r))
+        rows.sort(key=lambda t: (-t[0], t[1]))
+        for spread, _, iid, all_r in rows[:per_judge]:
+            it = by_id[iid]
+            out.append({"judge": j, "parent": it.parent_id, "url": it.url, "spread": spread,
+                        "scores": [r.overall for r in all_r], "reasons": [r.reasons.get("R7", "") for r in all_r]})
     return out
