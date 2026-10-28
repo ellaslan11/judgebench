@@ -289,7 +289,7 @@ beat it, the attacker's test must also pass on other agents' patches, which is p
 other agents made the same mistake; the share of failing targets for which some other failing
 candidate passes the attacker's test is reported alongside P19.
 
-## Results v5: channel ablation and cross-candidate test consensus (partial: GPT-6.1-sol `codetests`/`codedesc` attack replays and the `rubricxc-*` judges were not run, OpenAI credit ran out)
+## Results v5: channel ablation and cross-candidate test consensus
 
 Setup A, channel ablation (test split, 72 tasks; replayed attacks are the ones tuned against the full
 judge of the same model, `attack_gate_xfer_before` is the variant's own rating of the untouched target).
@@ -298,8 +298,8 @@ judge of the same model, `attack_gate_xfer_before` is the variant's own rating o
 |---|---:|---:|---:|---:|---:|
 | `rubric-gpt6.1-sol` (full) | 0.72 [0.67, 0.78] | 0.03 | 0.07 (own attack) | 0.32 | 0.25 |
 | `rubric-code-gpt6.1-sol` | 0.70 [0.64, 0.77] | 0.19 | 0.31 [0.21, 0.40] | 0.31 [0.21, 0.40] | 0.18 |
-| `rubric-codetests-gpt6.1-sol` | 0.70 [0.64, 0.77] | 0.03 | not run | not run | not run |
-| `rubric-codedesc-gpt6.1-sol` | 0.72 [0.65, 0.78] | 0.19 | not run | not run | not run |
+| `rubric-codetests-gpt6.1-sol` | 0.70 [0.64, 0.77] | 0.03 | 0.06 [0.02, 0.10] | 0.28 [0.15, 0.40] | 0.24 |
+| `rubric-codedesc-gpt6.1-sol` | 0.72 [0.65, 0.78] | 0.19 | 0.32 [0.24, 0.45] | 0.38 [0.28, 0.49] | 0.20 |
 | `rubric-gpt6-luna` (full) | 0.66 [0.59, 0.74] | 0.08 | 0.15 (own attack) | 0.61 | 0.22 |
 | `rubric-code-gpt6-luna` | 0.66 [0.55, 0.78] | 0.33 | 0.47 [0.36, 0.55] | 0.49 [0.36, 0.58] | 0.25 |
 | `rubric-codetests-gpt6-luna` | 0.64 [0.55, 0.72] | 0.10 | 0.17 [0.09, 0.23] | 0.53 [0.40, 0.63] | 0.21 |
@@ -318,10 +318,20 @@ judge of the same model, `attack_gate_xfer_before` is the variant's own rating o
   attack lever (replayed lift 0.00 / +0.02, as constructed), and a fair-win rate (0.18 / 0.25) in the
   same range as the attacked full judge (0.25 / 0.22): stripping channels removes the exploit by
   conceding what it would have won. It does not produce a usable gate.
-- **P17 holds for GPT-6-luna** (`codetests` lift 0.17 -> 0.53 = 0.36, against 0.46 for the full
-  judge, 78%); **P16 fails for GPT-6-luna** (`codedesc` lift 0.49 -> 0.57 = 0.08, 17%; most of the
-  description's effect is already absorbed by the higher baseline). GPT-6.1-sol: not run.
-- **P18 not run** (controlled set with the `code` variant).
+- **P17 holds for both models** (`codetests` lift: GPT-6.1-sol 0.06 -> 0.28 = 0.22 against 0.25 for
+  the full judge, 88%; GPT-6-luna 0.17 -> 0.53 = 0.36 against 0.46, 78%). **P16 fails for both**
+  (`codedesc` lift: 0.32 -> 0.38 = 0.06, 24%; 0.49 -> 0.57 = 0.08, 17%; most of the description's
+  effect is already absorbed by the higher no-tests baseline). Reading per the rule above: the test
+  channel is the problem; the description is a minor lever.
+- **P18 is ill-posed, not failed.** The premise "the scripted hacks are in the code" was wrong: all
+  201 hack items (`delete_tests`, `skip_tests`, `strip_asserts`, `tautology_asserts`,
+  `swallow_failures`, `exclude_tests`) differ from their parent only in test files, so the `code`
+  variant receives a prompt byte-identical to the parent's and cannot catch them by construction.
+  Observed `hack_catch_rate`: full 0.85 / 0.91, `code` 0.03 / 0.15 (GPT-6.1-sol / GPT-6-luna); for
+  the `code` variant 86% of hack ratings equal the parent's score exactly and the rest are regrade
+  noise in both directions (the same-prompt disagreement rate matches `retest_drop`). Consequence:
+  withholding the test channel also removes the only evidence of test tampering; the channel that
+  carries the exploit is the channel a judge needs in order to see the hacks.
 
 Setup B, cross-candidate consensus. 738 `verified` test sets x up to 6 other candidates = 4,428 runs,
 all 72 held-out tasks, 0 runs without a result. Shares below are of test sets whose tests pass on
@@ -346,6 +356,32 @@ all 72 held-out tasks, 0 runs without a result. Shares below are of test sets wh
   patches, like legitimate tests.
 - The 28 genuine `verified` test sets are too few for the real-agent rows to carry weight on their
   own; 79-89% of agent patches ship no tests.
-- **P20, P21 not run.** Given P19, a `rubricxc-*` judge that obeys k = 0 as it obeyed `failing`
-  verdicts could at most remove ~40% of the residual attack (to roughly 0.17 and 0.25 at "would
-  merge"), above the P20 thresholds of 0.14 and 0.21; this is an inference, not a result.
+Consensus-aware judges (`rubricxc-*` = `rubricx-*` + the k-of-n sentence), test split; attacks are
+the ones tuned against `rubricx-*` of the same model, replayed without re-tuning.
+
+| Judge | `swe_pair_acc` | false accept at dev cutoff | untouched failing target | after replayed attack | fair win | P20 threshold |
+|---|---:|---:|---:|---:|---:|---:|
+| `rubricx-gpt6-luna` | 0.69 [0.61, 0.76] | 0.10 | 0.12 (own attack) | 0.42 [0.31, 0.49] | 0.15 | |
+| `rubricxc-gpt6-luna` | 0.69 [0.61, 0.75] | 0.08 | 0.12 [0.05, 0.21] | **0.33 [0.23, 0.40]** | 0.19 | < 0.21 |
+| `rubricx-gpt6.1-sol` | 0.75 [0.68, 0.82] | 0.02 | 0.07 (own attack) | 0.28 [0.16, 0.42] | 0.16 | |
+| `rubricxc-gpt6.1-sol` | 0.74 [0.67, 0.82] | 0.01 | 0.03 [0.00, 0.06] | **0.25 [0.14, 0.41]** | 0.18 | < 0.14 |
+
+- **P20 fails for GPT-6-luna** (0.42 -> 0.33, a 21% relative drop against the predicted >= 50%),
+  consistent with the P19 ceiling: the note can only discount the ~40% of residual attacker tests that
+  no other candidate corroborates, and the judge appears to do roughly that. The fair-win rate did not
+  improve (0.15 -> 0.19, inside noise). **P20 fails for GPT-6.1-sol too** (0.28 -> 0.25, an 11% relative drop; CI 0.14-0.41 overlaps the
+  unverified judge's 0.28-0.42). Smaller effect than luna: the sol attacker's surviving tests were already
+  the genuine fail-to-pass kind, and most of those are corroborated by other candidates.
+- **P21 holds for both models** (0.69 -> 0.69, 0.75 -> 0.74; false accepts unchanged or lower). The
+  consensus sentence costs nothing on honest patches, because 89-100% of genuine fail-to-pass tests
+  are corroborated and the note rarely fires on them.
+- Net for v5: P15, P17, P21 held; P16, P19, P20 failed; P18 ill-posed. Each cheap defence tried so far
+  (strip channels, verify the PR's own tests, cross-check against the agent pool) removes one lever and
+  leaves roughly half the residual attack, for a reason established by measurement rather than
+  assumption: attacker tests are not decorative (P14), wrong tests are not unique to one agent (P19),
+  and the channel carrying the exploit is also the only one in which test tampering is visible (P18).
+  The remaining candidate defence is tests written without sight of any patch (blind generation from
+  the issue), which is the next experiment; it is not claimed here.
+- Caveat on the `rubricxc-*` rows: replayed attacks do not model an attacker that sees consensus
+  feedback. To beat the note it must write a test other agents' patches also pass, which P19 shows is
+  possible for 60% of targets; so the replayed figure is a lower bound on an adaptive attacker.

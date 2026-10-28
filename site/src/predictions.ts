@@ -20,6 +20,6 @@ export const PREDICTIONS: Pred[] = [
   { id: "P17", v: "v5", text: "Test channel alone carries ≥ half the attack lift", result: "held", note: "88% (sol), 78% (luna)" },
   { id: "P18", v: "v5", text: "Code-only judge catches scripted hacks within 0.05 of full", result: "ill-posed", note: "all 201 scripted hacks live in test files; code-only sees the parent's exact prompt" },
   { id: "P19", v: "v5", text: "≤ 35% of attacker tests on failing patches pass on another agent's patch", result: "failed", note: "60%: other agents make the same mistakes" },
-  { id: "P20", v: "v5", text: "Consensus halves the residual attack (< 21% luna, < 14% sol)", result: "pending", note: "luna 42% → 33%: failed; sol pending" },
+  { id: "P20", v: "v5", text: "Consensus halves the residual attack (< 21% luna, < 14% sol)", result: "failed", note: "luna 42% → 33%, sol 28% → 25%: a fifth and a tenth off, not half" },
   { id: "P21", v: "v5", text: "Consensus-aware judge ranks within 0.03 of execution-checked", result: "held", note: "0.69 → 0.69, 0.75 → 0.74" },
 ];

@@ -77,9 +77,11 @@ false-accept rate at the dev cutoff goes 0.03 -> 0.19 and 0.08 -> 0.33; the code
 the low baseline. Much of the full judge's apparent discrimination on failing patches was penalising
 missing tests, and the attacker's one test file supplied exactly that. Replayed attacks add nothing to
 the code-only judge (by construction), but it already sits where the attack pushes the full judge;
-stripping channels removes the lever by conceding the ground. On luna, the test channel alone carries
-78% of the attack lift and the description alone 17% (P17 held, P16 failed; GPT-6.1-sol replays and
-the controlled set were not run).
+stripping channels removes the lever by conceding the ground. The test channel alone carries 78-88% of
+the attack lift and the description alone 17-24% (P17 held, P16 failed, both models). P18 (code-only
+catches the scripted hacks) was ill-posed: all 201 scripted hacks live in test files, so the code-only
+judge sees the parent's exact prompt and catches 3-15% (regrade noise) against 85-91% for the full
+judge. The channel that carries the exploit is the only one in which test tampering is visible.
 
 **Cross-candidate test consensus (P19 failed).** Each genuinely fail-to-pass test set was also run
 against up to 6 *other* agents' patches for the same task (4,428 container runs, no hidden tests, no
@@ -88,7 +90,12 @@ labels). 60% of the attacker's tests on failing patches pass on at least one oth
 against a predicted ceiling of 35%. Of those, 39% pass only on other *failing* patches (shared
 mistakes) and 61% also pass on a *correct* patch: fail-to-pass tests of behaviour the wrong patch
 happens to get right. An execution check against the agent pool can flag at most the ~40% of residual
-attacker tests unique to their own patch; the consensus-aware judge (`rubricxc-*`) was not run.
+attacker tests unique to their own patch. Telling the judge the k-of-n count (`rubricxc-*`) does about
+that: replayed attacks at "would merge" go 42% -> 33% for GPT-6-luna (P20 predicted < 21%: failed)
+and 28% -> 25% for GPT-6.1-sol (predicted < 14%: failed); ranking is unchanged (0.69 -> 0.69, 0.75 -> 0.74; P21 held). Three defences, each
+removes a lever and leaves roughly half the attack; the common cause is that a test of what the patch
+does is indistinguishable from a test of what the issue needs unless it was written without sight of
+any patch.
 
 **What this does not show:** that any judge is "best" or safe as a reward signal; that passing
 hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).
