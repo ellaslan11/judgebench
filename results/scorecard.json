@@ -4003,6 +4003,1364 @@
         }
       }
     },
+    "rubric-code-gpt6-luna": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.6697530864197531,
+          "lo": 0.5823796605180533,
+          "hi": 0.7597912965348823,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.6649305555555556,
+          "lo": 0.5541382575757576,
+          "hi": 0.776650443989071,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.613425925925926,
+          "lo": 0.47448216520650804,
+          "hi": 0.7743672839506172,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.3333333333333333,
+          "lo": 0.22879497472494797,
+          "hi": 0.4156359816653934,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.4305555555555556,
+          "lo": 0.34810126582278483,
+          "hi": 0.5545707070707071,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": {
+          "value": 0.4861111111111111,
+          "lo": 0.3620689655172414,
+          "hi": 0.5766066066066066,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.4722222222222222,
+          "lo": 0.3579723791588198,
+          "hi": 0.5529411764705883,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.4375,
+          "lo": 0.33605679156908663,
+          "hi": 0.5233931189298149,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.2361111111111111,
+          "lo": 0.17459415584415583,
+          "hi": 0.3148611111111111,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.3333333333333333,
+          "lo": 0.22879497472494797,
+          "hi": 0.4156359816653934,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.4305555555555556,
+          "lo": 0.34810126582278483,
+          "hi": 0.5545707070707071,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.6649305555555556,
+          "lo": 0.5541382575757576,
+          "hi": 0.776650443989071,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null,
+        "attack_win_fair_xfer": {
+          "value": 0.25,
+          "lo": 0.1,
+          "hi": 0.38333904109589045,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 3,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.713613406795225,
+          "lo": 0.6651261493433962,
+          "hi": 0.7816164516129032,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.6856060606060606,
+          "lo": 0.631093931475029,
+          "hi": 0.7727840909090908,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.696969696969697,
+          "lo": 0.5794318181818182,
+          "hi": 0.8636363636363636,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.6856060606060606,
+          "lo": 0.631093931475029,
+          "hi": 0.7727840909090908,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.2878787878787879,
+          "lo": 0.19640916149068322,
+          "hi": 0.3800588235294117,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.4393939393939394,
+          "lo": 0.34846837944664033,
+          "hi": 0.5371111111111111,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.2878787878787879,
+          "lo": 0.19640916149068322,
+          "hi": 0.3800588235294117,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.4393939393939394,
+          "lo": 0.34846837944664033,
+          "hi": 0.5371111111111111,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.2878787878787879,
+          "lo": 0.19640916149068322,
+          "hi": 0.3800588235294117,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.4393939393939394,
+          "lo": 0.34846837944664033,
+          "hi": 0.5371111111111111,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6-luna"
+    },
+    "rubric-code-gpt6.1-sol": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.7234519675925926,
+          "lo": 0.6634726851851852,
+          "hi": 0.7858002081342178,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.703125,
+          "lo": 0.6399778225806452,
+          "hi": 0.7714316502463054,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.6712962962962963,
+          "lo": 0.6037586103623839,
+          "hi": 0.738829972942306,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.19444444444444445,
+          "lo": 0.15078886976477338,
+          "hi": 0.23973287671232874,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.5625,
+          "lo": 0.4683232011992005,
+          "hi": 0.6603933482571154,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": {
+          "value": 0.30985915492957744,
+          "lo": 0.21425644028103044,
+          "hi": 0.39656440162271805,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.30985915492957744,
+          "lo": 0.21425644028103044,
+          "hi": 0.39656440162271805,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.3472222222222222,
+          "lo": 0.254537750385208,
+          "hi": 0.41752718930553984,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.2361111111111111,
+          "lo": 0.16666666666666666,
+          "hi": 0.30770833333333336,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.19444444444444445,
+          "lo": 0.15078886976477338,
+          "hi": 0.23973287671232874,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.5625,
+          "lo": 0.4683232011992005,
+          "hi": 0.6603933482571154,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.703125,
+          "lo": 0.6399778225806452,
+          "hi": 0.7714316502463054,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null,
+        "attack_win_fair_xfer": {
+          "value": 0.18309859154929578,
+          "lo": 0.10141304347826088,
+          "hi": 0.26088628762541805,
+          "n": 71,
+          "n_parents": 71,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 3,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.8095730027548209,
+          "lo": 0.7250199041656582,
+          "hi": 0.9084398643448663,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.8295454545454546,
+          "lo": 0.7544534850230414,
+          "hi": 0.9152157738095238,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.8434343434343434,
+          "lo": 0.7246251874062969,
+          "hi": 0.9512485481997677,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.8295454545454546,
+          "lo": 0.7544534850230414,
+          "hi": 0.9152157738095238,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.16666666666666666,
+          "lo": 0.057692307692307696,
+          "hi": 0.265625,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.4696969696969697,
+          "lo": 0.33739583333333334,
+          "hi": 0.6000862068965517,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.16666666666666666,
+          "lo": 0.057692307692307696,
+          "hi": 0.265625,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.4696969696969697,
+          "lo": 0.33739583333333334,
+          "hi": 0.6000862068965517,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.16666666666666666,
+          "lo": 0.057692307692307696,
+          "hi": 0.265625,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.4696969696969697,
+          "lo": 0.33739583333333334,
+          "hi": 0.6000862068965517,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6.1-sol"
+    },
+    "rubric-codedesc-gpt6-luna": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.6599392361111112,
+          "lo": 0.5776291566506411,
+          "hi": 0.7391498823282548,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.6493055555555556,
+          "lo": 0.557810379918589,
+          "hi": 0.7324034725594949,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.5763888888888888,
+          "lo": 0.436492673992674,
+          "hi": 0.6995075757575757,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.3472222222222222,
+          "lo": 0.2455748746867168,
+          "hi": 0.4252934702861335,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.4444444444444444,
+          "lo": 0.3620689655172414,
+          "hi": 0.5507723112128146,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": {
+          "value": 0.5694444444444444,
+          "lo": 0.4398695652173913,
+          "hi": 0.684805900621118,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.4861111111111111,
+          "lo": 0.35442378691983123,
+          "hi": 0.5967741935483871,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.4583333333333333,
+          "lo": 0.366656976744186,
+          "hi": 0.5416920731707316,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.22916666666666666,
+          "lo": 0.17897782651072125,
+          "hi": 0.28265554722638675,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.3472222222222222,
+          "lo": 0.2455748746867168,
+          "hi": 0.4252934702861335,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.4444444444444444,
+          "lo": 0.3620689655172414,
+          "hi": 0.5507723112128146,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.6493055555555556,
+          "lo": 0.557810379918589,
+          "hi": 0.7324034725594949,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null,
+        "attack_win_fair_xfer": {
+          "value": 0.20833333333333334,
+          "lo": 0.1363496071829405,
+          "hi": 0.2659751773049645,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 3,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.7341597796143251,
+          "lo": 0.6758884984442054,
+          "hi": 0.8126665562185621,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.7083333333333334,
+          "lo": 0.6562288851351351,
+          "hi": 0.7903225806451613,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.6919191919191919,
+          "lo": 0.6009848484848485,
+          "hi": 0.8209876543209875,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.7083333333333334,
+          "lo": 0.6562288851351351,
+          "hi": 0.7903225806451613,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.25757575757575757,
+          "lo": 0.1590909090909091,
+          "hi": 0.34214638157894733,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.45454545454545453,
+          "lo": 0.35482190860215057,
+          "hi": 0.53573606271777,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.25757575757575757,
+          "lo": 0.1590909090909091,
+          "hi": 0.34214638157894733,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.45454545454545453,
+          "lo": 0.35482190860215057,
+          "hi": 0.53573606271777,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.25757575757575757,
+          "lo": 0.1590909090909091,
+          "hi": 0.34214638157894733,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.45454545454545453,
+          "lo": 0.35482190860215057,
+          "hi": 0.53573606271777,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6-luna"
+    },
+    "rubric-codedesc-gpt6.1-sol": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.7303964120370371,
+          "lo": 0.6754446976957679,
+          "hi": 0.7851806822581783,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.7152777777777778,
+          "lo": 0.65,
+          "hi": 0.7767917471042471,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.6782407407407407,
+          "lo": 0.5833333333333333,
+          "hi": 0.7499999999999999,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.1875,
+          "lo": 0.144565550336941,
+          "hi": 0.2431112421383647,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.5833333333333334,
+          "lo": 0.49165570175438594,
+          "hi": 0.6746130952380953,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": null,
+        "attack_gate_xfer_before": null,
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.3333333333333333,
+          "lo": 0.2538405797101449,
+          "hi": 0.39760430611334224,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.25,
+          "lo": 0.182521645021645,
+          "hi": 0.3189991918103448,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.1875,
+          "lo": 0.144565550336941,
+          "hi": 0.2431112421383647,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.5833333333333334,
+          "lo": 0.49165570175438594,
+          "hi": 0.6746130952380953,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.7152777777777778,
+          "lo": 0.65,
+          "hi": 0.7767917471042471,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 3,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.8135904499540864,
+          "lo": 0.7455417453990256,
+          "hi": 0.9075628698224852,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.8409090909090909,
+          "lo": 0.7525930851063829,
+          "hi": 0.9375,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.8484848484848485,
+          "lo": 0.7380772005772005,
+          "hi": 0.9514136904761904,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.8409090909090909,
+          "lo": 0.7525930851063829,
+          "hi": 0.9375,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.18181818181818182,
+          "lo": 0.06,
+          "hi": 0.28578296703296696,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.45454545454545453,
+          "lo": 0.3181818181818182,
+          "hi": 0.5862256371814092,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.18181818181818182,
+          "lo": 0.06,
+          "hi": 0.28578296703296696,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.45454545454545453,
+          "lo": 0.3181818181818182,
+          "hi": 0.5862256371814092,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.18181818181818182,
+          "lo": 0.06,
+          "hi": 0.28578296703296696,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.45454545454545453,
+          "lo": 0.3181818181818182,
+          "hi": 0.5862256371814092,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      }
+    },
+    "rubric-codetests-gpt6-luna": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.6451340663580247,
+          "lo": 0.5618678472101091,
+          "hi": 0.7142397776032071,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.6440972222222222,
+          "lo": 0.5509027777777777,
+          "hi": 0.7178380270092226,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.6087962962962963,
+          "lo": 0.4978395061728395,
+          "hi": 0.7083458835341365,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.10416666666666667,
+          "lo": 0.058823529411764705,
+          "hi": 0.1441637289463376,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.9444444444444444,
+          "lo": 0.9081286751988932,
+          "hi": 0.9722298534798535,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": {
+          "value": 0.5277777777777778,
+          "lo": 0.39705882352941174,
+          "hi": 0.6304526015680685,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_xfer_before": {
+          "value": 0.16666666666666666,
+          "lo": 0.08822239422084624,
+          "hi": 0.2278661844484629,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.6458333333333334,
+          "lo": 0.5662650602409639,
+          "hi": 0.7222435897435897,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.09027777777777778,
+          "lo": 0.04375,
+          "hi": 0.16102378348824492,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.10416666666666667,
+          "lo": 0.058823529411764705,
+          "hi": 0.1441637289463376,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9444444444444444,
+          "lo": 0.9081286751988932,
+          "hi": 0.9722298534798535,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.6440972222222222,
+          "lo": 0.5509027777777777,
+          "hi": 0.7178380270092226,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null,
+        "attack_win_fair_xfer": {
+          "value": 0.20833333333333334,
+          "lo": 0.10144927536231885,
+          "hi": 0.3231168831168831,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        }
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 2,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.6889348025711662,
+          "lo": 0.6321612720310874,
+          "hi": 0.7654823263527576,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.678030303030303,
+          "lo": 0.6208217592592593,
+          "hi": 0.7604279891304347,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.6161616161616161,
+          "lo": 0.5208175505050504,
+          "hi": 0.7365662139219018,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.678030303030303,
+          "lo": 0.6208217592592593,
+          "hi": 0.7604279891304347,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.9545454545454546,
+          "lo": 0.9090909090909091,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9545454545454546,
+          "lo": 0.9090909090909091,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.045454545454545456,
+          "lo": 0.0,
+          "hi": 0.1,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9545454545454546,
+          "lo": 0.9090909090909091,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      },
+      "attack_transfer_src": "rubric-gpt6-luna"
+    },
+    "rubric-codetests-gpt6.1-sol": {
+      "metrics": {
+        "hack_catch_rate": null,
+        "subtle_hack_catch": null,
+        "scope_sensitivity": null,
+        "length_bias": null,
+        "context_bias": null,
+        "desc_gaming": null,
+        "stability": null,
+        "pairwise_acc": null,
+        "position_flip_rate": null,
+        "merge_auroc": null,
+        "parent_merge_rate": null,
+        "retest_drop": null,
+        "hack_catch_net": null,
+        "subtle_catch_net": null,
+        "swe_auroc": {
+          "value": 0.7204861111111112,
+          "lo": 0.6629439495018954,
+          "hi": 0.7853600592497739,
+          "n": 288,
+          "n_repos": 10
+        },
+        "swe_pair_acc": {
+          "value": 0.7048611111111112,
+          "lo": 0.6444346829640947,
+          "hi": 0.7703945517629407,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_best_of_4": {
+          "value": 0.712962962962963,
+          "lo": 0.6444402985074628,
+          "hi": 0.7725534759358288,
+          "n": 72,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "heldout_hack_catch": null,
+        "heldout_catch_net": null,
+        "hack_catch_wc": null,
+        "heldout_catch_wc": null,
+        "swe_false_accept": {
+          "value": 0.027777777777777776,
+          "lo": 0.007692307692307693,
+          "hi": 0.05084745762711865,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject": {
+          "value": 0.9652777777777778,
+          "lo": 0.9274193548387096,
+          "hi": 0.9928571428571429,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_rank_fail_touches_tests": null,
+        "swe_rank_fail_no_tests": null,
+        "swe_fail_score_touches_tests": null,
+        "swe_fail_score_no_tests": null,
+        "attack_gate_xfer": null,
+        "attack_gate_xfer_before": null,
+        "prb_auroc": null,
+        "prb_auroc_any": null,
+        "bcr_agree": null,
+        "bcr_agree_wc": null,
+        "swe_false_accept_cal": {
+          "value": 0.5555555555555556,
+          "lo": 0.43449404761904764,
+          "hi": 0.644747453310696,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_cal": {
+          "value": 0.1111111111111111,
+          "lo": 0.05303030303030303,
+          "hi": 0.15873917748917749,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_accept_wc": {
+          "value": 0.027777777777777776,
+          "lo": 0.007692307692307693,
+          "hi": 0.05084745762711865,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9652777777777778,
+          "lo": 0.9274193548387096,
+          "hi": 0.9928571428571429,
+          "n": 144,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_win_or_tie": null,
+        "attack_win_fair": null,
+        "attack_win_or_tie_fair": null,
+        "attack_win_before": null,
+        "attack_gate_before": null,
+        "swe_pair_acc_wc": {
+          "value": 0.7048611111111112,
+          "lo": 0.6444346829640947,
+          "hi": 0.7703945517629407,
+          "n": 288,
+          "n_parents": 72,
+          "n_repos": 10
+        },
+        "attack_gate_rate": null,
+        "attack_win_rate": null,
+        "attack_gate_verified_tests": null,
+        "attack_gate_unverified_tests": null,
+        "attack_tests_verified_share": null
+      },
+      "n_ratings": 0,
+      "n_prefs": 0,
+      "n_missing": 464,
+      "cost_usd_total": 0,
+      "cost_per_rating_usd": 0.0,
+      "p50_latency_s": 0.0,
+      "composite": null,
+      "mixed_effects": {},
+      "swe_cutoff": 2,
+      "swe_dev": {
+        "swe_auroc": {
+          "value": 0.7890266299357208,
+          "lo": 0.7084809565801629,
+          "hi": 0.8867344232253086,
+          "n": 132,
+          "n_repos": 11
+        },
+        "swe_pair_acc": {
+          "value": 0.8106060606060606,
+          "lo": 0.7370202175697865,
+          "hi": 0.8965564092953523,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_best_of_4": {
+          "value": 0.7929292929292928,
+          "lo": 0.6981911599099099,
+          "hi": 0.8928690476190476,
+          "n": 33,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_pair_acc_wc": {
+          "value": 0.8106060606060606,
+          "lo": 0.7370202175697865,
+          "hi": 0.8965564092953523,
+          "n": 132,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept": {
+          "value": 0.015151515151515152,
+          "lo": 0.0,
+          "hi": 0.05174682395644281,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject": {
+          "value": 0.9848484848484849,
+          "lo": 0.9499568965517241,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_wc": {
+          "value": 0.015151515151515152,
+          "lo": 0.0,
+          "hi": 0.05174682395644281,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_wc": {
+          "value": 0.9848484848484849,
+          "lo": 0.9499568965517241,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_accept_cal": {
+          "value": 0.015151515151515152,
+          "lo": 0.0,
+          "hi": 0.05174682395644281,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        },
+        "swe_false_reject_cal": {
+          "value": 0.9848484848484849,
+          "lo": 0.9499568965517241,
+          "hi": 1.0,
+          "n": 66,
+          "n_parents": 33,
+          "n_repos": 11
+        }
+      }
+    },
     "rubric-gpt6-luna": {
       "metrics": {
         "hack_catch_rate": {
@@ -8907,6 +10265,86 @@
       },
       "attack_transfer_src": "rubric-gpt6-luna",
       "attack_cost_usd": 5.057188
+    }
+  },
+  "consensus": {
+    "attacker_fail_corroborated": {
+      "value": 0.6031746031746031,
+      "lo": 0.48121860118598164,
+      "hi": 0.75079915471159,
+      "n": 315,
+      "n_parents": 56,
+      "n_repos": 10
+    },
+    "attacker_pass_corroborated": {
+      "value": 0.6810126582278481,
+      "lo": 0.558295565114969,
+      "hi": 0.7943495928387038,
+      "n": 395,
+      "n_parents": 68,
+      "n_repos": 10
+    },
+    "genuine_pass_corroborated": {
+      "value": 1.0,
+      "lo": 1.0,
+      "hi": 1.0,
+      "n": 19,
+      "n_parents": 13,
+      "n_repos": 6
+    },
+    "genuine_fail_corroborated": {
+      "value": 0.8888888888888888,
+      "lo": 0.625,
+      "hi": 1.0,
+      "n": 9,
+      "n_parents": 7,
+      "n_repos": 5
+    },
+    "attacker_fail_corroborated2": {
+      "value": 0.4158730158730159,
+      "lo": 0.3184261497334763,
+      "hi": 0.5377809867629363,
+      "n": 315,
+      "n_parents": 56,
+      "n_repos": 10
+    },
+    "attacker_pass_corroborated2": {
+      "value": 0.4962025316455696,
+      "lo": 0.4038369565217391,
+      "hi": 0.6092976147554982,
+      "n": 395,
+      "n_parents": 68,
+      "n_repos": 10
+    },
+    "genuine_pass_corroborated2": {
+      "value": 0.8947368421052632,
+      "lo": 0.6,
+      "hi": 1.0,
+      "n": 19,
+      "n_parents": 13,
+      "n_repos": 6
+    },
+    "genuine_fail_corroborated2": {
+      "value": 0.7777777777777778,
+      "lo": 0.625,
+      "hi": 1.0,
+      "n": 9,
+      "n_parents": 7,
+      "n_repos": 5
+    },
+    "attacker_fail_corroborated_only_by_failing": {
+      "value": 0.39473684210526316,
+      "lo": 0.28239094192831343,
+      "hi": 0.5219546478597317,
+      "n": 190,
+      "n_parents": 42,
+      "n_repos": 10
+    },
+    "n_test_sets": {
+      "attacker_fail": 315,
+      "attacker_pass": 395,
+      "genuine_pass": 19,
+      "genuine_fail": 9
     }
   },
   "rank_robustness": {
