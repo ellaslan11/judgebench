@@ -15,7 +15,7 @@ export function GoodhartChart({ judges, height = 340 }: { judges: Entry[]; heigh
   });
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer>
+      <ResponsiveContainer initialDimension={{ width: 960, height }}>
         <LineChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="level" stroke="var(--muted)" />
@@ -43,7 +43,7 @@ export function BestOfNChart({ judges, height = 340 }: { judges: Entry[]; height
   });
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer>
+      <ResponsiveContainer initialDimension={{ width: 960, height }}>
         <LineChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="n" stroke="var(--muted)" label={{ value: "N candidates", position: "insideBottom", offset: -4, fill: "var(--muted)" }} />
@@ -67,7 +67,7 @@ export function AttackChart({ judges, height = 300 }: { judges: Entry[]; height?
   }));
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer>
+      <ResponsiveContainer initialDimension={{ width: 960, height }}>
         <BarChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="id" stroke="var(--muted)" />
@@ -89,7 +89,7 @@ export function DefenceChart({ steps, height = 300 }: { steps: Step[]; height?: 
   const data = steps.map((s) => ({ label: s.label, before: s.before ?? 0, after: s.after ?? 0 }));
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer>
+      <ResponsiveContainer initialDimension={{ width: 960, height }}>
         <BarChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="label" stroke="var(--muted)" />
