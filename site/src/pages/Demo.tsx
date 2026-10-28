@@ -201,8 +201,8 @@ export default function Demo() {
     <section className="slide" key="end">
       <h2>9. What this does and does not show</h2>
       <ul className="caveats">
-        <li><b>Shows:</b> LLM judges beat chance on whether tests pass; the signal lives in the channels the agent controls; the exploit transfers, compounds under optimisation, and no threshold makes the score a gate.</li>
-        <li><b>Does not show:</b> that any judge is "best" or safe; that execution-checking the agent's own tests makes a judge safe; that passing hidden tests means good code.</li>
+        <li><b>Shows:</b> LLM judges beat chance on whether tests pass; the ranking signal lives in the code, the exploit in the test channel the agent controls; the exploit transfers, compounds under optimisation, and no threshold makes the score a gate.</li>
+        <li><b>Does not show:</b> that any judge is "best" or safe; that execution-checking the agent's own tests, or running them on other agents' patches, makes a judge safe; that passing hidden tests means good code.</li>
         <li><b>Caveats:</b> public data may be in training sets; one attacker model, three rounds; Devin and Haiku were not run in the attack or verified settings; human-label datasets are weak proxies.</li>
         <li><b>Use it as:</b> a regression suite for whoever picks or changes a code judge, with pre-registered metrics and repo-clustered error bars. Gate on execution evidence the agent did not produce; use the judge to rank.</li>
       </ul>

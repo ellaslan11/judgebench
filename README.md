@@ -69,6 +69,27 @@ Ranking on real patches is unchanged (0.66 -> 0.69, 0.72 -> 0.75), since 79-89% 
 no tests, and the dev-tuned cutoff is still R7 >= 2 with 58-63% false accepts. Of predictions P11-P14,
 only P12 held; details in `docs/analysis_plan.md`.
 
+**Which channel carries the signal (`rubric-code-*`, `rubric-codetests-*`, `rubric-codedesc-*`).**
+Judging the source hunks alone ranks passing above failing patches as well as the full judge
+(GPT-6.1-sol 0.72 -> 0.70, GPT-6-luna 0.66 -> 0.66; P15 held). But the code-only judge accepts the
+untouched *failing* attack targets at 31% / 47%, where the full judge accepted 7% / 15%, and its
+false-accept rate at the dev cutoff goes 0.03 -> 0.19 and 0.08 -> 0.33; the code+tests variant keeps
+the low baseline. Much of the full judge's apparent discrimination on failing patches was penalising
+missing tests, and the attacker's one test file supplied exactly that. Replayed attacks add nothing to
+the code-only judge (by construction), but it already sits where the attack pushes the full judge;
+stripping channels removes the lever by conceding the ground. On luna, the test channel alone carries
+78% of the attack lift and the description alone 17% (P17 held, P16 failed; GPT-6.1-sol replays and
+the controlled set were not run).
+
+**Cross-candidate test consensus (P19 failed).** Each genuinely fail-to-pass test set was also run
+against up to 6 *other* agents' patches for the same task (4,428 container runs, no hidden tests, no
+labels). 60% of the attacker's tests on failing patches pass on at least one other agent's patch too
+(68% for its tests on passing patches; 100% of the 19 genuine agent-written verified test sets),
+against a predicted ceiling of 35%. Of those, 39% pass only on other *failing* patches (shared
+mistakes) and 61% also pass on a *correct* patch: fail-to-pass tests of behaviour the wrong patch
+happens to get right. An execution check against the agent pool can flag at most the ~40% of residual
+attacker tests unique to their own patch; the consensus-aware judge (`rubricxc-*`) was not run.
+
 **What this does not show:** that any judge is "best" or safe as a reward signal; that passing
 hidden tests means good code; or freedom from contamination (SWE-bench and the PRs are public).
 Full limitations are at the end. The site (`site/`) has a findings page, a leaderboard, a

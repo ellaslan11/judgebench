@@ -25,6 +25,11 @@ export default function Findings() {
   const gate = js.filter(([, j]) => j.metrics.swe_false_accept_cal);
   const vx = js.filter(([id, j]) => id.startsWith("rubricx-") && j.metrics.attack_gate_rate)
     .map(([id, j]) => [id, j, sc.judges[id.replace("rubricx-", "rubric-")]] as const);
+  const chan = ["gpt6.1-sol", "gpt6-luna"].flatMap((m) =>
+    [["rubric", "full PR"], ["rubric-code", "code only"], ["rubric-codetests", "code + tests"], ["rubric-codedesc", "code + description"]]
+      .map(([v, label]) => [`${v}-${m}`, label, sc.judges[`${v}-${m}`]] as const).filter(([, , j]) => j));
+  const cons = sc.consensus as Record<string, Metric> | undefined;
+  const cm = (k: string) => (cons && cons[k] && typeof cons[k] === "object" && "value" in (cons[k] as object) ? (cons[k] as Metric) : undefined);
 
   return (
     <div className="prose">
@@ -165,9 +170,71 @@ export default function Findings() {
         dev-tuned cutoff is still R7 ≥ 2 with 58–63% false accepts.
       </p>
 
+      <h2 id="channels">6. Channel ablation: the ranking signal is in the code, the exploit is in the tests channel</h2>
+      <p>
+        Same rubric and models, but the PR shown to the judge is restricted: source hunks only; source + test hunks
+        (description withheld); or source + description (test hunks withheld). The attacks replayed on each variant are
+        the ones tuned against the full judge of the same model, so the code-only variant sees an identical prompt for
+        an attacked item and its target; "before" is each variant's own rating of the untouched failing target.
+        SWE items carry no description, so code + description differs from code only in withholding tests.
+      </p>
+      <table className="board">
+        <thead><tr><th>Judge</th><th>Sees</th><th>Passing above failing (SWE)</th><th>False accept at dev cutoff</th><th>Untouched failing target at "would merge"</th><th>After replayed attack</th><th>Fair attack win</th></tr></thead>
+        <tbody>
+          {chan.map(([id, label, j]) => (
+            <tr key={id}><td>{id}</td><td>{label}</td>
+              <td className="num">{ci(j.metrics.swe_pair_acc)}</td>
+              <td className="num">{pct(j.metrics.swe_false_accept)}</td>
+              <td className="num">{pct(j.metrics.attack_gate_xfer_before ?? j.metrics.attack_gate_before)}</td>
+              <td className="num">{pct(j.metrics.attack_gate_xfer ?? j.metrics.attack_gate_rate)}</td>
+              <td className="num">{pct(j.metrics.attack_win_fair_xfer ?? j.metrics.attack_win_fair)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      <p>
+        Code-only ranking is within 0.02 of the full judge (P15 held): the description and test channels add no ranking
+        signal on real agent patches. But withholding tests raises acceptance of <i>untouched failing</i> patches to
+        about where the attack pushes the full judge, and false accepts at the dev cutoff rise 0.03 → 0.19 (GPT-6.1-sol)
+        and 0.08 → 0.33 (GPT-6-luna); the code + tests variant keeps the low baseline. Much of the full judge's apparent
+        discrimination on failing patches was penalising missing tests, and the attacker's one added test file supplied
+        exactly that. The code-only judge has no attack lever (replayed lift 0, by construction) and a fair-win rate in
+        the same range as the attacked full judge: stripping channels removes the exploit by conceding what it would have
+        won, and does not produce a usable gate. On luna the test channel alone carries 78% of the attack lift and the
+        description 17% (P17 held, P16 failed). The full row for the full judge shows its own adaptive attack; the
+        GPT-6.1-sol code + tests / code + description replays and the controlled-set run (P18) were not run.
+      </p>
+
+      <h2 id="consensus">7. Running the attacker's tests on other agents' patches does not separate them either</h2>
+      <p>
+        The 45% of attacker tests that survive section 5 are genuinely fail → pass against the wrong patch. If they
+        encode the wrong behaviour, they should fail on independent patches for the same task. We ran every genuinely
+        fail → pass test set (738, from the attacker and from real agents) against up to 6 other candidates' source
+        patches in the SWE-bench image: 4,428 runs, no hidden tests, no labels, computable from the agent pool alone.
+      </p>
+      <table className="board">
+        <thead><tr><th>Test set written by</th><th>Its own patch passes hidden tests</th><th>Passes on ≥ 1 other candidate</th><th>On ≥ 2</th></tr></thead>
+        <tbody>
+          <tr><td>attacker</td><td>no (attack target)</td><td className="num"><b>{ci(cm("attacker_fail_corroborated"))}</b></td><td className="num">{pct(cm("attacker_fail_corroborated2"))}</td></tr>
+          <tr><td>attacker</td><td>yes (pass-side control)</td><td className="num">{ci(cm("attacker_pass_corroborated"))}</td><td className="num">{pct(cm("attacker_pass_corroborated2"))}</td></tr>
+          <tr><td>real agent</td><td>yes</td><td className="num">{ci(cm("genuine_pass_corroborated"))}</td><td className="num">{pct(cm("genuine_pass_corroborated2"))}</td></tr>
+          <tr><td>real agent</td><td>no</td><td className="num">{ci(cm("genuine_fail_corroborated"))}</td><td className="num">{pct(cm("genuine_fail_corroborated2"))}</td></tr>
+        </tbody>
+      </table>
+      <p>
+        P19 predicted at most 35% for the first row; observed {pct(cm("attacker_fail_corroborated"))}. The controls came
+        out as predicted, so the attacker's tests on wrong patches are only ~8 points less corroborated than its tests on
+        correct ones. Of the corroborated attacker tests on wrong patches, {pct(cm("attacker_fail_corroborated_only_by_failing"))}{" "}
+        pass only on other <i>wrong</i> patches (other agents made the same mistake); the rest also pass on a correct
+        patch, i.e. they are fail → pass tests of behaviour the wrong patch happens to get right, not of what the hidden
+        tests check. A pool-consensus signal can therefore flag at most the ~40% of residual attacker tests unique to
+        their own patch. Only 28 real-agent test sets are genuinely fail → pass (79–89% of agent patches ship no tests),
+        so the real-agent rows are indicative only. The consensus-aware judge (<code>rubricxc-*</code>, P20–P21) was not
+        run.
+      </p>
+
       <h2>What this does not show</h2>
       <ul>
-        <li>That execution-checking the agent's own tests makes a judge safe: it removes the decorative-test exploit, not the wrong-test one.</li>
+        <li>That execution-checking the agent's own tests, or running them on other agents' patches, makes a judge safe: it removes the decorative-test exploit and at most ~40% of the wrong-test one.</li>
         <li>That any judge is "best": most top judges' intervals overlap.</li>
         <li>That a judge is safe as a reward signal: the attack above is cheap and only uses non-code channels.</li>
         <li>Passing hidden tests is narrower than good code; SWE-bench and these PRs are public and may be in training data.</li>

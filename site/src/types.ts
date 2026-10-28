@@ -22,6 +22,7 @@ export type Scorecard = {
   n_items: number;
   n_pairs: number;
   n_parents: number;
+  consensus?: Record<string, Metric | Record<string, number>>;
 };
 
 export type Failure = {
