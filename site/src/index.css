@@ -159,3 +159,5 @@ ol.findings li { margin: 10px 0; }
 .demo .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin: 14px 0; }
 .demo .vs .mid-label { color: var(--muted); font-size: 14px; }
 @media (max-width: 900px) { .demo .pipeline .arrow { display: none; } .demo .vs { grid-template-columns: 1fr; } }
+.demo .pipeline .scale { flex-wrap: wrap; gap: 4px; font-size: 12px; }
+.demo .pipeline .scale span { padding: 2px 6px; }
