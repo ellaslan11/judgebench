@@ -58,3 +58,10 @@ export type PlaygroundPR = {
   showcase: boolean;
   variants: Variant[];
 };
+
+export type DemoRound = { round: number; r7: number; reason: string; description: string; test_file: string; verdict: string | null };
+export type DemoAttack = {
+  judge: string; target: string; repo: string; url: string; task: string; description: string; diff: string;
+  before: { r7: number; reason: string }; rounds: DemoRound[];
+};
+export type Demo = { attacks: DemoAttack[] };

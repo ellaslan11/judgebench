@@ -1,4 +1,5 @@
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
+import Demo from "./pages/Demo";
 import Failures from "./pages/Failures";
 import Findings from "./pages/Findings";
 import Home from "./pages/Home";
@@ -13,7 +14,8 @@ export default function App() {
       <header className="nav">
         <NavLink to="/" className="brand">JudgeBench-Code</NavLink>
         <nav>
-          <NavLink to="/" end>Overview</NavLink>
+          <NavLink to="/" end>Demo</NavLink>
+          <NavLink to="/overview">Overview</NavLink>
           <NavLink to="/findings">Findings</NavLink>
           <NavLink to="/board">Leaderboard</NavLink>
           <NavLink to="/play">Fool the judge</NavLink>
@@ -24,7 +26,8 @@ export default function App() {
       </header>
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Demo />} />
+          <Route path="/overview" element={<Home />} />
           <Route path="/findings" element={<Findings />} />
           <Route path="/board" element={<Leaderboard />} />
           <Route path="/play" element={<Playground />} />

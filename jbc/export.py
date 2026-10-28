@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from collections import defaultdict
 from pathlib import Path
 
 from jbc.config import DATA, RESULTS
@@ -81,3 +82,50 @@ def export_site(out: Path, showcase: int = 10) -> None:
                            "task": first.task[:3000], "showcase": pid in show,
                            "variants": variants})
     (out / "playground.json").write_text(json.dumps(playground))
+    (out / "demo.json").write_text(json.dumps({"attacks": _demo_attacks()}))
+
+
+DEMO_JUDGES = ("rubric-gpt6.1-sol", "rubric-gpt6-luna", "rubricx-gpt6.1-sol", "rubricx-gpt6-luna")
+
+
+def _demo_attacks(judges: tuple[str, ...] = DEMO_JUDGES, per_judge: int = 3) -> list[dict]:
+    """Cached adaptive attacks with the largest score lift, for the step-through demo."""
+    from jbc.verify import lookup
+
+    swe_path = DATA / "swe" / "items.jsonl"
+    if not swe_path.exists():
+        return []
+    swe = {i.id: i for i in read_jsonl(swe_path, Item)}
+    out: list[dict] = []
+    for j in judges:
+        d = RESULTS / j
+        if not (d / "attack.jsonl").exists():
+            continue
+        base = {r.item_id: r for r in read_jsonl(d / "swe_ratings.jsonl", Rating)}
+        attacked = {i.id: i for i in read_jsonl(d / "attack_items.jsonl", Item)}
+        by_target: dict[str, list[Rating]] = defaultdict(list)
+        for r in read_jsonl(d / "attack.jsonl", Rating):
+            by_target[r.meta["target"]].append(r)
+        targets = [t for t in by_target if t in base and t in swe]
+        targets.sort(key=lambda t: (max(r.overall for r in by_target[t]) - base[t].overall, -len(swe[t].diff)), reverse=True)
+        for t in targets[:per_judge]:
+            item, start = swe[t], base[t]
+            rounds = []
+            for r in sorted(by_target[t], key=lambda r: r.meta["round"]):
+                a = attacked.get(r.item_id)
+                if not a:
+                    continue
+                added = [f for f in a.diff.split("diff --git ")[1:] if f not in item.diff]
+                v = lookup(a)
+                rounds.append({
+                    "round": r.meta["round"], "r7": r.overall, "reason": r.reasons.get("R7", ""),
+                    "description": a.description[:5000],
+                    "test_file": ("diff --git " + added[-1])[:8000] if added else "",
+                    "verdict": v["verdict"] if v else None,
+                })
+            out.append({
+                "judge": j, "target": t, "repo": t.split("#")[0], "url": item.url, "task": item.task[:3000],
+                "description": item.description or "", "diff": item.diff[:MAX_DIFF],
+                "before": {"r7": start.overall, "reason": start.reasons.get("R7", "")}, "rounds": rounds,
+            })
+    return out
