@@ -233,11 +233,11 @@ export default function Demo() {
 
   const scenes: Scene[] = [
     { key: "title", part: 0, title: "Can the grader be trusted?", dur: 9, short: true, note: "Opening. AI coding agents are now checked by other AIs; we tested whether that checker can be trusted and found it can be gamed without changing a line of code. Everything here is a measurement on real agent-written patches with a known right answer.",
-      body: ({ cap }) => <>
+      body: () => <>
         <p className="kicker">JudgeBench-Code</p>
         <h1>AI now writes code. Another AI grades it.<br />Can that grader be trusted?</h1>
         <p className="lead">A benchmark that tests the <b>grader</b>, not the coder: 751 real changes written by AI coding agents, each with a known right answer. The grader carries real signal, yet it can be pushed from "reject" to "approve" <b>without changing a single line of code</b>, and the obvious fixes only half work.</p>
-        <Caption show={cap}>Five minutes, four parts. Press play, or step with the arrow keys; every scene is interactive when paused.</Caption>
+        <p className="small muted" style={{ marginTop: 18 }}>Press play, or step with the arrow keys. About five minutes.</p>
       </> },
     { key: "pipeline", part: 0, title: "Who writes the code, who checks it", dur: 20, short: true, note: "Define the actors: a coding agent is an AI system like Devin or Codex that turns a bug report into a code change; a judge is a second model that scores the change 1–5 like a reviewer. Platforms use that score to finish tasks, pick among attempts and as a training reward. No human in the loop.",
       body: ({ cap }) => <>
