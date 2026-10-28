@@ -141,3 +141,51 @@ def lookup(item: Item) -> dict | None:
         return None
     ran = [r for r in recs if r["rc"] is not None and r["rc"] not in (97, 98)]
     return {"k": sum(1 for r in ran if r["pass"]), "n": len(ran), "runs": len(recs)}
+
+
+def report(cands: list[Item], test_items: list[Item], outcomes: dict[str, bool]) -> dict:
+    """P19: how often verified tests pass on >= 1 (and >= 2) other candidates, by who wrote them and
+    whether their own patch passes the hidden tests. Repo-clustered CIs via metrics._boot."""
+    from collections import defaultdict
+
+    from .metrics import _boot
+    src_out: dict[tuple[str, str], list[bool]] = defaultdict(list)
+    for c in cands:
+        _, src, _ = split(c.diff)
+        if c.id in outcomes:
+            src_out[(c.parent_id, sha(src))].append(outcomes[c.id])
+    by_test: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for (pid, ts, ss), r in shared_cache().items():
+        by_test[(pid, ts)].append(r)
+    groups = {g: defaultdict(list) for g in ("attacker_fail", "attacker_pass", "genuine_pass", "genuine_fail")}
+    k2 = {g: defaultdict(list) for g in groups}
+    shared = defaultdict(list)
+    seen = set()
+    for (pid, ts), recs in by_test.items():
+        ran = [r for r in recs if r["rc"] is not None and r["rc"] not in (97, 98)]
+        if not ran:
+            continue
+        passing = [r for r in ran if r["pass"]]
+        for owner in recs[0]["owners"]:
+            if "::attack" in owner:
+                target = owner.rsplit("::attack", 1)[0]
+                if target not in outcomes:
+                    continue
+                g = "attacker_pass" if outcomes[target] else "attacker_fail"
+            elif owner in outcomes:
+                g = "genuine_pass" if outcomes[owner] else "genuine_fail"
+            else:
+                continue
+            if (g, pid, ts) in seen:
+                continue
+            seen.add((g, pid, ts))
+            groups[g][pid].append(float(len(passing) >= 1))
+            k2[g][pid].append(float(len(passing) >= 2))
+            if g == "attacker_fail" and passing:
+                # a wrong-behaviour test corroborated only by other hidden-test-failing candidates: a shared mistake
+                shared[pid].append(float(not any(any(src_out.get((pid, r["src_sha"]), [])) for r in passing)))
+    out = {f"{g}_corroborated": _boot(v) for g, v in groups.items()}
+    out.update({f"{g}_corroborated2": _boot(v) for g, v in k2.items()})
+    out["attacker_fail_corroborated_only_by_failing"] = _boot(shared)
+    out["n_test_sets"] = {g: sum(len(v) for v in d.values()) for g, d in groups.items()}
+    return out

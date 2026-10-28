@@ -347,6 +347,22 @@ def verify_cmd(split_name: str = "test", workers: int = 3, keep_images: bool = F
     typer.echo(Counter(v["verdict"] for v in cache.values()))
 
 
+@app.command("consensus-report")
+def consensus_report(split_name: str = "test"):
+    """P19 summary of the cross-candidate consensus runs."""
+    from .consensus import report
+
+    split = json.loads((DATA / "swe" / "split.json").read_text())
+    out = json.loads((DATA / "swe" / "outcomes.json").read_text()) | json.loads((DATA / "swe" / "pool_outcomes.json").read_text())
+    cands = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) + read_jsonl(DATA / "swe" / "pool_items.jsonl", Item)
+             if split.get(i.parent_id) == split_name]
+    tests: list[Item] = []
+    for f in sorted(RESULTS.glob("*/attack*_items.jsonl")):
+        tests += [i for i in read_jsonl(f, Item) if split.get(i.parent_id) == split_name]
+    r = report(cands, tests, out)
+    typer.echo(json.dumps(r, indent=1))
+
+
 @app.command("ext-build")
 def ext_build(prb: str = "~/ext/prb", bcr: str = "~/ext/bcr/sample200.json"):
     """Human-labelled external sets -> data/ext/ (SWE-PRBench, BigCodeReward)."""
@@ -521,8 +537,16 @@ def score():
         if agent and outcomes:
             board[d.name]["metrics"]["merge_auroc"] = merge_auroc(agent, outcomes)
         fails += failures(items, ratings, d.name)
+    cons = None
+    if (swe_dir / "consensus.jsonl").exists():
+        from jbc.consensus import report as consensus_report_fn
+        att_items: list[Item] = []
+        for f in sorted(RESULTS.glob("*/attack*_items.jsonl")):
+            att_items += read_jsonl(f, Item)
+        cons = consensus_report_fn([i for i in swe_items + pool_items if swe_split.get(i.parent_id) == "test"],
+                                   att_items, {**swe_out, **pool_out})
     out = {"axes": {k: {"direction": v[0], "desc": v[1]} for k, v in AXES.items()},
-           "judges": board, "rank_robustness": rank_robustness(board), "n_items": len(items), "n_pairs": len(pairs),
+           "judges": board, "consensus": cons, "rank_robustness": rank_robustness(board), "n_items": len(items), "n_pairs": len(pairs),
            "n_parents": len({i.parent_id for i in items})}
     dump_json(RESULTS / "scorecard.json", out)
     dump_json(RESULTS / "failures.json", fails)
