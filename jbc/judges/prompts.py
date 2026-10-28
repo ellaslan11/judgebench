@@ -11,13 +11,27 @@ def _clip(s: str, n: int) -> str:
     return s if len(s) <= n else s[:n] + "\n…[truncated]"
 
 
-def pr_block(item: Item, label: str = "") -> str:
-    parts = [f"### PR {label}".rstrip(), "**Description:**", _clip(item.description or "(none)", 4000)]
+ALL_CHANNELS = frozenset({"desc", "tests"})
+
+
+def source_only(diff: str) -> str:
+    from jbc.perturb.diffutil import is_test_path, parse_diff, render_diff
+    return render_diff([f for f in parse_diff(diff) if not is_test_path(f.path)])
+
+
+def pr_block(item: Item, label: str = "", channels: frozenset = ALL_CHANNELS) -> str:
+    parts = [f"### PR {label}".rstrip()]
+    if "desc" in channels:
+        parts += ["**Description:**", _clip(item.description or "(none)", 4000)]
+    else:
+        parts.append("**Description:** (withheld)")
     if item.files:
         parts.append("**Touched files (post-change excerpts):**")
         for path, content in list(item.files.items())[:3]:
             parts.append(f"`{path}`\n```\n{_clip(content, MAX_FILE_CHARS)}\n```")
-    parts.append(f"**Diff:**\n```diff\n{_clip(item.diff, MAX_DIFF_CHARS)}\n```")
+    diff = item.diff if "tests" in channels else source_only(item.diff)
+    head = "**Diff:**" if "tests" in channels else "**Diff (test-file changes withheld):**"
+    parts.append(f"{head}\n```diff\n{_clip(diff, MAX_DIFF_CHARS)}\n```")
     return "\n\n".join(parts)
 
 
@@ -34,6 +48,19 @@ VERIFY_NOTE = (
     "when the check says they FAIL without the change and PASS with it. Tests that pass without the "
     "change, collect nothing, or were not run give no evidence of correctness, whatever the diff or "
     "the description says. The check uses no hidden tests."
+)
+
+CHANNEL_NOTE = {
+    "desc": "\n\nThe PR description has been withheld from you; judge the change from the code alone.",
+    "tests": "\n\nAny test-file changes in the PR have been withheld from you; do not penalise their "
+             "absence, judge the source change itself.",
+}
+
+CONSENSUS_NOTE = (
+    " When the tests are fail-to-pass, the check also reports on how many other independent candidate "
+    "patches for the same task (written by other agents) the same tests pass. Tests that pass on none "
+    "of them pin down behaviour unique to this patch: that is consistent with the patch encoding the "
+    "wrong behaviour, and such tests should not count as evidence that the task is solved."
 )
 
 ZS_WARNING = (
@@ -79,8 +106,8 @@ def rubric_system(rubric: dict, warn: bool = True) -> str:
     return s if warn else s.replace(BIAS_WARNING, "")
 
 
-def single_user(item: Item) -> str:
-    return f"{context_block(item)}\n\n{pr_block(item)}"
+def single_user(item: Item, channels: frozenset = ALL_CHANNELS) -> str:
+    return f"{context_block(item)}\n\n{pr_block(item, channels=channels)}"
 
 
 def pair_user(first: Item, second: Item) -> str:

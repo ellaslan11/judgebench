@@ -67,9 +67,11 @@ def _clamp(v) -> int:
 class LLMJudge(Judge):
     def __init__(self, id: str, kind: str, provider: str, model: str,
                  price_in: float = 0.0, price_out: float = 0.0, max_tokens: int = 4000,
-                 rubric: str = "rubric_v1.yaml", bias_warning: bool = True, verify: bool = False, **_):
+                 rubric: str = "rubric_v1.yaml", bias_warning: bool = True, verify: bool = False,
+                 consensus: bool = False, channels: str = "desc,tests", **_):
         self.id, self.kind, self.provider, self.model = id, kind, provider, model
-        self.verify = verify
+        self.verify, self.consensus = verify or consensus, consensus
+        self.channels = frozenset(c.strip() for c in channels.split(",") if c.strip())
         self.price_in, self.price_out, self.max_tokens = price_in, price_out, max_tokens
         if kind == "rubric":
             self.system = prompts.rubric_system(load_yaml(CONFIGS / rubric), warn=bias_warning)
@@ -78,8 +80,12 @@ class LLMJudge(Judge):
             self.system = prompts.ZS_SYSTEM if bias_warning else prompts.ZS_SYSTEM.replace(prompts.ZS_WARNING, "")
         else:
             raise ValueError(kind)
-        if verify:
+        if self.verify:
             self.system += prompts.VERIFY_NOTE
+        if consensus:
+            self.system += prompts.CONSENSUS_NOTE
+        for ch in sorted(prompts.ALL_CHANNELS - self.channels):
+            self.system += prompts.CHANNEL_NOTE[ch]
         self.prompt_sha = hashlib.sha256(self.system.encode()).hexdigest()[:12]
 
     def _cost(self, r: llm.LLMResponse) -> float:
@@ -90,12 +96,14 @@ class LLMJudge(Judge):
                 "in_tok": r.input_tokens, "out_tok": r.output_tokens, "cached": r.cached}
 
     def rate(self, item: Item, sample: int = 0) -> Rating:
-        user = prompts.single_user(item)
-        verdict = None
+        user = prompts.single_user(item, self.channels)
+        verdict, cons = None, None
         if self.verify:
-            from ..verify import lookup, verdict_text
+            from ..verify import consensus_lookup, lookup, verdict_text
             verdict = lookup(item)
-            user = f"{verdict_text(verdict)}\n\n{user}"
+            if self.consensus:
+                cons = consensus_lookup(item)
+            user = f"{verdict_text(verdict, cons)}\n\n{user}"
         r = llm.chat(self.provider, self.model, self.system, user, self.max_tokens, sample=sample)
         d = parse_json(r.text, "scores" if self.kind == "rubric" else "score")
         if self.kind == "rubric":
@@ -108,7 +116,8 @@ class LLMJudge(Judge):
                       merge=scores["R7"] >= 4, raw=r.text, cost_usd=self._cost(r),
                       latency_s=r.latency_s,
                       meta={**self._meta(r), "sample": sample,
-                            **({"verify": verdict["verdict"] if verdict else "not_run"} if self.verify else {})})
+                            **({"verify": verdict["verdict"] if verdict else "not_run"} if self.verify else {}),
+                            **({"consensus": cons} if self.consensus else {})})
 
     def compare(self, pair: Pair, first: Item, second: Item, order: str) -> Pref:
         r = llm.chat(self.provider, self.model, prompts.PAIR_SYSTEM, prompts.pair_user(first, second), 800)
@@ -120,5 +129,5 @@ class LLMJudge(Judge):
                     latency_s=r.latency_s, meta=self._meta(r))
 
     def estimate_tokens(self, item: Item) -> tuple[int, int]:
-        return llm.approx_tokens(self.system + prompts.single_user(item)), (
+        return llm.approx_tokens(self.system + prompts.single_user(item, self.channels)), (
             600 if self.kind == "rubric" else 150)

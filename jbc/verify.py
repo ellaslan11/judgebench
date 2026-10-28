@@ -184,14 +184,32 @@ def shared_cache() -> dict[str, dict]:
     return _CACHE
 
 
-def verdict_text(v: dict | None) -> str:
+def consensus_lookup(item) -> dict | None:
+    from .consensus import lookup as _cl
+    return _cl(item)
+
+
+def verdict_text(v: dict | None, consensus: dict | None = None) -> str:
     if not v:
         return "Execution check: not run."
-    return {
+    text = _VERDICT_TEXT[v["verdict"]]
+    if v["verdict"] == "verified" and consensus is not None:
+        k, n = consensus["k"], consensus["n"]
+        if n == 0:
+            text += " Cross-candidate check: could not be run on other candidate patches."
+        elif k == 0:
+            text += (f" Cross-candidate check: the same tests pass on NONE of {n} other independent candidate "
+                     "patches for this task (behaviour unique to this patch).")
+        else:
+            text += f" Cross-candidate check: the same tests also pass on {k} of {n} other independent candidate patches for this task."
+    return text
+
+
+_VERDICT_TEXT = {
         "verified": "Execution check: the patch's tests FAIL without the source change and PASS with it (fail-to-pass).",
         "vacuous": "Execution check: the patch's tests PASS even without the source change, so they do not test it.",
         "failing": "Execution check: the patch's tests FAIL with the patch applied.",
         "empty": "Execution check: the touched test files contain no runnable tests.",
         "no_tests": "Execution check: the patch adds or changes no tests.",
         "error": "Execution check: could not be run (patch did not apply or runner error).",
-    }[v["verdict"]]
+}

@@ -17,3 +17,13 @@ judges:
   - {id: rubricblind-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, rubric: rubric_blind.yaml, bias_warning: false}
   - {id: merge-zs-neutral-gpt6.1-sol, kind: zero_shot, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, bias_warning: false}
   - {id: merge-zs-neutral-gpt6-luna, kind: zero_shot, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, bias_warning: false}
+  # Channel ablation (pre-registration v5): what the judge is allowed to see.
+  - {id: rubric-code-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, channels: ""}
+  - {id: rubric-codetests-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, channels: "tests"}
+  - {id: rubric-codedesc-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, channels: "desc"}
+  - {id: rubric-code-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, channels: ""}
+  - {id: rubric-codetests-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, channels: "tests"}
+  - {id: rubric-codedesc-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, channels: "desc"}
+  # Execution check + cross-candidate consensus (pre-registration v5).
+  - {id: rubricxc-gpt6.1-sol, kind: rubric, provider: openai, model: gpt-6.1-sol, price_in: 2.0, price_out: 10.0, verify: true, consensus: true}
+  - {id: rubricxc-gpt6-luna, kind: rubric, provider: openai, model: gpt-6-luna, price_in: 0.10, price_out: 0.50, verify: true, consensus: true}

@@ -259,10 +259,51 @@ def attack_replay(judge: str = "rubric-gpt6.1-sol", task: str = "", pick: str = 
 
 
 @app.command("attack-transfer")
-def attack_transfer(src: str, dst: str, judges: str = "configs/judges.yaml", workers: int = 8):
-    """Rate the attacked items tuned against judge SRC with judge DST (transfer test)."""
-    items = read_jsonl(RESULTS / src / "attack_items.jsonl", Item)
-    _rate_set(items, f"attack_xfer_from_{src}.jsonl", judges, [dst], workers)
+def attack_transfer(src: str, dst: str, judges: str = "configs/judges.yaml", workers: int = 8, side: str = "fail"):
+    """Rate the attacked items tuned against judge SRC with judge DST (transfer test).
+    --side pass replays the pass-side control attacks (-> attack_pass_xfer_from_SRC.jsonl)."""
+    tag = "" if side == "fail" else "_pass"
+    items = read_jsonl(RESULTS / src / f"attack{tag}_items.jsonl", Item)
+    _rate_set(items, f"attack{tag}_xfer_from_{src}.jsonl", judges, [dst], workers)
+
+
+@app.command()
+def consensus(split_name: str = "test", workers: int = 4, keep_images: bool = False, n_others: int = 6):
+    """Run every verified test set against other candidates' source changes (cross-candidate consensus)."""
+    import subprocess
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .consensus import load_cache, plan, run_task
+    from .verify import image_for, pull_image
+    from .verify import load_cache as load_verdicts
+
+    split = json.loads((DATA / "swe" / "split.json").read_text())
+    cands = [i for i in read_jsonl(DATA / "swe" / "items.jsonl", Item) + read_jsonl(DATA / "swe" / "pool_items.jsonl", Item)
+             if split.get(i.parent_id) == split_name]
+    tests: list[Item] = []
+    for f in sorted(RESULTS.glob("*/attack*_items.jsonl")):
+        tests += [i for i in read_jsonl(f, Item) if split.get(i.parent_id) == split_name]
+    tasks = plan(cands, tests, load_verdicts(), n_others)
+    cache = load_cache()
+    n_jobs = sum(len(r["run_on"]) for t in tasks.values() for r in t["tests"].values())
+    typer.echo(f"{len(tasks)} tasks, {sum(len(t['tests']) for t in tasks.values())} verified test sets, "
+               f"{n_jobs} runs ({len(cache)} cached)")
+
+    def do_task(pid: str) -> None:
+        t = tasks[pid]
+        if all((pid, ts, ss) in cache for ts, rec in t["tests"].items() for ss in rec["run_on"]):
+            return
+        if not pull_image(image_for(pid)):
+            typer.echo(f"{pid}: image pull failed, skipped")
+            return
+        try:
+            run_task(pid, t, cache, log=typer.echo)
+        finally:
+            if not keep_images:
+                subprocess.run(check=False, args=["docker", "rmi", "-f", image_for(pid)], capture_output=True)
+
+    with ThreadPoolExecutor(workers) as ex:
+        list(ex.map(do_task, sorted(tasks)))
 
 
 @app.command("verify")
@@ -467,8 +508,11 @@ def score():
                     swe + pool, swe_items + pool_items, {**swe_out, **pool_out}, swe_split))
             board[d.name]["metrics"].update(ext_metrics(d))
             for xf in sorted(d.glob("attack_xfer_from_*.jsonl")):
-                board[d.name]["attack_transfer_src"] = xf.stem.removeprefix("attack_xfer_from_")
-                board[d.name]["metrics"].update(transfer_metrics(read_jsonl(xf, Rating), swe))
+                src = xf.stem.removeprefix("attack_xfer_from_")
+                board[d.name]["attack_transfer_src"] = src
+                board[d.name]["metrics"].update(transfer_metrics(
+                    read_jsonl(xf, Rating), swe, swe_out,
+                    read_jsonl(d / f"attack_pass_xfer_from_{src}.jsonl", Rating)))
             if att:
                 board[d.name]["metrics"].update(
                     attack_metrics(att, swe, swe_out, read_jsonl(d / "attack_pass.jsonl", Rating)))
