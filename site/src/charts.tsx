@@ -15,7 +15,7 @@ export function GoodhartChart({ judges, height = 340 }: { judges: Entry[]; heigh
   });
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer initialDimension={{ width: 960, height }}>
+      <ResponsiveContainer>
         <LineChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="level" stroke="var(--muted)" />
@@ -43,7 +43,7 @@ export function BestOfNChart({ judges, height = 340 }: { judges: Entry[]; height
   });
   return (
     <div className="chart" style={{ width: "100%", height }}>
-      <ResponsiveContainer initialDimension={{ width: 960, height }}>
+      <ResponsiveContainer>
         <LineChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--grid)" />
           <XAxis dataKey="n" stroke="var(--muted)" label={{ value: "N candidates", position: "insideBottom", offset: -4, fill: "var(--muted)" }} />
