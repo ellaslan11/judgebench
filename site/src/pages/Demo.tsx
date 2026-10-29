@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Diff from "../Diff";
-import { AttackChart, BestOfNChart, DefenceChart, GoodhartChart } from "../charts";
+import { DefenceChart, GoodhartChart } from "../charts";
 import { useData } from "../data";
 import { PREDICTIONS } from "../predictions";
 import type { Demo as DemoData, DemoAttack, JudgeCard, Metric, Scorecard } from "../types";
@@ -14,7 +14,7 @@ const NAMES: Record<string, string> = {
   "rubricxc-gpt6.1-sol": "GPT-6.1-sol + tests + other agents", "rubricxc-gpt6-luna": "GPT-6-luna + tests + other agents",
 };
 const MODELS = [["gpt6-luna", "GPT-6-luna"], ["gpt6.1-sol", "GPT-6.1-sol"]] as const;
-const PARTS = ["The setup", "What we found", "Can it be fixed?", "Bottom line"];
+const PARTS = ["The attack", "The study", "What we found", "Can it be fixed?", "Bottom line"];
 const name = (id: string) => NAMES[id] ?? id;
 const pct = (m: Metric | undefined) => (m ? `${Math.round(m.value * 100)}%` : "–");
 const pctv = (v: number | null | undefined) => (v == null || Number.isNaN(v) ? "–" : `${Math.round(v * 100)}%`);
@@ -29,12 +29,12 @@ const VERDICT: Record<string, string> = {
 };
 const gate = (j: JudgeCard | undefined, own: boolean) =>
   own ? [j?.metrics.attack_gate_before?.value, j?.metrics.attack_gate_rate?.value] : [j?.metrics.attack_gate_xfer_before?.value, j?.metrics.attack_gate_xfer?.value];
+const lift = (j: JudgeCard | undefined, own: boolean) => { const [b, a] = gate(j, own); return b == null || a == null ? null : a - b; };
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
 /* ---- small presentational helpers ---- */
 const Caption = ({ show, children }: { show: boolean; children: ReactNode }) => (show ? <div className="caption"><span className="lbl">Takeaway</span>{children}</div> : <div style={{ height: 70 }} />);
 const More = ({ title = "Details and exact numbers", children }: { title?: string; children: ReactNode }) => <details className="more"><summary>{title}</summary>{children}</details>;
-const Scale = () => <div className="scale"><span className="bad">1</span><span className="bad">2 reject</span><span className="mid">3 needs changes</span><span className="good">4 would merge</span><span className="good">5</span></div>;
 const Score = ({ v }: { v: number }) => <span className={`scorebox ${cls(v)}`}>{v}<small>/ 5 · {verdictWord(v)}</small></span>;
 
 function Typewriter({ text, active, cps = 160 }: { text: string; active: boolean; cps?: number }) {
@@ -168,100 +168,93 @@ export default function Demo() {
     </span>
   );
 
+  const share = (j: JudgeCard | undefined, full: JudgeCard | undefined) => { const l = lift(j, false), f = lift(full, true); return l == null || !f ? "–" : `${Math.round((l / f) * 100)}%`; };
+  const mSol = { full: sol, code: J["rubric-code-gpt6.1-sol"], tests: J["rubric-codetests-gpt6.1-sol"], desc: J["rubric-codedesc-gpt6.1-sol"] };
+  const mLuna = { full: luna, code: J["rubric-code-gpt6-luna"], tests: J["rubric-codetests-gpt6-luna"], desc: J["rubric-codedesc-gpt6-luna"] };
   const scenes: Scene[] = [
-    { key: "title", part: 0, title: "Can the grader be trusted?", dur: 8, short: true, note: "This is a research side project on automatic evaluation. Every agent pipeline has an AI somewhere deciding whether code is good enough. I measured how much that grader actually knows, how easily it can be fooled, and whether the usual fixes work.",
-      body: () => <>
+    { key: "live", part: 0, title: "A broken fix gets approved", dur: 32, beats: 4, short: true, note: "Start here, no preamble. This is a real pull request from an AI coding agent. The code change is broken: it fails the project's own tests. The judge, another AI, scores it a two and rejects it. Now an attacker model gets three tries. It may only rewrite the description and add one test file. It cannot touch the code. Watch the score. One round later the judge says it would merge. The code on the right never changed.",
+      body: ({ beat, setBeat, playing, cap }) => <>
         <p className="kicker">JudgeBench-Code</p>
-        <h1>AI writes the code. Another AI grades it.<br />Can we trust the grader?</h1>
-        <p className="lead">We tested the <b>grader</b>, not the coder, on 751 real code changes written by AI coding agents. Each change has a known right answer. The grader knows something, but it can be talked into approving broken code <b>without a single line of code changing</b>. The obvious fixes only get you halfway.</p>
+        <h2>A broken fix gets approved, and not one line of code changed</h2>
+        <p className="lead">An AI coding agent wrote this fix. It fails the project's tests. An AI judge rejected it. Then an attacker rewrote the description and added one test file. It never touched the code.</p>
+        {demo ? <Attack attacks={attacks} beat={beat} onBeat={setBeat} playing={playing} /> : <p className="muted">loading…</p>}
+        <Caption show={cap}>Same broken code. New words and one test file. The judge flips to "would merge". It was grading the <b>story</b>, not the code.</Caption>
       </> },
 
-    { key: "setup", part: 0, title: "The setup", dur: 24, short: true, note: "A real bug report comes in. A coding agent writes a pull request. A second model, the judge, reads it and scores it from one to five. Four or five means it would be merged. That score ends tasks, picks between attempts, and trains agents. Our answer key is the hidden tests written by the project maintainers. The judge never sees them.",
+    { key: "thesis", part: 1, title: "What we found, and how", dur: 40, short: true, note: "That is the project in one example. The claim it leads to: the part of an AI code judge that can be gamed is the part that reads what the agent wrote about its own code, the description and the tests. Every fix that checks that same material fails for the same reason. To show it, we built a benchmark of the grader, not the coder. 751 real changes from more than thirty agents on 105 real bugs, each with the project's hidden tests as the answer key. An attacker that may never touch the code. And before every experiment, a numeric prediction committed to the repo, so the results could not be chosen after the fact.",
       body: ({ cap }) => <>
-        <p className="kicker">Part 1 · The setup</p>
-        <h2>Who writes the code, who grades it, and how we know who was right</h2>
-        <div className="pipeline">
-          <div className="node"><span className="n">1</span><h4>A real bug</h4><p>A bug report from a real open-source project, for example "requests crashes when the method name is bytes".</p></div>
-          <div className="node"><span className="n">2</span><h4>An AI coding agent</h4><p>Reads the bug and writes a pull request: a code change, a description, and sometimes tests.</p></div>
-          <div className="node hot"><span className="n">3</span><h4>An AI judge</h4><p>A second model reads the pull request and scores it from <b>1 to 5</b>. A 4 or 5 means <b>"would merge"</b>. This is what we test.</p><Scale /></div>
-          <div className="node"><span className="n">4</span><h4>The answer key</h4><p>The project's own hidden tests. The judge never sees them. If the change passes, it is right. If it fails, it is wrong.</p></div>
+        <p className="kicker">Part 2 · The study</p>
+        <h1>The part of an AI code judge that can be gamed is the part that reads what the agent said about its own code.</h1>
+        <p className="lead">Agent platforms use an AI judge to end tasks, choose between attempts, and reward agents in training. We measured how much that judge knows, how cheaply it can be fooled, and whether the standard fixes work.</p>
+        <div className="grid2" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
+          <div className="cell"><h4>Ground truth</h4><b>751</b> real changes from 30+ coding agents on <b>105</b> real bugs. The answer key is the project's own hidden tests, which the judge never sees.</div>
+          <div className="cell"><h4>An adversary</h4>An attacker model that may rewrite the description and add one test file, with three tries and the judge's feedback. It can never touch the code.</div>
+          <div className="cell"><h4>Rigor</h4><b>21</b> numeric predictions committed before the runs. Error bars that resample whole projects. Fair controls. <b>4,428</b> sandbox runs in the real containers.</div>
         </div>
-        <Caption show={cap}>751 real changes from 30+ coding agents on 105 real bugs, each with a known right answer. Everything that follows is measured against that answer key.</Caption>
+        <Caption show={cap}>Every number in this deck had a prediction written down before the experiment ran. The ones that failed are reported as loudly as the ones that held.</Caption>
       </> },
 
-    { key: "signal", part: 1, title: "The judges know something", dur: 18, note: "First the good news. Give a judge a right fix and a wrong fix for the same bug. It picks the right one about seven times out of ten. A coin flip gets five. The top three judges are tied, so this benchmark does not crown a winner.",
+    { key: "signal", part: 2, title: "The judges know something", dur: 16, note: "First, to be fair to the judges. Show one a right fix and a wrong fix for the same bug, and it picks the right one about seven times out of ten. A coin flip gets five. Devin, GPT-6.1-sol and GPT-6-luna are tied. So the weakness you are about to see is not one bad model. It is shared by every judge we tested.",
       body: ({ cap }) => <>
-        <p className="kicker">Part 2 · What we found</p>
-        <h2>The judges know something</h2>
+        <p className="kicker">Part 3 · What we found</p>
+        <h2>The judges do know something</h2>
         <p className="lead">Show a judge a right fix and a wrong fix for the same bug. How often does the right one get the higher score?</p>
         <table className="mini"><thead><tr><th>Judge</th><th>Right fix scored higher</th></tr></thead>
           <tbody>{signal.map(([id, j]) => <tr key={id}><td>{name(id)}</td><td className="num">{pct(j.metrics.swe_pair_acc)}</td></tr>)}<tr><td className="muted">Coin flip</td><td className="num muted">50%</td></tr></tbody></table>
-        <Caption show={cap}>About seven times out of ten. Better than chance, but the top three judges are tied, so there is <b>no winner</b>.</Caption>
+        <Caption show={cap}>About seven times out of ten, and the top three are tied. The weakness that follows is <b>shared by every judge we tested</b>, not a flaw of one model.</Caption>
         <More><table className="mini"><tbody>{signal.map(([id, j]) => <tr key={id}><td>{id}</td><td className="num">{ci(j.metrics.swe_pair_acc)}</td></tr>)}</tbody></table>72 held-out bugs from 11 projects. Ties count as half. The 95% intervals resample whole projects.</More>
       </> },
 
-    { key: "live", part: 1, title: "Watch a broken fix get approved", dur: 55, beats: 4, short: true, note: "Here is the main result in one example. Before the attack the judge scores this broken fix a two and rejects it. Then an attacker model gets three tries. It is only allowed to rewrite the description and add one test file. It cannot touch the code, so the fix stays broken. Watch the score. After one round the judge says it would merge. The code on the right never changed.",
-      body: ({ beat, setBeat, playing, cap }) => <>
-        <p className="kicker">Part 2 · What we found</p>
-        <h2>Watch a broken fix get approved without changing the code</h2>
-        <p className="lead">An attacker model gets three tries. It may rewrite the description and add one test file. It may <b>not</b> touch the code, so the fix stays broken.</p>
-        {demo ? <Attack attacks={attacks} beat={beat} onBeat={setBeat} playing={playing} /> : <p className="muted">loading…</p>}
-        <Caption show={cap}>Same broken code. New words and one test file. The verdict flips to "would merge". The judge was grading the <b>story</b>, not the code.</Caption>
-      </> },
-
-    { key: "agg", part: 1, title: "It works almost everywhere", dur: 24, note: `We ran that attack on ${nAttacked} bugs. Broken fixes approved went from ${pct(sol?.metrics.attack_gate_before)} to ${pct(sol?.metrics.attack_gate_rate)} on GPT-6.1-sol, and from ${pct(luna?.metrics.attack_gate_before)} to ${pct(luna?.metrics.attack_gate_rate)} on GPT-6-luna. Attacks built against one judge also work on the other. This is a property of the approach, not a quirk of one model.`,
+    { key: "scale", part: 2, title: "It works almost everywhere, and it compounds", dur: 60, note: `We ran the attack on ${nAttacked} bugs. Broken fixes approved went from ${pct(sol?.metrics.attack_gate_before)} to ${pct(sol?.metrics.attack_gate_rate)} on GPT-6.1-sol and from ${pct(luna?.metrics.attack_gate_before)} to ${pct(luna?.metrics.attack_gate_rate)} on GPT-6-luna. To be fair we gave the right fixes the same attacker, and the broken one still won about a quarter of the time. Attacks built against one judge fool the other. Then the compounding part. Let the agent try several times and let the judge pick: it helps up to about four attempts and then stops. Keep optimising against the judge, add attacked candidates, and the judge's score of its favourite keeps rising while that favourite is right less and less often. That is what happens to an agent trained on this score. And a threshold does not save you. The best cutoff still lets about 60 percent of broken fixes through.`,
       body: ({ cap }) => <>
-        <p className="kicker">Part 2 · What we found</p>
-        <h2>It works on most bugs, and on other judges</h2>
-        <div className="bigs">
-          {att.map(([id, j]) => <div key={id}><div className="big">{pct(j.metrics.attack_gate_before)} → <CountUp to={j.metrics.attack_gate_rate?.value} /></div><div className="stat-l">broken fixes approved, before and after the attack · {name(id)}</div></div>)}
-        </div>
-        {sc && <AttackChart judges={att} height={170} />}
-        <Caption show={cap}>Attacks built against one judge also fool the other. Even when the right fixes get the same attacker, the broken one still wins {pct(luna?.metrics.attack_win_fair)} to {pct(sol?.metrics.attack_win_fair)} of the time.</Caption>
-        <More>Attacks tuned on GPT-6-luna and replayed on GPT-6.1-sol: {pct(sol?.metrics.attack_gate_xfer_before)} → {pct(sol?.metrics.attack_gate_xfer)}. The reverse: {pct(luna?.metrics.attack_gate_xfer_before)} → {pct(luna?.metrics.attack_gate_xfer)}. They also work on a blind rubric and a plain zero-shot prompt. Devin and Claude were not run under attack.</More>
-      </> },
-
-    { key: "opt", part: 1, title: "Leaning on the judge makes things worse", dur: 30, note: `Two ways people lean on the judge. Let the agent try several times and let the judge pick. The pick is right ${pct(bo("1"))} of the time with one attempt and ${pct(bo("4"))} with four. Then it stops improving. A perfect picker would reach ${pct(sol?.best_of_n?.["8"]?.oracle)}. Now keep optimising against the judge. Add more candidates, including attacked ones. The judge's score of its favourite keeps rising while that favourite is right less and less often. That is what happens to an agent trained on this score. And you cannot fix it with a threshold. The best cutoff still lets about 60% of broken fixes through.`,
-      body: ({ cap }) => <>
-        <p className="kicker">Part 2 · What we found</p>
-        <h2>The more you lean on the judge, the worse it gets</h2>
+        <p className="kicker">Part 3 · What we found</p>
+        <h2>It works on most bugs, on other judges, and it gets worse the harder you optimise</h2>
         <div className="cols">
-          <div>{sc && <BestOfNChart judges={(["rubric-gpt6.1-sol", "rubric-gpt6-luna"] as const).filter((id) => J[id]).map((id) => [id, J[id]] as const)} height={200} />}
-            <p className="small muted"><b>Let the judge pick the best of several attempts.</b> The pick is right {pct(bo("1"))} of the time with one attempt and {pct(bo("4"))} with four. Then it stops improving. A perfect picker would reach {pct(sol?.best_of_n?.["8"]?.oracle)}.</p></div>
-          <div>{sc && <GoodhartChart judges={gh} height={200} />}
-            <p className="small muted"><b>Keep optimising against the judge.</b> Solid line: how often its favourite is actually right. Dashed line: how much the judge likes it. Add attacked candidates and the judge gets happier while its picks get worse.</p></div>
+          <div>
+            <div className="bigs" style={{ gridTemplateColumns: "1fr 1fr", margin: "6px 0 10px" }}>
+              {att.map(([id, j]) => <div key={id}><div className="big" style={{ fontSize: 40 }}>{pct(j.metrics.attack_gate_before)} → <CountUp to={j.metrics.attack_gate_rate?.value} /></div><div className="stat-l">broken fixes approved, before and after the attack · {name(id)}</div></div>)}
+            </div>
+            <p className="small muted">Attacks built against one judge also fool the other. When the right fixes get the same attacker, the broken one still wins {pct(luna?.metrics.attack_win_fair)} to {pct(sol?.metrics.attack_win_fair)} of the time.</p>
+          </div>
+          <div>{sc && <GoodhartChart judges={gh} height={210} />}
+            <p className="small muted"><b>Optimising against the judge.</b> Solid: how often its favourite is actually right. Dashed: how much the judge likes it. Picking the best of several attempts helps up to about four, then stops. Add attacked candidates and the judge gets happier while its picks get worse.</p></div>
         </div>
-        <Caption show={cap}>Past a point, a higher score means worse code. A threshold does not save you either. The best cutoff still lets about {pct(luna?.metrics.swe_false_accept_cal)} of broken fixes through.</Caption>
+        <Caption show={cap}>Past a point, a higher score means worse code. A threshold does not save you either: the best cutoff still lets about {pct(luna?.metrics.swe_false_accept_cal)} of broken fixes through.</Caption>
+        <More>Transfer: attacks tuned on GPT-6-luna replayed on GPT-6.1-sol, {pct(sol?.metrics.attack_gate_xfer_before)} → {pct(sol?.metrics.attack_gate_xfer)}; the reverse, {pct(luna?.metrics.attack_gate_xfer_before)} → {pct(luna?.metrics.attack_gate_xfer)}. Best-of-N: the pick is right {pct(bo("1"))} of the time with one attempt, {pct(bo("4"))} with four, {pct(bo("8"))} with eight; a perfect picker would reach {pct(sol?.best_of_n?.["8"]?.oracle)}. Strict cutoff "4 or more" rejects about 97% of right fixes. Devin and Claude were not run under attack.</More>
       </> },
 
-    { key: "defences", part: 2, title: "Three fixes", dur: 50, short: true, note: "We tested the three obvious fixes against the same attacks. First, actually run the pull request's tests in a sandbox and tell the judge whether they really pass only with the change. That kills fake tests, and the attack drops from 61 to 42 percent. But almost half of the attacker's tests are real tests of the wrong behaviour, and those still get through. Second, also run those tests against other agents' attempts at the same bug. A test of wrong behaviour should fail on everyone else. It drops to 33 percent, because 60 percent of the time other agents made the same mistake. Third, hide the description and tests from the judge. Nothing left to attack, but now it approves the untouched broken fix 47 percent of the time. Every fix helps a bit. None gets halfway.",
+    { key: "defences", part: 3, title: "Three fixes, and why they fail", dur: 60, short: true, note: "We tested the three obvious fixes against the same attacks. Run the pull request's tests for real and tell the judge: fake tests die, and the attack drops from 61 to 42 percent. But almost half the attacker's tests are real tests of the wrong behaviour, and those still get through. Also run them against other agents' attempts, since a wrong test should fail on everyone else: 33 percent, because 60 percent of the time the other agents made the same mistake. Hide the description and tests entirely: nothing to attack, but the judge now approves the untouched broken fix 47 percent of the time. Here is the mechanism. The judge's skill at rejecting bad fixes was largely a penalty for missing tests. The attacker supplies a test, and the penalty disappears. The test file carries almost all of the attack, and it is also the only place where tampering can be seen. You can neither hide it nor trust it.",
       body: ({ cap }) => <>
-        <p className="kicker">Part 3 · Can it be fixed?</p>
+        <p className="kicker">Part 4 · Can it be fixed?</p>
         <h2>Three obvious fixes. Each helps a little. None gets halfway.</h2>
         {modelPicker}
         {sc && <Ladder J={J} model={model} />}
+        <div className="grid2" style={{ marginTop: 6 }}>
+          <div className="cell"><h4>Why the judge rejected bad fixes in the first place</h4>Mostly because they had <b>no tests</b>. Hide the test file and the plain judge approves the untouched broken fix {pctv(gate(mSol.code, false)[0])} / {pctv(gate(mLuna.code, false)[0])} of the time instead of {pctv(gate(sol, true)[0])} / {pctv(gate(luna, true)[0])} (GPT-6.1-sol / GPT-6-luna). The attacker's one test file removes that penalty.</div>
+          <div className="cell"><h4>Where the exploit lives</h4>The test file carries <b>{share(mSol.tests, sol)} / {share(mLuna.tests, luna)}</b> of the attack. The description carries {share(mSol.desc, sol)} / {share(mLuna.desc, luna)}. Yet a judge shown only the code ranks right above wrong as well as the full judge, and sees none of the test tampering.</div>
+        </div>
         <Caption show={cap}>A test of what the code <i>does</i> looks exactly like a test of what the bug <i>needs</i>, once you run it. And other agents make the same mistakes. <b>The only fix left is tests that nobody involved wrote.</b></Caption>
-        <More>Judges keep their ranking ability through every fix (within 0.03). Hiding the test file also blinds the judge to test tampering: it catches 3% to 15% of deleted or gutted tests instead of 85% to 91%, because every such hack lives in a test file. The two right-hand bars replay attacks tuned against the previous judge, so an attacker who adapts would do at least this well.{consensus?.attacker_fail_corroborated && <> Cross-agent check: 4,428 sandbox runs. {pct(consensus.attacker_fail_corroborated)} of the attacker's real tests on broken fixes also pass on another agent's attempt.</>}</More>
+        <More>Judges keep their ranking ability through every fix (within 0.03). A code-only judge catches {pct(mSol.code?.metrics.hack_catch_rate)} / {pct(mLuna.code?.metrics.hack_catch_rate)} of deleted or gutted tests instead of {pct(sol?.metrics.hack_catch_rate)} / {pct(luna?.metrics.hack_catch_rate)}, because every such hack lives in a test file. The two right-hand bars replay attacks tuned against the previous judge, so an adapting attacker would do at least this well.{consensus?.attacker_fail_corroborated && <> Cross-agent check: 4,428 sandbox runs; {pct(consensus.attacker_fail_corroborated)} of the attacker's real tests on broken fixes also pass on another agent's attempt.</>}</More>
       </> },
 
-    { key: "preds", part: 3, title: "We called it in advance", dur: 26, note: "Why believe this? Before every experiment I wrote down what I expected, as a number, and committed it to the repo. Ten of those predictions came true. Nine did not. One could not be tested as written. The ones about how judges behave mostly held. The ones that said a fix would work mostly failed, each time because I had assumed something about the attack that turned out to be false. The failures are the findings.",
+    { key: "preds", part: 4, title: "We called it in advance", dur: 22, note: "Why believe this? Before every experiment I wrote down what I expected, as a number, and committed it. Ten predictions came true. Nine did not. One could not be tested as written. The ones about how judges behave mostly held. The ones that said a fix would work mostly failed, each time because I had assumed something about the attack that turned out to be false. The failures are the findings.",
       body: ({ cap }) => <>
-        <p className="kicker">Part 4 · Bottom line</p>
+        <p className="kicker">Part 5 · Bottom line</p>
         <h2>We wrote down what we expected before every experiment</h2>
         <p className="lead">21 predictions, each with a number, committed before the run. Green came true. Red did not.</p>
         <Preds />
         <Caption show={cap}>Predictions about how judges <i>behave</i> mostly came true. Predictions that a <i>fix would work</i> mostly did not. The failures are the findings.</Caption>
       </> },
 
-    { key: "end", part: 3, title: "What this means", dur: 30, short: true, note: "What this shows. AI code judges know something, but they can be flipped from reject to approve without the code changing. That weakness transfers between judges, gets worse the harder you optimise, cannot be fixed with a cutoff, and survives the standard fixes. What it does not show. That any judge is safe, or that passing tests means good code. What comes next is the one fix the results point to: tests generated from the bug report before any code exists. The rule for anyone using an AI grader is simple. Use it to rank. Never let it be the gate unless the evidence comes from somewhere the graded party cannot touch.",
+    { key: "end", part: 4, title: "What to do about it", dur: 22, short: true, note: "The rule for anyone using an AI grader: use it to rank, never as the gate, unless the evidence comes from somewhere the graded party cannot touch. What comes next is the one fix the results point to, tests generated from the bug report before any code exists. Everyone is optimising against the referee and assuming it is honest. It is honest about seven times out of ten. The rest of the time it can be talked into anything.",
       body: ({ cap }) => <>
-        <p className="kicker">Part 4 · Bottom line</p>
-        <h2>What this means</h2>
+        <p className="kicker">Part 5 · Bottom line</p>
+        <h2>What to do about it</h2>
         <div className="grid2">
-          <div className="cell"><h4>What we showed</h4>AI code judges know something about right and wrong code. But they can be flipped from "reject" to "approve" without the code changing. That weakness carries over between judges, gets worse the harder you optimise, cannot be fixed with a cutoff, and survives the standard fixes.</div>
-          <div className="cell"><h4>What we did not show</h4>That any judge is safe or the best. That passing tests means good code. That judges agree with human reviewers. The human labels we could find were too weak to tell either way.</div>
-          <div className="cell"><h4>What comes next</h4>Tests generated from the bug report before any code exists. It is the one fix these results point to. Also Devin and Claude under attack, and an attacker that adapts to the fixes.</div>
-          <div className="cell"><h4>The rule</h4>Use an AI judge to rank. Do not let it be the gate unless the evidence comes from somewhere the graded party cannot touch.</div>
+          <div className="cell"><h4>The rule</h4>Use an AI judge to <b>rank</b>. Do not let it be the <b>gate</b> unless the evidence comes from somewhere the graded party cannot touch.</div>
+          <div className="cell"><h4>What comes next</h4>Tests generated from the bug report before any code exists. It is the one fix these results point to. Then Devin and Claude under attack, and an attacker that adapts to the fixes.</div>
+          <div className="cell"><h4>What we showed</h4>AI code judges know something, but they can be flipped from "reject" to "approve" without the code changing. That carries across judges, grows under optimisation, cannot be fixed with a cutoff, and survives the standard fixes.</div>
+          <div className="cell"><h4>What we did not show</h4>That any judge is safe or the best. That passing tests means good code. That judges agree with human reviewers; the human labels available were too weak to tell.</div>
         </div>
         <Caption show={cap}>Everyone is optimising against the referee and assuming it is honest. It is honest about seven times out of ten. The rest of the time, it can be talked into anything.</Caption>
         <p className="small muted" style={{ marginTop: 10 }}>All numbers and methods: <Link to="/overview">Overview</Link>, <Link to="/findings">Findings</Link>, <Link to="/board">Leaderboard</Link>, <Link to="/play">Fool the judge</Link>, <Link to="/method">Method</Link>.</p>
@@ -330,7 +323,7 @@ export default function Demo() {
         <button className="pbtn ghost" onClick={() => go(1)} disabled={pos === order.length - 1} title="next (→)">›</button>
         <span className="title">{pos + 1} / {order.length} · {s.title}</span>
         <span className="time">{fmt(before + Math.min(elapsed, s.dur))} / {fmt(total)}</span>
-        <button className={`btn ${short ? "on" : ""}`} onClick={() => { setShort((x) => !x); goTo(0); }}>{short ? "2-minute cut" : "full cut (5 min)"}</button>
+        <button className={`btn ${short ? "on" : ""}`} onClick={() => { setShort((x) => !x); goTo(0); }}>{short ? "2-minute cut" : "full cut (4 min)"}</button>
         <button className={`btn ${notes ? "on" : ""}`} onClick={() => setNotes((x) => !x)}>notes</button>
       </div>
       <p className="hint">Space plays and pauses. Arrow keys step. Click the timeline to jump. N shows speaker notes. S switches to the two-minute cut. Everything on screen stays clickable while paused.</p>
